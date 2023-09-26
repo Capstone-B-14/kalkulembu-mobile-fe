@@ -1,22 +1,21 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, SafeAreaView } from "react-native";
+import Login from './src/screens/Login';
+import SapiPageDetail from "./src/screens/SapiPageDetail";
+ 
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>
-        Open up App.js to start working on your app! This was changed lol
-      </Text>
+      
+      <SapiPageDetail />
       <StatusBar style='auto' />
-    </View>
+    </View> 
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    flex: 1
   },
 });
