@@ -11,7 +11,7 @@ const Login = ({onPress}) => {
     return (
         <View style={styles.root}>
             <View style={styles.atas}>
-                <Image source={require('../../../assets/kalkulembu-logo.png.png')} style={styles.logo} resizeMode="contain"></Image>
+                <Image source={require('../../../assets/kalkulembu-logo.png')} style={styles.logo} resizeMode="contain"></Image>
                 <Text style={styles.kalku}>Kalkulembu</Text>
             </View>
             <Text style={styles.masuk}>MASUK</Text>
