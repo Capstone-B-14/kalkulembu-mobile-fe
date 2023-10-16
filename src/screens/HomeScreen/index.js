@@ -3,7 +3,7 @@ import { View, Text } from 'react-native';
 import SearchBar from '../../components/SearchBar';
 
 const HomeScreen = () => {
-    const [searhText, setSearchText]= useState('');
+    const [searchText, setSearchText]= useState('');
 
     const handleSearch=(text)=>{
         setSearchText(text);
@@ -13,9 +13,9 @@ const HomeScreen = () => {
         <View>
             <SearchBar 
                 placeholder="Pencarian"
-                value={searhText}
+                value={searchText}
                 onChangeText={handleSearch}
-                />
+            />
         </View>
     );
 }
