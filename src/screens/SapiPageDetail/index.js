@@ -1,1 +1,1 @@
-export { default } from './SapiPageDetail'
+// export { default } from './SapiPageDetail'
