@@ -1,25 +1,53 @@
-import { View, Text } from 'react-native';
-import ChartMo from '../ChartMo';
+import React from 'react';
+import { View } from 'react-native';
+import { LineChart } from 'react-native-chart-kit';
 
 const Grafik = () => {
   return (
-    <View className="pt-5 pb-3 pl-5 pr-5">
-      <View className="bg-[#FBFBFB] items-center p-2 rounded-xl ">
-        <Text className="font-bold">Grafik Pertumbuhan Bobot Sapi (kg)</Text>
-        <View className="mt-2">
-          <View className="bg-[#D9D9D9] flex-row p-1.5 rounded-3xl">
-            <View className="bg-[#FFDF64] rounded-xl p-1">
-              <Text> Bulan </Text>
-            </View>
-            <View className="bg-[#D9D9D9] rounded-xl p-1">
-              <Text> Tahun </Text>
-            </View>
-          </View>
-        </View>
-        <View className="">
-          <ChartMo />
-        </View>
-      </View>
+    <View className="w-full">
+      <LineChart
+        data={{
+          labels: ['January', 'February', 'March', 'April', 'May'],
+          datasets: [
+            {
+              data: [
+                Math.random() * 100,
+                Math.random() * 100,
+                Math.random() * 100,
+                Math.random() * 100,
+                Math.random() * 100,
+                Math.random() * 100,
+              ],
+            },
+          ],
+        }}
+        width={350} // from react-native
+        height={220}
+        yAxisLabel=""
+        yAxisSuffix=" Kg"
+        yAxisInterval={1} // optional, defaults to 1
+        chartConfig={{
+          backgroundColor: '#FBFBFB',
+          backgroundGradientFrom: '#FBFBFB',
+          backgroundGradientTo: '#FBFBFB',
+          decimalPlaces: 2, // optional, defaults to 2dp
+          color: (opacity = 1) => `#212121`,
+          labelColor: (opacity = 1) => `#212121`,
+          style: {
+            borderRadius: 0,
+          },
+          propsForDots: {
+            r: '6',
+            strokeWidth: '2',
+            stroke: '#212121',
+          },
+        }}
+        false
+        style={{
+          marginVertical: 8,
+          borderRadius: 0,
+        }}
+      />
     </View>
   );
 };

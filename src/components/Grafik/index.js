@@ -1,1 +1,1 @@
-export {default} from './Grafik'
+export { default } from './Grafik';

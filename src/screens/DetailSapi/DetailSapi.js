@@ -1,40 +1,27 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import CardDetail from '../../components/CardDetail';
-import Grafik from '../../components/Grafik';
+import Camera from '../../components/Camera';
+import { ScrollView } from 'react-native';
+import Detail1 from '../../components/Detail1';
+import Detail2 from '../../components/Detail2/Detail2';
+import Detail3 from '../../components/Detail3';
 import Card from '../../components/Card';
 
-const SapiPageDetail = () => {
+const DetailSapi = () => {
   return (
     <View>
-      <CardDetail />
-      <View style={styles.dua}>
-        <View style={styles.umur}>
-          <View style={styles.subumur}>
-            <Text style={styles.textumur}>Umur</Text>
-          </View>
-          <View style={styles.bulan}>
-            <Text style={styles.angka}>39</Text>
-            <Text style={styles.satuan}>Bulan</Text>
-          </View>
-        </View>
-        <View style={styles.umur}>
-          <View style={styles.subumur}>
-            <Text style={styles.textumur}>Bobot</Text>
-          </View>
-          <View style={styles.bulan}>
-            <Text style={styles.angka}>95</Text>
-            <Text style={styles.satuan}>kilogram</Text>
-          </View>
-        </View>
-      </View>
-      <Grafik />
-      <View className="flex-row p-3">
+    <ScrollView>
+      <Detail1 />
+      <Detail2 />
+      <Detail3 />
+      <ScrollView horizontal={true} className="flex-row flex p-3 ">
         <Card />
         <Card />
         <Card />
         <Card />
-      </View>
+      </ScrollView>
+    </ScrollView>
+    <Camera />
     </View>
   );
 };
@@ -79,4 +66,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SapiPageDetail;
+export default DetailSapi;
