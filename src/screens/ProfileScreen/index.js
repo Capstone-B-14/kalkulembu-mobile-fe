@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Image, StyleSheet, ActivityIndicator } from "react-native";
 import axios from "axios";
+import CustomHeader from "../../components/Header";
 // import { REACT_APP_API_URL } from "@env";
 
 const ProfileScreen = () => {
@@ -30,6 +31,7 @@ const ProfileScreen = () => {
 
   return (
     <View style={styles.container}>
+      <CustomHeader title='Profil' />
       <View style={styles.header}>
         <Image
           source // Replace with your image source

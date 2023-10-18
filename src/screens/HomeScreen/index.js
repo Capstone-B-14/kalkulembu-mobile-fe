@@ -1,25 +1,18 @@
 import React, { useState, useLayoutEffect } from "react";
 import { View, Text } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-
+import CustomHeader from "../../components/Header";
 import SearchBar from "../../components/SearchBar";
 
-const HomeScreen = () => {
+const HomeScreen = (navigation) => {
   const [searchText, setSearchText] = useState("");
-  const navigation = useNavigation();
 
   const handleSearch = (text) => {
     setSearchText(text);
   };
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      title: "Home",
-    });
-  }, [navigation]);
-
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+    <View>
+      <CustomHeader title='Home' />
       <SearchBar
         placeholder='Pencarian'
         value={searchText}

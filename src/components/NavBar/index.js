@@ -23,6 +23,7 @@ function NavBar() {
         tabBarActiveTintColor: "#2E78A6",
         tabBarInactiveTintColor: "#0D0D0D",
         tabBarShowLabel: false,
+        headerShown: false,
       }}
     >
       <Tab.Screen
