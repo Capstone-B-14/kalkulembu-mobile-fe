@@ -1,23 +1,32 @@
-import React, { useState } from 'react';
-import { View, Text } from 'react-native';
-import SearchBar from '../../components/SearchBar';
+import React, { useState, useLayoutEffect } from "react";
+import { View, Text } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+
+import SearchBar from "../../components/SearchBar";
 
 const HomeScreen = () => {
-    const [searchText, setSearchText]= useState('');
+  const [searchText, setSearchText] = useState("");
+  const navigation = useNavigation();
 
-    const handleSearch=(text)=>{
-        setSearchText(text);
-    }
+  const handleSearch = (text) => {
+    setSearchText(text);
+  };
 
-    return(
-        <View>
-            <SearchBar 
-                placeholder="Pencarian"
-                value={searchText}
-                onChangeText={handleSearch}
-            />
-        </View>
-    );
-}
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: "Home",
+    });
+  }, [navigation]);
 
-export default HomeScreen
+  return (
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <SearchBar
+        placeholder='Pencarian'
+        value={searchText}
+        onChangeText={handleSearch}
+      />
+    </View>
+  );
+};
+
+export default HomeScreen;
