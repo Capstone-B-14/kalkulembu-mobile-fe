@@ -8,7 +8,7 @@ import {
   Pressable,
   Image,
 } from "react-native";
-import LoginButton from "../../components/LoginButton";
+import CustomButton from "../../components/Button";
 import BuatAkun from "../../components/BuatAkun";
 
 const Login = ({ onPress }) => {
@@ -38,7 +38,7 @@ const Login = ({ onPress }) => {
             onChangeText={onChangeNumber}
             value={number}
             placeholder='Email'
-            keyboardType='alphabet'
+            keyboardType='email-address'
           />
         </View>
         <View style={styles.inputpassword}>
@@ -52,16 +52,26 @@ const Login = ({ onPress }) => {
             onChangeText={onChangeNumber}
             value={number}
             placeholder='Password'
-            keyboardType='alphabet'
+            keyboardType='visible-password'
           />
         </View>
       </View>
       <Pressable onPress={onPress} style={styles.lupa}>
         <Text>Lupa Password?</Text>
       </Pressable>
-      <LoginButton />
-      <Text style={styles.atau}>atau</Text>
-      <BuatAkun />
+      <View style={styles.buttonroot}>
+        <CustomButton
+          style={styles.login}
+          text='Masuk'
+          backgroundColor='#FFDF64'
+        />
+        <Text style={styles.atau}>atau</Text>
+        <CustomButton
+          style={styles.buatakun}
+          text='Buat Akun Baru'
+          backgroundColor='#DDDDDDDD'
+        />
+      </View>
     </View>
   );
 };
@@ -70,6 +80,10 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     backgroundColor: "#2E78A6",
+  },
+  buttonroot: {
+    flex: 1,
+    alignItems: "center",
   },
   atas: {
     flexDirection: "row",
@@ -128,7 +142,7 @@ const styles = StyleSheet.create({
   },
   atau: {
     alignSelf: "center",
-    marginTop: 15,
+    marginVertical: 15,
     color: "#FBFBFB",
     fontSize: 16,
   },
@@ -160,6 +174,16 @@ const styles = StyleSheet.create({
   },
   logoemail: {
     opacity: 0.5,
+  },
+  login: {
+    width: "90%",
+    flex: 0,
+    borderRadius: 10,
+  },
+  buatakun: {
+    width: "90%",
+    flex: 0,
+    borderRadius: 10,
   },
 });
 

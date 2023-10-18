@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, Image, StyleSheet, ActivityIndicator } from "react-native";
 import axios from "axios";
+import { useNavigation } from "@react-navigation/core";
 import CustomHeader from "../../components/Header";
+import { useUser } from "../../contexts/UserContext";
 // import { REACT_APP_API_URL } from "@env";
 
 const ProfileScreen = () => {
-  const [userData, setUserData] = useState(null);
+  const navigation = useNavigation();
+
+  const { setUserData } = useUser();
   const [loading, setLoading] = useState(true);
 
   const apiURL = process.env.REACT_APP_API_URL + "/auth/profile";
