@@ -1,23 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   View,
   Text,
   StyleSheet,
-  Button,
   TextInput,
   Pressable,
   Image,
 } from "react-native";
-import CustomButton from "../../components/Button";
+import CustomButton from "../../components/CustomButton";
 
-const Login = ({ onPress }) => {
-
-  const handleSignupNavigation = () => {
-  navigation.navigate("Sign Up User");}
-
-  const navigation = useNavigation();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const SignupUser = ({ onPress }) => {
+  const [namalengkap, setNamalengkap] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [konfirmasipassword, setKonfirmasipassword] = React.useState("");
 
   return (
     <View style={styles.root}>
@@ -26,13 +22,27 @@ const Login = ({ onPress }) => {
           source={require("../../../assets/kalkulembu-logo.png")}
           style={styles.logo}
           resizeMode="contain"
-        ></Image>
+        />
         <Text style={styles.kalku}>Kalkulembu</Text>
       </View>
-      <Text style={styles.masuk}>MASUK</Text>
-      <Text style={styles.selamat}>Selamat datang di Kalkulembu</Text>
-      <View style={styles.inputan}>
-        <View style={styles.inputanemail}>
+      <Text style={styles.daftar}>Daftar Akun</Text>
+      <Text style={styles.selamat}>Masukkan data diri Anda</Text>
+      <View style={styles.input}>
+        <View style={styles.inputuser}>
+          <Image
+            source={require("../../../assets/user-logo.png")}
+            style={styles.logouser}
+            resizeMode="contain"
+          ></Image>
+          <TextInput
+            style={styles.user}
+            onChangeText={setNamalengkap}
+            value={namalengkap}
+            placeholder="Masukkan Nama Lengkap"
+            keyboardType="default"
+          />
+        </View>
+        <View style={styles.inputemail}>
           <Image
             source={require("../../../assets/email-logo.png")}
             style={styles.logoemail}
@@ -40,9 +50,9 @@ const Login = ({ onPress }) => {
           ></Image>
           <TextInput
             style={styles.email}
-            onChangeText={(text) => setEmail(text)}
+            onChangeText={setEmail}
             value={email}
-            placeholder="Email"
+            placeholder="Masukkan Email"
             keyboardType="email-address"
           />
         </View>
@@ -54,34 +64,42 @@ const Login = ({ onPress }) => {
           ></Image>
           <TextInput
             style={styles.password}
-            onChangeText={(text) => setPassword(text)}
+            onChangeText={setPassword}
             value={password}
             placeholder="Password"
-            keyboardType="default"
+            secureTextEntry
+          />
+        </View>
+        <View style={styles.inputpassword}>
+          <Image
+            source={require("../../../assets/password-logo.png")}
+            style={styles.logopassword}
+            resizeMode="contain"
+          ></Image>
+          <TextInput
+            style={styles.password}
+            onChangeText={setKonfirmasipassword}
+            value={konfirmasipassword}
+            placeholder="Password"
             secureTextEntry
           />
         </View>
       </View>
-      <Pressable onPress={""} style={styles.lupa}>
-        <Text className="text-white">Lupa Password?</Text>
-      </Pressable>
       <CustomButton
-        text="Masuk"
+        style={styles.buttonlanjut}
+        text="Lanjutkan"
         backgroundColor="#FFDF64"
         textColor="#000"
-        routeName={Login}
+        routeName="SignupPeternakan"
         navigation={navigation}
       />
-      <Text style={styles.atau}>atau</Text>
-      <CustomButton
-        text="Buat Akun Baru"
-        backgroundColor="#FFDF64"
-        textColor="#000"
-        onPress={handleSignupNavigation}
-      />
+      <Pressable onPress={onPress} style={styles.login}>
+        <Text className="text-white">Saya sudah memiliki akun</Text>
+      </Pressable>
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   root: {
     flex: 1,
@@ -98,24 +116,23 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   kalku: {
-    paddingTop: 40,
+    paddingTop: 30,
     alignSelf: "center",
     fontSize: 25,
     color: "#FBFBFB",
     paddingBottom: 30,
   },
-  masuk: {
-    color: "#FBFBFB",
-    fontSize: 38,
-    paddingTop: 40,
-    paddingLeft: 40,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
   selamat: {
     color: "#FBFBFB",
     fontSize: 20,
     paddingLeft: 40,
+  },
+  daftar: {
+    color: "#FBFBFB",
+    fontSize: 38,
+    paddingLeft: 40,
+    fontWeight: "bold",
+    marginBottom: -2,
   },
   email: {
     height: 30,
@@ -135,24 +152,28 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     fontSize: 16,
   },
-  lupa: {
-    Color: "#FBFBFB",
-    alignSelf: "flex-end",
-    paddingRight: 40,
-    marginTop: -15,
-    marginBottom: 15,
-  },
-  atau: {
-    alignSelf: "center",
-    marginTop: 10,
-    marginBottom: 10,
-    color: "#FBFBFB",
+  user: {
+    height: 30,
+    padding: 20,
+    margin: 10,
+    marginLeft: -1,
+    width: "80%",
+    borderRadius: 10,
     fontSize: 16,
   },
-  inputan: {
+  input: {
     backgroundColor: "#80ACC8",
     borderRadius: 10,
     margin: 30,
+  },
+  inputemail: {
+    backgroundColor: "#FDFDFD",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 10,
+    margin: 10,
+    marginTop: -1,
   },
   inputpassword: {
     backgroundColor: "#FDFDFD",
@@ -163,7 +184,7 @@ const styles = StyleSheet.create({
     margin: 10,
     marginTop: -1,
   },
-  inputanemail: {
+  inputuser: {
     backgroundColor: "#FDFDFD",
     flexDirection: "row",
     alignItems: "center",
@@ -178,6 +199,19 @@ const styles = StyleSheet.create({
   logoemail: {
     opacity: 0.5,
   },
+  logouser: {
+    opacity: 0.5,
+  },
+  buttonlanjut: {
+    paddingTop: 5,
+  },
+  login: {
+    alignSelf: "flex-end",
+    paddingRight: 40,
+    color: "#FBFBFB",
+    marginTop: 15,
+    marginBottom: 15,
+  },
 });
 
-export default Login;
+export default SignupUser;
