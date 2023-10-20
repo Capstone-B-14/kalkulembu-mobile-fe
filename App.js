@@ -6,10 +6,11 @@ import HomeScreen from "./src/screens/HomeScreen";
 import CameraScreen from "./src/screens/CameraScreen";
 import SapiScreen from "./src/screens/SapiScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";
-import Login from './src/screens/LoginScreen';
+import Login from "./src/screens/LoginScreen";
 import NavBar from "./src/components/NavBar";
 import SignupUser from "./src/screens/SignupUser";
-import SignupPeternakan from "./src/screens/SignUpPeternakan";
+import SignupPeternakan from "./src/screens/SignupPeternakan";
+import { UserProvider } from "./src/contexts/UserContext";
 
 const Stack = createStackNavigator();
 
@@ -47,15 +48,15 @@ export default function App() {
             component={Login}
             options={{ title: "Login" }}
           />
-          <Stack.Screen 
+          <Stack.Screen
             name='Sign Up User'
             component={SignupUser}
-            option={{title: "Sign Up User"}}
+            option={{ title: "Sign Up User" }}
           />
-          <Stack.Screen 
+          <Stack.Screen
             name='Sign Up Peternakan'
             component={SignupPeternakan}
-            option={{title: "Sign Up Peternakan"}}
+            option={{ title: "Sign Up Peternakan" }}
           />
         </Stack.Navigator>
       </NavigationContainer>

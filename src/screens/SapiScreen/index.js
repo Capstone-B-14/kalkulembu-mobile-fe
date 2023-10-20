@@ -5,7 +5,7 @@ import CustomHeader from "../../components/Header";
 const SapiScreen = () => {
   return (
     <View>
-      <CustomHeader title='Sapi' />
+      <CustomHeader title='Sapi' showUserData={false} />
       <Text>Ini Sapi</Text>
     </View>
   );

@@ -15,25 +15,26 @@ const CustomHeader = ({ title, showUserData }) => {
   const handleLogin = () => {
     navigation.navigate("Login");
   };
-
   return (
     <View style={styles.container}>
       <StatusBar style='auto' animated={true} />
       <Text style={styles.title}>{title}</Text>
-      <View style={styles.rightContent}>
-        {userData ? (
-          <Text style={styles.userData}>
-            Selamat datang, {userData.username}
-          </Text>
-        ) : (
-          <CustomButton
-            style={styles.login}
-            onPress={handleLogin}
-            text='Masuk'
-            backgroundColor='#FFDF64'
-          />
-        )}
-      </View>
+      {showUserData && (
+        <View style={styles.rightContent}>
+          {userData ? (
+            <Text style={styles.userData}>
+              Selamat datang, {userData.username}
+            </Text>
+          ) : (
+            <CustomButton
+              style={styles.login}
+              onPress={handleLogin}
+              text='Masuk'
+              backgroundColor='#FFDF64'
+            />
+          )}
+        </View>
+      )}
     </View>
   );
 };
