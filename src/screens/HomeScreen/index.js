@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text } from 'react-native';
 import SearchBar from '../../components/SearchBar';
-import CardSapiOverview from '../../components/CardSapiOverview';
+import CardSapiTotal from '../../components/CardSapiTotal';
+import CardSapiGender from '../../components/CardSapiGender';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const HomeScreen = () => {
@@ -18,7 +19,17 @@ const HomeScreen = () => {
                 value={searchText}
                 onChangeText={handleSearch}
             />
-            <CardSapiOverview></CardSapiOverview>
+            <CardSapiTotal></CardSapiTotal>
+            <CardSapiGender
+                icon="gender-male"
+                title="Sapi Jantan"
+                jumlahsapi="60"
+                text="ekor"></CardSapiGender>
+            <CardSapiGender
+                icon="gender-female"
+                title="Sapi Betina"
+                jumlahsapi="25"
+                text="ekor"></CardSapiGender>
         </View>
     );
 }
