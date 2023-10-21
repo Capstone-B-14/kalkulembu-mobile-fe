@@ -28,20 +28,20 @@ const styles = StyleSheet.create({
   },
   modalContent: {
     backgroundColor: "white",
-    padding: 20,
+    padding: 10,
     borderRadius: 10,
     width: "90%",
   },
   close: {
     position: "absolute",
-    right: 10,
-    padding: 5,
+    right: 12,
+    top:10
   },
   closeText: {
     fontSize: 24,
   },
   modalBody: {
-    padding: 10,
+    padding: 3,
   },
 });
 
