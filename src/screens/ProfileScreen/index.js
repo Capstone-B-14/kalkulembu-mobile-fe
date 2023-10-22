@@ -19,7 +19,7 @@ const ProfileScreen = () => {
     const fetchUserData = async () => {
       try {
         const response = await axios.post(
-          process.env.REACT_APP_API_URL + "/auth/profile"
+          apiURL,
         );
         const { password, ...filteredData } = response.data.data;
         setUserData(filteredData);
