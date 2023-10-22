@@ -9,40 +9,40 @@ import { useUser } from "../../contexts/UserContext";
 const ProfileScreen = () => {
   const navigation = useNavigation();
 
-  const { setUserData } = useUser();
+  const { userData, setUserData } = useUser();
   const [loading, setLoading] = useState(true);
 
   const apiURL = process.env.REACT_APP_API_URL + "/auth/profile";
-  console.log("URL: ", apiURL);
+  // console.log("URL: ", apiURL);
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.post(
-          apiURL,
-        );
-        const { password, ...filteredData } = response.data.data;
-        setUserData(filteredData);
+        console.log("Fetching user data...");
+        const apiURL = process.env.REACT_APP_API_URL + "/auth/profile";
+        const response = await axios.post(apiURL);
+
+        setUserData(response.data.data);
         setLoading(false);
       } catch (err) {
-        console.error("Error fetching user data: ", err);
+        console.error("Error fetching user data:", err);
         setLoading(false);
       }
     };
 
     fetchUserData();
-  });
+  }, []);
 
   return (
     <View style={styles.container}>
       <CustomHeader title='Profil' />
       <View style={styles.header}>
         <Image
-          source // Replace with your image source
+          uri // Replace with your image source
           style={styles.profileImage}
         />
-        <Text style={styles.userName}>John Doe</Text>
-        <Text style={styles.bio}>Front-end Developer</Text>
+        <Text style={styles.userName}>{userData.name}</Text>
+        <Text style={styles.bio}>{userData.role}</Text>
       </View>
 
       {/* Add more content here */}
