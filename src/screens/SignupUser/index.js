@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -7,13 +7,16 @@ import {
   Pressable,
   Image,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import CustomButton from "../../components/CustomButton";
 
 const SignupUser = ({ onPress }) => {
-  const [namalengkap, setNamalengkap] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [konfirmasipassword, setKonfirmasipassword] = React.useState("");
+  const navigation = useNavigation();
+
+  const [namalengkap, setNamalengkap] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [konfirmasipassword, setKonfirmasipassword] = useState("");
 
   return (
     <View style={styles.root}>
@@ -21,7 +24,7 @@ const SignupUser = ({ onPress }) => {
         <Image
           source={require("../../../assets/kalkulembu-logo.png")}
           style={styles.logo}
-          resizeMode="contain"
+          resizeMode='contain'
         />
         <Text style={styles.kalku}>Kalkulembu</Text>
       </View>
@@ -32,41 +35,41 @@ const SignupUser = ({ onPress }) => {
           <Image
             source={require("../../../assets/user-logo.png")}
             style={styles.logouser}
-            resizeMode="contain"
+            resizeMode='contain'
           ></Image>
           <TextInput
             style={styles.user}
             onChangeText={setNamalengkap}
             value={namalengkap}
-            placeholder="Masukkan Nama Lengkap"
-            keyboardType="default"
+            placeholder='Masukkan Nama Lengkap'
+            keyboardType='default'
           />
         </View>
         <View style={styles.inputemail}>
           <Image
             source={require("../../../assets/email-logo.png")}
             style={styles.logoemail}
-            resizeMode="contain"
+            resizeMode='contain'
           ></Image>
           <TextInput
             style={styles.email}
             onChangeText={setEmail}
             value={email}
-            placeholder="Masukkan Email"
-            keyboardType="email-address"
+            placeholder='Masukkan Email'
+            keyboardType='email-address'
           />
         </View>
         <View style={styles.inputpassword}>
           <Image
             source={require("../../../assets/password-logo.png")}
             style={styles.logopassword}
-            resizeMode="contain"
+            resizeMode='contain'
           ></Image>
           <TextInput
             style={styles.password}
             onChangeText={setPassword}
             value={password}
-            placeholder="Password"
+            placeholder='Password'
             secureTextEntry
           />
         </View>
@@ -74,27 +77,27 @@ const SignupUser = ({ onPress }) => {
           <Image
             source={require("../../../assets/password-logo.png")}
             style={styles.logopassword}
-            resizeMode="contain"
+            resizeMode='contain'
           ></Image>
           <TextInput
             style={styles.password}
             onChangeText={setKonfirmasipassword}
             value={konfirmasipassword}
-            placeholder="Password"
+            placeholder='Password'
             secureTextEntry
           />
         </View>
       </View>
       <CustomButton
         style={styles.buttonlanjut}
-        text="Lanjutkan"
-        backgroundColor="#FFDF64"
-        textColor="#000"
-        routeName="SignupPeternakan"
+        text='Lanjutkan'
+        backgroundColor='#FFDF64'
+        textColor='#000'
+        routeName='SignupPeternakan'
         navigation={navigation}
       />
       <Pressable onPress={onPress} style={styles.login}>
-        <Text className="text-white">Saya sudah memiliki akun</Text>
+        <Text className='text-white'>Saya sudah memiliki akun</Text>
       </Pressable>
     </View>
   );

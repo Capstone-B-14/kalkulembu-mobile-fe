@@ -1,7 +1,9 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, SafeAreaView } from "react-native";
+import * as Font from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
+import React, { useState, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import HomeScreen from "./src/screens/HomeScreen";
 import CameraScreen from "./src/screens/CameraScreen";
 import SapiScreen from "./src/screens/SapiScreen";
@@ -14,7 +16,46 @@ import { UserProvider } from "./src/contexts/UserContext";
 
 const Stack = createStackNavigator();
 
+SplashScreen.preventAutoHideAsync();
+
 export default function App() {
+  useEffect(() => {
+    clearAsyncStorage();
+  }, []);
+
+  const clearAsyncStorage = async () => {
+    try {
+      await AsyncStorage.clear();
+    } catch (error) {
+      console.error("Error clearing data from AsyncStorage:", error);
+    }
+  };
+
+  const [appIsReady, setAppIsReady] = useState(false);
+
+  useEffect(() => {
+    const prepare = async () => {
+      try {
+        await Font.loadAsync({
+          "Roboto-Regular": require("./assets/fonts/Roboto/Roboto-Regular.ttf"),
+          Raleway: require("./assets/fonts/Raleway/static/Raleway-Regular.ttf"),
+          "Raleway-Bold": require("./assets/fonts/Raleway/static/Raleway-Bold.ttf"),
+        });
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setAppIsReady(true);
+        await SplashScreen.hideAsync();
+      }
+    };
+
+    prepare();
+  }, []);
+
+  if (!appIsReady) {
+    return null;
+  }
+
   return (
     <UserProvider>
       <NavigationContainer>
@@ -51,12 +92,12 @@ export default function App() {
           <Stack.Screen
             name='Sign Up User'
             component={SignupUser}
-            option={{ title: "Sign Up User" }}
+            options={{ title: "Sign Up User" }}
           />
           <Stack.Screen
             name='Sign Up Peternakan'
             component={SignupPeternakan}
-            option={{ title: "Sign Up Peternakan" }}
+            options={{ title: "Sign Up Peternakan" }}
           />
         </Stack.Navigator>
       </NavigationContainer>

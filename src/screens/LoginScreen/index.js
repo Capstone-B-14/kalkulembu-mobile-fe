@@ -8,14 +8,52 @@ import {
   Pressable,
   Image,
 } from "react-native";
+import axios from "axios";
+import { useNavigation } from "@react-navigation/native";
 import CustomButton from "../../components/Button";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Login = ({ onPress }) => {
-
-  const handleSignupNavigation = () => {
-  navigation.navigate("Sign Up User");}
-
+const Login = () => {
   const navigation = useNavigation();
+  const [token, setToken] = useState("");
+  const [user, setUser] = useState(null);
+
+  const loginURL = process.env.REACT_APP_API_URL + "/auth/login";
+
+  const handleSignUp = () => {
+    navigation.navigate("Sign Up User");
+  };
+
+  const handleLogin = async () => {
+    try {
+      const loginData = {
+        email: email,
+        password: password,
+      };
+
+      const response = await axios.post(loginURL, loginData);
+      // console.log(response.data);
+
+      if (response.status == 200) {
+        const { user, token } = response.data;
+        await AsyncStorage.setItem("userData", JSON.stringify(user));
+        await AsyncStorage.setItem("token", token);
+
+        setUser(user);
+        setToken(token);
+
+        console.log(user);
+        console.log(token);
+
+        navigation.navigate("Home");
+      } else {
+        console.error("Login gagal: ", response.data.error);
+      }
+    } catch (error) {
+      console.error("Terjadi error: ", error);
+    }
+  };
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -25,7 +63,7 @@ const Login = ({ onPress }) => {
         <Image
           source={require("../../../assets/kalkulembu-logo.png")}
           style={styles.logo}
-          resizeMode="contain"
+          resizeMode='contain'
         ></Image>
         <Text style={styles.kalku}>Kalkulembu</Text>
       </View>
@@ -36,49 +74,52 @@ const Login = ({ onPress }) => {
           <Image
             source={require("../../../assets/email-logo.png")}
             style={styles.logoemail}
-            resizeMode="contain"
+            resizeMode='contain'
           ></Image>
           <TextInput
             style={styles.email}
             onChangeText={(text) => setEmail(text)}
             value={email}
-            placeholder="Email"
-            keyboardType="email-address"
+            placeholder='Email'
+            keyboardType='email-address'
           />
         </View>
         <View style={styles.inputpassword}>
           <Image
             source={require("../../../assets/password-logo.png")}
             style={styles.logopassword}
-            resizeMode="contain"
+            resizeMode='contain'
           ></Image>
           <TextInput
             style={styles.password}
             onChangeText={(text) => setPassword(text)}
             value={password}
-            placeholder="Password"
-            keyboardType="default"
+            placeholder='Password'
+            keyboardType='default'
             secureTextEntry
           />
         </View>
       </View>
       <Pressable onPress={""} style={styles.lupa}>
-        <Text className="text-white">Lupa Password?</Text>
+        <Text className='text-white'>Lupa Password?</Text>
       </Pressable>
-      <CustomButton
-        text="Masuk"
-        backgroundColor="#FFDF64"
-        textColor="#000"
-        routeName={Login}
-        navigation={navigation}
-      />
-      <Text style={styles.atau}>atau</Text>
-      <CustomButton
-        text="Buat Akun Baru"
-        backgroundColor="#FFDF64"
-        textColor="#000"
-        onPress={handleSignupNavigation}
-      />
+      <View style={styles.buttonroot}>
+        <CustomButton
+          style={styles.login}
+          text='Masuk'
+          backgroundColor='#FFDF64'
+          textColor='#000'
+          onPress={handleLogin}
+        />
+        <Text style={styles.atau}>atau</Text>
+        <CustomButton
+          style={styles.buatakun}
+          text='Buat Akun Baru'
+          backgroundColor='#FFDF64'
+          textColor='#000'
+          onPress={handleSignUp}
+        />
+      </View>
     </View>
   );
 };
@@ -86,6 +127,10 @@ const styles = StyleSheet.create({
   root: {
     flex: 1,
     backgroundColor: "#2E78A6",
+  },
+  buttonroot: {
+    flex: 1,
+    alignItems: "center",
   },
   atas: {
     flexDirection: "row",
@@ -144,8 +189,7 @@ const styles = StyleSheet.create({
   },
   atau: {
     alignSelf: "center",
-    marginTop: 10,
-    marginBottom: 10,
+    marginVertical: 15,
     color: "#FBFBFB",
     fontSize: 16,
   },
@@ -177,6 +221,16 @@ const styles = StyleSheet.create({
   },
   logoemail: {
     opacity: 0.5,
+  },
+  login: {
+    width: "90%",
+    flex: 0,
+    borderRadius: 10,
+  },
+  buatakun: {
+    width: "90%",
+    flex: 0,
+    borderRadius: 10,
   },
 });
 

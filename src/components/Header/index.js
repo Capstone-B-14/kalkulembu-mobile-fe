@@ -1,20 +1,42 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import Constants from "expo-constants";
 import { useNavigation } from "@react-navigation/native";
 import { useUser } from "../../contexts/UserContext";
 import CustomButton from "../Button";
+import axios from "axios";
 
 const statusBarHeight = Constants.statusBarHeight;
 
 const CustomHeader = ({ title, showUserData }) => {
-  const { userData } = useUser();
+  const { userData, setUserData } = useUser();
   const navigation = useNavigation();
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = () => {
     navigation.navigate("Login");
   };
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        console.log("Fetching user data...");
+        const apiURL = process.env.REACT_APP_API_URL + "/auth/profile";
+        const response = await axios.post(apiURL);
+        console.log("userData", response.data);
+
+        setUserData(response.data.data);
+        setLoading(false);
+      } catch (err) {
+        console.error("Error fetching user data:", err);
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
   return (
     <View style={styles.container}>
       <StatusBar style='auto' animated={true} />
@@ -22,9 +44,7 @@ const CustomHeader = ({ title, showUserData }) => {
       {showUserData && (
         <View style={styles.rightContent}>
           {userData ? (
-            <Text style={styles.userData}>
-              Selamat datang, {userData.username}
-            </Text>
+            <Text style={styles.userData}>Selamat datang, {userData.name}</Text>
           ) : (
             <CustomButton
               style={styles.login}
