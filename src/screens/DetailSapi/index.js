@@ -3,13 +3,14 @@ import { View, Text, StyleSheet } from 'react-native';
 import Camera from '../../components/Camera';
 import { ScrollView } from 'react-native';
 import Detail1 from '../../components/Detail1';
-import Detail2 from '../../components/Detail2/Detail2';
+import Detail2 from '../../components/Detail2';
 import Detail3 from '../../components/Detail3';
 import Card from '../../components/Card';
+import NavBar from '../../components/NavBar';
 
 const DetailSapi = () => {
   return (
-    <View>
+    <View className="mt-10">
     <ScrollView>
       <Detail1 />
       <Detail2 />
