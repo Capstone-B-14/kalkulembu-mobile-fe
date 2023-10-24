@@ -7,6 +7,7 @@ import SearchBar from '../../components/SearchBar';
 import CardSapiTotal from '../../components/CardSapiTotal';
 import CardSapiGender from '../../components/CardSapiGender';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import DetailSapi from "../DetailSapi";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -24,22 +25,35 @@ const HomeScreen = () => {
     return(
         <View>
             <CustomHeader title='Home' showUserData={true} />
-            <SearchBar 
-                placeholder="Pencarian"
-                value={searchText}
-                onChangeText={handleSearch}
-            />
-            <CardSapiTotal></CardSapiTotal>
-            <CardSapiGender
-                icon="gender-male"
-                title="Sapi Jantan"
-                jumlahsapi="60"
-                text="ekor"></CardSapiGender>
-            <CardSapiGender
-                icon="gender-female"
-                title="Sapi Betina"
-                jumlahsapi="25"
-                text="ekor"></CardSapiGender>
+            <View className="flex flex-row justify-between m-3">
+              <View className="pt-3">
+                <Text className="font-bold text-lg">Overview</Text>
+              </View>
+              <SearchBar 
+                  placeholder="Pencarian"
+                  value={searchText}
+                  onChangeText={handleSearch}
+              />
+            </View>
+            <View className="mx-5 my-5 flex flex-row">
+              <View className="flex justify-center">
+                <CardSapiTotal></CardSapiTotal>
+              </View>
+              <View className="">
+                <CardSapiGender
+                  icon="gender-male"
+                  title="Sapi Jantan"
+                  jumlahsapi="60"
+                  text="ekor"></CardSapiGender>
+                <CardSapiGender
+                  icon="gender-female"
+                  title="Sapi Betina"
+                  jumlahsapi="25"
+                  text="ekor"></CardSapiGender>
+              </View>
+            </View>
+            
+
         </View>
     );
 };

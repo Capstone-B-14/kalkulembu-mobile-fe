@@ -12,6 +12,7 @@ import ProfileScreen from "../../screens/ProfileScreen";
 import Icon from "react-native-vector-icons/AntDesign";
 import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import IonIcon from "react-native-vector-icons/Ionicons";
+import DetailSapi from "../../screens/DetailSapi";
 
 const Tab = createBottomTabNavigator();
 

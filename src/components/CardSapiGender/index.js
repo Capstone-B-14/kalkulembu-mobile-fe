@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const CardSapiGender = ({ icon, title, text, jumlahsapi }) => {
   return (
-    <View className="p-4 mb-2 m-2 bg-[#0D0D0D] rounded-3xl w-[160px] h-[75px] flex flex-row">
+    <View className="p-4 mb-2 m-1 bg-[#0D0D0D] rounded-3xl w-[160px] h-[75px] flex flex-row">
       <View className="flex basis-1/4 flex justify-center">
         {icon && <Icon name={icon} size={25} color="#FBFBFB" />}
       </View>
