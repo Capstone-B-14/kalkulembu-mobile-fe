@@ -6,10 +6,15 @@ import Detail1 from '../../components/Detail1';
 import Detail2 from '../../components/Detail2';
 import Detail3 from '../../components/Detail3';
 import Card from '../../components/Card';
+import NavBar from '../../components/NavBar';
 
 const DetailSapi = () => {
   return (
+<<<<<<< HEAD
     <View className="h-full">
+=======
+    <View className="mt-10">
+>>>>>>> 7d36074b6b353102b3bab13eff595381d7b4db39
     <ScrollView>
       <Detail1 />
       <Detail2 />

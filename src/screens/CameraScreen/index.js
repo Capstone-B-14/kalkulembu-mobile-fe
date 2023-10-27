@@ -10,6 +10,7 @@ import {
   Image,
 } from "react-native";
 import CustomHeader from "../../components/Header";
+import Dropdowns from "../../components/Dropdown";
 import Modal from "../../components/Modal";
 import Svg, { Path } from "react-native-svg";
 
@@ -17,6 +18,15 @@ const CameraScreen = ({ navigation }) => {
   const [type, setType] = useState(CameraType.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const [isModalOpen, setIsModalOpen] = useState(true);
+  const [selectedOption, setSelectedOption]= useState(null);
+  const handleDropdownChange = (value) => {
+    setSelectedOption(value);
+  };
+
+  const options=[
+    {label: '3 Bulan', value:'3bulan'},
+    {label: '6 Bulan', value:'6bulan'},
+  ];
 
   const onClose = () => {
     setIsModalOpen(false);
@@ -45,6 +55,9 @@ const CameraScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Camera style={styles.camera} type={type}>
+        <View className="m-4 flex justify-center items-center pt-10">
+          <Dropdowns options={options} selectedValue={selectedOption} onSelect={handleDropdownChange} placeholder='Pilih Umur Sapi' search searchPlaceholder='Cari Umur Sapi'/> 
+        </View>
         <Image
           source={require("../../../assets/cow-outline.png")}
           style={styles.sticker}
@@ -74,6 +87,7 @@ const CameraScreen = ({ navigation }) => {
           </Text>
         </Modal>
       </Camera>
+      
     </View>
   );
 };

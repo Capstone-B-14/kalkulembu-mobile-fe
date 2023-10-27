@@ -4,15 +4,15 @@ import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 const CardSapiTotal = () => {
   return (
-    <View className='p-4 h-[97px] w-[211px] bg-[#2E78A6] rounded-3xl'>
+    <View className='p-4 h-[156px] w-[211px] bg-[#2E78A6] rounded-3xl flex justify-center'>
       <View className='flex flex-row justify-between mb-2'>
-        <View className='flex basis-1/4 m-1'>
-          <Icon name='cow' size={50} color='#FBFBFB' />
+        <View className='flex basis-1/3 m-1'>
+          <Icon name='cow' size={55} color='#FBFBFB' />
         </View>
         <View className='flex basis-2/3'>
           <Text
             className='text-[#FBFBFB]'
-            style={{ fontFamily: "Roboto-Regular", fontSize: 18 }}
+            style={{ fontFamily: "Roboto-Regular", fontSize: 20 }}
           >
             Total Sapi
           </Text>
@@ -21,7 +21,7 @@ const CardSapiTotal = () => {
               className='text-[#FBFBFB]'
               style={{
                 fontFamily: "Raleway-Bold",
-                fontSize: 32,
+                fontSize: 38,
                 fontWeight: "bold",
               }}
             >
@@ -29,7 +29,7 @@ const CardSapiTotal = () => {
             </Text>
             <Text
               className='text-[#FBFBFB]'
-              style={{ fontFamily: "Roboto-Regular", fontSize: 18 }}
+              style={{ fontFamily: "Roboto-Regular", fontSize: 20 }}
             >
               ekor
             </Text>
