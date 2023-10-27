@@ -14,6 +14,7 @@ import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import IonIcon from "react-native-vector-icons/Ionicons";
 import DetailSapi from "../../screens/DetailSapi";
 import EditSapi from "../../screens/EditSapi/EditSapi";
+import CRUDSapi from "../../screens/CRUDSapi/CRUDSapi";
 
 const Tab = createBottomTabNavigator();
 
@@ -41,7 +42,7 @@ function NavBar() {
 
       <Tab.Screen
         name='Daftar Sapi'
-        component={SapiScreen}
+        component={CRUDSapi}
         options={{
           tabBarLabel: "Daftar Sapi",
           tabBarIcon: ({ color, size }) => (
