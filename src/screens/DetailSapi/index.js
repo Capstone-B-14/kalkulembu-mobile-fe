@@ -10,16 +10,12 @@ import NavBar from '../../components/NavBar';
 
 const DetailSapi = () => {
   return (
-<<<<<<< HEAD
     <View className="h-full">
-=======
-    <View className="mt-10">
->>>>>>> 7d36074b6b353102b3bab13eff595381d7b4db39
     <ScrollView>
       <Detail1 />
       <Detail2 />
       <Detail3 />
-      <ScrollView horizontal={true} className="flex-row flex p-3 ">
+      <ScrollView horizontal={true} className="flex flex-row p-3 ">
         <Card />
         <Card />
         <Card />
