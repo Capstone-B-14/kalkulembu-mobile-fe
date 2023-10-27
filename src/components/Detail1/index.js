@@ -6,7 +6,7 @@ import DetailOption from '../DetailOption';
 
 const Detail1 = () => {
   return (
-    <View className="p-5">
+    <View className="p-5 mt-10 shadow-lg">
       <View className="bg-[#A3BFD9] p-2 rounded-t-xl flex-row items-center ">
         <Entypo name="chevron-left" size={25} />
         <Text className="ml-2 text-base font-bold mr-44">Informasi Sapi</Text>
