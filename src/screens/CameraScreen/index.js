@@ -9,7 +9,6 @@ import {
   View,
   Image,
 } from "react-native";
-import CustomHeader from "../../components/Header";
 import Dropdowns from "../../components/Dropdown";
 import Modal from "../../components/Modal";
 import Svg, { Path } from "react-native-svg";

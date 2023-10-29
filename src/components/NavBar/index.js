@@ -1,8 +1,8 @@
 import React from "react";
-import { View, TextInput, TouchableOpacity } from "react-native";
-import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { NavigationContainer } from "@react-navigation/native";
+import { useUser } from "../../contexts/UserContext";
+import { View, Text, TouchableOpacity } from "react-native";
+// import { NavigationContainer } from "@react-navigation/native";
 
 import HomeScreen from "../../screens/HomeScreen";
 import CameraScreen from "../../screens/CameraScreen";
@@ -75,5 +75,4 @@ function NavBar() {
     </Tab.Navigator>
   );
 }
-
 export default NavBar;

@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
-  Button,
   TextInput,
   Pressable,
   Image,
+  ActivityIndicator,
 } from "react-native";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
@@ -15,7 +15,8 @@ import { useUser } from "../../contexts/UserContext";
 
 const Login = () => {
   const navigation = useNavigation();
-  const { userData, setUserTokenAuth } = useUser();
+  const { userData, setUserTokenAuth, setUserProfileData } = useUser();
+  const [loading, setLoading] = useState(false);
 
   const loginURL = process.env.REACT_APP_API_URL + "/auth/login";
 
@@ -24,6 +25,7 @@ const Login = () => {
   };
 
   const handleLogin = async () => {
+    setLoading(true);
     try {
       const loginData = {
         email: email,
@@ -33,17 +35,30 @@ const Login = () => {
       const response = await axios.post(loginURL, loginData);
 
       if (response.status == 200) {
-        setUserTokenAuth(response.data.user, response.data.token);
-        console.log(response.data);
-        // console.log(response.user);
-        // console.log(response.data.token);
-
-        navigation.navigate("Home");
+        setUserTokenAuth(response.data.user, response.data.accessToken);
+        await fetchUserData();
+        navigation.navigate("NavBar");
       } else {
         console.error("Login gagal: ", response.data.error);
       }
     } catch (error) {
       console.error("Terjadi error: ", error);
+    }
+  };
+
+  const fetchUserData = async () => {
+    try {
+      console.log("Fetching user data...");
+      const apiURL = process.env.REACT_APP_API_URL + "/auth/profile";
+      const response = await axios.post(apiURL);
+
+      if (response.status == 200) {
+        setUserProfileData(response.data.data.user);
+      } else {
+        console.error("What is profile data? ", response.data.error);
+      }
+    } catch (err) {
+      console.error("Error fetching user data:", err);
     }
   };
 
@@ -97,25 +112,32 @@ const Login = () => {
         <Text className='text-white'>Lupa Password?</Text>
       </Pressable>
       <View style={styles.buttonroot}>
-        <CustomButton
-          style={styles.login}
-          text='Masuk'
-          backgroundColor='#FFDF64'
-          textColor='#000'
-          onPress={handleLogin}
-        />
-        <Text style={styles.atau}>atau</Text>
-        <CustomButton
-          style={styles.buatakun}
-          text='Buat Akun Baru'
-          backgroundColor='#FFDF64'
-          textColor='#000'
-          onPress={handleSignUp}
-        />
+        {loading ? (
+          <ActivityIndicator size='large' color='#FFDF64' />
+        ) : (
+          <>
+            <CustomButton
+              style={styles.login}
+              text='Masuk'
+              backgroundColor='#FFDF64'
+              textColor='#000'
+              onPress={handleLogin}
+            />
+            <Text style={styles.atau}>atau</Text>
+            <CustomButton
+              style={styles.buatakun}
+              text='Buat Akun Baru'
+              backgroundColor='#FFDF64'
+              textColor='#000'
+              onPress={handleSignUp}
+            />
+          </>
+        )}
       </View>
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   root: {
     flex: 1,
@@ -163,6 +185,7 @@ const styles = StyleSheet.create({
     width: "80%",
     borderRadius: 10,
     fontSize: 16,
+    color: "#000",
   },
   password: {
     height: 30,
@@ -172,6 +195,7 @@ const styles = StyleSheet.create({
     width: "80%",
     borderRadius: 10,
     fontSize: 16,
+    color: "#000",
   },
   lupa: {
     Color: "#FBFBFB",

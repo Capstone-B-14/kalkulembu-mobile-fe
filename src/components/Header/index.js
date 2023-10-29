@@ -10,36 +10,18 @@ import axios from "axios";
 const statusBarHeight = Constants.statusBarHeight;
 
 const CustomHeader = ({ title, showUserData }) => {
-  const { userData, setUserTokenAuth } = useUser();
-  const [headerData, setHeaderData] = useState("");
+  const { userData, clearUserTokenAuth } = useUser();
   const navigation = useNavigation();
-  const [loading, setLoading] = useState(false);
 
   const handleLogin = () => {
     navigation.navigate("Login");
   };
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        console.log("Fetching user data...");
-        const apiURL = process.env.REACT_APP_API_URL + "/auth/profile";
-        const response = await axios.post(apiURL);
-        console.log(response.data);
-
-        // setUserData(response.data.data);
-        setUserTokenAuth(response.data.data, response.data.token);
-        setHeaderData(response.data.data);
-        console.log(userData);
-        setLoading(false);
-      } catch (err) {
-        console.error("Error fetching user data:", err);
-        setLoading(false);
-      }
-    };
-
-    fetchUserData();
-  }, []);
+  const parsedUserData = userData ? JSON.parse(userData) : null;
+  if (!parsedUserData) {
+    clearUserTokenAuth();
+  }
+  // console.log(`userData: ${userData}`);
 
   return (
     <View style={styles.container}>
@@ -47,8 +29,10 @@ const CustomHeader = ({ title, showUserData }) => {
       <Text style={styles.title}>{title}</Text>
       {showUserData && (
         <View style={styles.rightContent}>
-          {userData ? (
-            <Text style={styles.userData}>Selamat datang, {userData.name}</Text>
+          {parsedUserData ? (
+            <Text style={styles.userData}>
+              Selamat datang, {parsedUserData?.name}
+            </Text>
           ) : (
             <CustomButton
               style={styles.login}

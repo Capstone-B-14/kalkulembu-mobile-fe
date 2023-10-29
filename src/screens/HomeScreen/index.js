@@ -5,7 +5,6 @@ import CustomHeader from "../../components/Header";
 import SearchBar from '../../components/SearchBar';
 import CardSapiTotal from '../../components/CardSapiTotal';
 import CardSapiGender from '../../components/CardSapiGender';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const HomeScreen = () => {
   const [searchText, setSearchText] = useState("");

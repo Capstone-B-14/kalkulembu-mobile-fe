@@ -5,6 +5,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const UserContext = createContext();
 
 export function UserProvider({ children }) {
+  const [userLogin, setUserLogin] = useState("");
   const [userData, setUserData] = useState("");
   const [token, setToken] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -13,17 +14,15 @@ export function UserProvider({ children }) {
   useEffect(() => {
     const loadDataFromStorage = async () => {
       try {
-        const storedUserData = await AsyncStorage.getItem("userData");
-        const storedToken = await AsyncStorage.getItem("token");
+        const userData = await AsyncStorage.getItem("userData");
+        const storedToken = await AsyncStorage.getItem("accessToken");
 
         // console.log(storedUserData);
         // console.log(storedToken);
 
-        if (storedUserData && storedToken) {
-          setUserData(JSON.parse(storedUserData));
+        if (storedToken) {
           setToken(storedToken);
           setIsAuthenticated(true);
-          console.log("User data loaded from AsyncStorage:", storedUserData);
         }
       } catch (error) {
         console.error("Error loading data from AsyncStorage: ", error);
@@ -37,26 +36,36 @@ export function UserProvider({ children }) {
 
   const setUserTokenAuth = async (user, token) => {
     try {
-      await AsyncStorage.setItem("userData", JSON.stringify(user));
-      await AsyncStorage.setItem("token", token);
+      await AsyncStorage.setItem("userLogin", JSON.stringify(user));
+      await AsyncStorage.setItem("accessToken", token);
 
-      setUserData(JSON.stringify(user));
+      setUserLogin(JSON.stringify(user));
       setToken(token);
       setIsAuthenticated(true);
     } catch (error) {
-      console.error("Error storing data in AsyncStorage: ", error);
+      console.error("Error storing user login and token: ", error);
+    }
+  };
+
+  const setUserProfileData = async (profile) => {
+    try {
+      await AsyncStorage.setItem("userData", JSON.stringify(profile));
+
+      setUserData(JSON.stringify(profile));
+    } catch (error) {
+      console.error("Error setting user profile: ", error);
     }
   };
 
   const clearUserTokenAuth = async () => {
     try {
       // Remove user data and token from AsyncStorage
-      await AsyncStorage.removeItem("userData");
-      await AsyncStorage.removeItem("token");
+      await AsyncStorage.removeItem("accessToken");
 
       // Update state
-      setUserData(null);
-      setToken(null);
+      setUserLogin("");
+      setUserData("");
+      setToken("");
       setIsAuthenticated(false);
       // console.log("User data and token cleared.");
     } catch (error) {
@@ -68,7 +77,9 @@ export function UserProvider({ children }) {
     <UserContext.Provider
       value={{
         userData,
+        userLogin,
         isAuthenticated,
+        setUserProfileData,
         setUserTokenAuth,
         clearUserTokenAuth,
       }}

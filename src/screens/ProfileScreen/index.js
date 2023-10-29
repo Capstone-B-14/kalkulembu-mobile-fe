@@ -6,11 +6,9 @@ import { useNavigation } from "@react-navigation/native";
 import AuthModal from "../../components/Modal/AuthModal";
 import CustomHeader from "../../components/Header";
 import { useUser } from "../../contexts/UserContext";
-// import { REACT_APP_API_URL } from "@env";
 
 const ProfileScreen = () => {
   const { userData, isAuthenticated } = useUser();
-  const [profileData, setProfileData] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
 
   const navigation = useNavigation();
@@ -24,11 +22,14 @@ const ProfileScreen = () => {
     navigation.goBack();
     setModalVisible(false);
   };
+
+  const parsedUserData = userData ? JSON.parse(userData) : null;
+
   useFocusEffect(
     useCallback(() => {
       // console.log("useFocusEffect callback is running");
 
-      if (!isAuthenticated && !userData) {
+      if (!isAuthenticated && !parsedUserData) {
         setModalVisible(true);
       }
     }, [])
@@ -43,8 +44,8 @@ const ProfileScreen = () => {
           uri // Replace with your image source
           style={styles.profileImage}
         />
-        <Text style={styles.userName}>{userData.name}</Text>
-        <Text style={styles.bio}>{userData.role}</Text>
+        <Text style={styles.userName}>{parsedUserData?.name}</Text>
+        <Text style={styles.bio}>{parsedUserData?.role}</Text>
         <AuthModal
           isVisible={modalVisible}
           onLogin={handleLogin}

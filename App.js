@@ -20,18 +20,6 @@ const Stack = createStackNavigator();
 SplashScreen.preventAutoHideAsync();
 
 export default function App() {
-  useEffect(() => {
-    clearAsyncStorage();
-  }, []);
-
-  const clearAsyncStorage = async () => {
-    try {
-      await AsyncStorage.clear();
-    } catch (error) {
-      console.error("Error clearing data from AsyncStorage:", error);
-    }
-  };
-
   const [appIsReady, setAppIsReady] = useState(false);
 
   useEffect(() => {
