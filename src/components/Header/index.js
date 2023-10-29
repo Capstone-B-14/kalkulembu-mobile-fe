@@ -10,7 +10,8 @@ import axios from "axios";
 const statusBarHeight = Constants.statusBarHeight;
 
 const CustomHeader = ({ title, showUserData }) => {
-  const { userData, setUserData } = useUser();
+  const { userData, setUserTokenAuth } = useUser();
+  const [headerData, setHeaderData] = useState("");
   const navigation = useNavigation();
   const [loading, setLoading] = useState(false);
 
@@ -24,9 +25,12 @@ const CustomHeader = ({ title, showUserData }) => {
         console.log("Fetching user data...");
         const apiURL = process.env.REACT_APP_API_URL + "/auth/profile";
         const response = await axios.post(apiURL);
-        console.log("userData", response.data);
+        console.log(response.data);
 
-        setUserData(response.data.data);
+        // setUserData(response.data.data);
+        setUserTokenAuth(response.data.data, response.data.token);
+        setHeaderData(response.data.data);
+        console.log(userData);
         setLoading(false);
       } catch (err) {
         console.error("Error fetching user data:", err);

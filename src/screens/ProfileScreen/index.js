@@ -1,41 +1,43 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback } from "react";
 import { View, Text, Image, StyleSheet, ActivityIndicator } from "react-native";
+import { useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
-import { useNavigation } from "@react-navigation/core";
+import { useNavigation } from "@react-navigation/native";
+import AuthModal from "../../components/Modal/AuthModal";
 import CustomHeader from "../../components/Header";
 import { useUser } from "../../contexts/UserContext";
 // import { REACT_APP_API_URL } from "@env";
 
 const ProfileScreen = () => {
+  const { userData, isAuthenticated } = useUser();
+  const [profileData, setProfileData] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+
   const navigation = useNavigation();
 
-  const { userData, setUserData } = useUser();
-  const [loading, setLoading] = useState(true);
+  const handleLogin = () => {
+    navigation.navigate("Login");
+    setModalVisible(false);
+  };
 
-  const apiURL = process.env.REACT_APP_API_URL + "/auth/profile";
-  // console.log("URL: ", apiURL);
+  const handleBack = () => {
+    navigation.goBack();
+    setModalVisible(false);
+  };
+  useFocusEffect(
+    useCallback(() => {
+      // console.log("useFocusEffect callback is running");
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        console.log("Fetching user data...");
-        const apiURL = process.env.REACT_APP_API_URL + "/auth/profile";
-        const response = await axios.post(apiURL);
-
-        setUserData(response.data.data);
-        setLoading(false);
-      } catch (err) {
-        console.error("Error fetching user data:", err);
-        setLoading(false);
+      if (!isAuthenticated && !userData) {
+        setModalVisible(true);
       }
-    };
-
-    fetchUserData();
-  }, []);
+    }, [])
+  );
 
   return (
     <View style={styles.container}>
       <CustomHeader title='Profil' />
+
       <View style={styles.header}>
         <Image
           uri // Replace with your image source
@@ -43,8 +45,12 @@ const ProfileScreen = () => {
         />
         <Text style={styles.userName}>{userData.name}</Text>
         <Text style={styles.bio}>{userData.role}</Text>
+        <AuthModal
+          isVisible={modalVisible}
+          onLogin={handleLogin}
+          onGoBack={handleBack}
+        />
       </View>
-
       {/* Add more content here */}
     </View>
   );

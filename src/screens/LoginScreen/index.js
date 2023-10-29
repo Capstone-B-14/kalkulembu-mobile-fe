@@ -11,12 +11,11 @@ import {
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 import CustomButton from "../../components/Button";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useUser } from "../../contexts/UserContext";
 
 const Login = () => {
   const navigation = useNavigation();
-  const [token, setToken] = useState("");
-  const [user, setUser] = useState(null);
+  const { userData, setUserTokenAuth } = useUser();
 
   const loginURL = process.env.REACT_APP_API_URL + "/auth/login";
 
@@ -32,18 +31,12 @@ const Login = () => {
       };
 
       const response = await axios.post(loginURL, loginData);
-      // console.log(response.data);
 
       if (response.status == 200) {
-        const { user, token } = response.data;
-        await AsyncStorage.setItem("userData", JSON.stringify(user));
-        await AsyncStorage.setItem("token", token);
-
-        setUser(user);
-        setToken(token);
-
-        console.log(user);
-        console.log(token);
+        setUserTokenAuth(response.data.user, response.data.token);
+        console.log(response.data);
+        // console.log(response.user);
+        // console.log(response.data.token);
 
         navigation.navigate("Home");
       } else {
