@@ -5,15 +5,19 @@ import CustomHeader from "../../components/Header";
 import SearchBar from '../../components/SearchBar';
 import CardSapiTotal from '../../components/CardSapiTotal';
 import CardSapiGender from '../../components/CardSapiGender';
+import OverviewChart from "../../components/OverviewChart";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const HomeScreen = () => {
   const [searchText, setSearchText] = useState("");
+  
 
   const handleSearch = (text) => {
     setSearchText(text);
   };
-  
+
+
+// 
     return(
         <View>
             <CustomHeader title='Home' showUserData={true} />
@@ -44,8 +48,9 @@ const HomeScreen = () => {
                   text="ekor"></CardSapiGender>
               </View>
             </View>
-            
-
+            <View>
+              <OverviewChart></OverviewChart>
+            </View>
         </View>
     );
 };
