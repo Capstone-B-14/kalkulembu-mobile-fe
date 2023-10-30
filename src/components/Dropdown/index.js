@@ -16,7 +16,7 @@ const Dropdowns = ({options, selectedValue, onSelect, placeholder, searchPlaceho
     const [isFocus, setIsFocus] = useState(false);
 
     return(
-        <View className="bg-[#2E78A6] w-[170px] m-2 p-2 pl-2 rounded rounded-3xl">
+        <View className="bg-[#2E78A6] w-[170px] m-2 p-2 pl-2 ounded-3xl">
             <Dropdown
                 styles={[styles.dropdown]}
                 iconStyle={[styles.iconStyle]}
