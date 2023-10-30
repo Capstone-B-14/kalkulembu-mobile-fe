@@ -60,7 +60,7 @@ export default function App() {
           <Stack.Screen
             name='Camera'
             component={CameraScreen}
-            options={{ title: "Camera" }}
+            options={{ title: "Camera", unmountOnBlur: true }}
           />
           <Stack.Screen
             name='Sapi'

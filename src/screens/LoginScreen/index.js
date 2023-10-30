@@ -40,9 +40,11 @@ const Login = () => {
         navigation.navigate("NavBar");
       } else {
         console.error("Login gagal: ", response.data.error);
+        setLoading(false);
       }
     } catch (error) {
       console.error("Terjadi error: ", error);
+      setLoading(false);
     }
   };
 
