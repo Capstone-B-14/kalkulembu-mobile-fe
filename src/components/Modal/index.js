@@ -10,14 +10,11 @@ const Modal = ({ isOpen, onClose, children }) => {
         <TouchableOpacity style={styles.close} onPress={onClose}>
           <Text style={styles.closeText}>&times;</Text>
         </TouchableOpacity>
-        <View style={styles.modalBody}>
-            {children}
-        </View>
+        <View style={styles.modalBody}>{children}</View>
       </View>
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   modal: {
@@ -35,7 +32,7 @@ const styles = StyleSheet.create({
   close: {
     position: "absolute",
     right: 12,
-    top:10
+    top: 10,
   },
   closeText: {
     fontSize: 24,
