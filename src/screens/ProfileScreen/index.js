@@ -4,12 +4,16 @@ import { useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 import AuthModal from "../../components/Modal/AuthModal";
+import CustomButton from "../../components/Button";
 import CustomHeader from "../../components/Header";
 import { useUser } from "../../contexts/UserContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ProfileScreen = () => {
-  const { userData, isAuthenticated } = useUser();
+  const { userData, isAuthenticated, clearUserTokenAuth } = useUser();
   const [modalVisible, setModalVisible] = useState(false);
+
+  const apiURL = process.env.REACT_APP_API_URL;
 
   const navigation = useNavigation();
 
@@ -21,6 +25,30 @@ const ProfileScreen = () => {
   const handleBack = () => {
     navigation.goBack();
     setModalVisible(false);
+  };
+
+  const handleLogout = async () => {
+    try {
+      const accessToken = await AsyncStorage.getItem("accessToken");
+      const refreshToken = await AsyncStorage.getItem("refreshToken");
+
+      const response = await axios.get(apiURL + "/auth/logout", {
+        headers: {
+          Cookie: `accessToken=${accessToken}; refreshToken=${refreshToken}`,
+        },
+      });
+
+      if (response.data.success) {
+        // Clear local state and AsyncStorage
+        clearUserTokenAuth();
+
+        navigation.navigate("Home");
+      } else {
+        throw new Error("Logout failed");
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const parsedUserData = userData ? JSON.parse(userData) : null;
@@ -51,6 +79,12 @@ const ProfileScreen = () => {
           onLogin={handleLogin}
           onGoBack={handleBack}
         />
+        <CustomButton
+          style={styles.login}
+          onPress={handleLogout}
+          text='Masuk'
+          backgroundColor='#FFDF64'
+        />
       </View>
       {/* Add more content here */}
     </View>
@@ -77,6 +111,10 @@ const styles = StyleSheet.create({
   },
   bio: {
     fontSize: 16,
+  },
+  logout: {
+    flex: 0,
+    borderRadius: 10,
   },
 });
 

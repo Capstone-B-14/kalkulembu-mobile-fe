@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import * as SecureStore from "expo-secure-store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const UserContext = createContext();
@@ -14,13 +13,11 @@ export function UserProvider({ children }) {
   useEffect(() => {
     const loadDataFromStorage = async () => {
       try {
-        const userData = await AsyncStorage.getItem("userData");
+        const storedUser = await AsyncStorage.getItem("userLogin");
         const storedToken = await AsyncStorage.getItem("accessToken");
 
-        // console.log(storedUserData);
-        // console.log(storedToken);
-
         if (storedToken) {
+          setUserLogin(storedUser);
           setToken(storedToken);
           setIsAuthenticated(true);
         }
@@ -47,10 +44,13 @@ export function UserProvider({ children }) {
     }
   };
 
+  useEffect(() => {
+    // console.log(`UserData: ${userData} and isAuth: ${isAuthenticated}`);
+  }, [userData, isAuthenticated]);
+
   const setUserProfileData = async (profile) => {
     try {
       await AsyncStorage.setItem("userData", JSON.stringify(profile));
-
       setUserData(JSON.stringify(profile));
     } catch (error) {
       console.error("Error setting user profile: ", error);
@@ -59,15 +59,13 @@ export function UserProvider({ children }) {
 
   const clearUserTokenAuth = async () => {
     try {
-      // Remove user data and token from AsyncStorage
       await AsyncStorage.removeItem("accessToken");
 
-      // Update state
       setUserLogin("");
       setUserData("");
       setToken("");
       setIsAuthenticated(false);
-      // console.log("User data and token cleared.");
+      // console.log("GET CLEARED LOL");
     } catch (error) {
       console.error("Error clearing data from AsyncStorage: ", error);
     }

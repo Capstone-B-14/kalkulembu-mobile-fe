@@ -5,23 +5,25 @@ import Constants from "expo-constants";
 import { useNavigation } from "@react-navigation/native";
 import { useUser } from "../../contexts/UserContext";
 import CustomButton from "../Button";
-import axios from "axios";
 
 const statusBarHeight = Constants.statusBarHeight;
 
 const CustomHeader = ({ title, showUserData }) => {
   const { userData, clearUserTokenAuth } = useUser();
   const navigation = useNavigation();
+  const parsedUserData = userData ? JSON.parse(userData) : null;
+
 
   const handleLogin = () => {
     navigation.navigate("Login");
   };
 
-  const parsedUserData = userData ? JSON.parse(userData) : null;
-  if (!parsedUserData) {
-    clearUserTokenAuth();
-  }
-  // console.log(`userData: ${userData}`);
+  
+  useEffect(() => {
+    if (!parsedUserData) {
+      clearUserTokenAuth();
+    }
+  }, [userData]);
 
   return (
     <View style={styles.container}>
@@ -68,7 +70,7 @@ const styles = StyleSheet.create({
   },
   userData: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: "regular",
     color: "black",
     textAlign: "left",
   },
