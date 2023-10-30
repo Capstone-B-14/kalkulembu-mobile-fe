@@ -6,6 +6,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import * as SecureStore from "expo-secure-store";
 import HomeScreen from "./src/screens/HomeScreen";
 import CameraScreen from "./src/screens/CameraScreen";
+import CameraResult from "./src/screens/CameraResult";
 import SapiScreen from "./src/screens/SapiScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";
 import Login from "./src/screens/LoginScreen";
@@ -61,6 +62,11 @@ export default function App() {
             name='Camera'
             component={CameraScreen}
             options={{ title: "Camera", unmountOnBlur: true }}
+          />
+          <Stack.Screen
+            name='CameraResult'
+            component={CameraResult}
+            options={{ title: "Camera Result" }}
           />
           <Stack.Screen
             name='Sapi'

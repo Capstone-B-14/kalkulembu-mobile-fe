@@ -12,7 +12,7 @@ import {
 import Dropdowns from "../../components/Dropdown";
 import Modal from "../../components/Modal";
 import Svg, { Path } from "react-native-svg";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
 const CameraScreen = () => {
   const [type, setType] = useState(CameraType.back);
@@ -22,6 +22,8 @@ const CameraScreen = () => {
   const [showImageModal, setShowImageModal] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
   const [isScreenActive, setIsScreenActive] = useState(false);
+
+  const navigation = useNavigation();
 
   const handleDropdownChange = (value) => {
     setSelectedOption(value);
@@ -81,6 +83,7 @@ const CameraScreen = () => {
     if (cameraRef.current) {
       const photo = await cameraRef.current.takePictureAsync();
       setCapturedImage(photo);
+      navigation.navigate("CameraResult", { uri: photo.uri });
     }
   };
 
