@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import * as SecureStore from "expo-secure-store";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import HomeScreen from "./src/screens/HomeScreen";
 import CameraScreen from "./src/screens/CameraScreen";
 import SapiScreen from "./src/screens/SapiScreen";
