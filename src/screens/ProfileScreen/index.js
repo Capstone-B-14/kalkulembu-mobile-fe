@@ -71,9 +71,9 @@ const ProfileScreen = () => {
           onGoBack={handleBack}
         />
         <CustomButton
-          style={styles.login}
+          style={styles.logout}
           onPress={handleLogout}
-          text='Masuk'
+          text='Log Out'
           backgroundColor='#FFDF64'
         />
       </View>

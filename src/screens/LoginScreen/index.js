@@ -8,7 +8,6 @@ import {
   Image,
   ActivityIndicator,
 } from "react-native";
-import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 import CustomButton from "../../components/Button";
 import { useUser } from "../../contexts/UserContext";
