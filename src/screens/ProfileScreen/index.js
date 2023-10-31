@@ -7,13 +7,11 @@ import AuthModal from "../../components/Modal/AuthModal";
 import CustomButton from "../../components/Button";
 import CustomHeader from "../../components/Header";
 import { useUser } from "../../contexts/UserContext";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import axiosInstance from "../../utils/axios";
 
 const ProfileScreen = () => {
   const { userData, isAuthenticated, clearUserTokenAuth } = useUser();
   const [modalVisible, setModalVisible] = useState(false);
-
-  const apiURL = process.env.REACT_APP_API_URL;
 
   const navigation = useNavigation();
 
@@ -29,17 +27,10 @@ const ProfileScreen = () => {
 
   const handleLogout = async () => {
     try {
-      const accessToken = await AsyncStorage.getItem("accessToken");
-      const refreshToken = await AsyncStorage.getItem("refreshToken");
-
-      const response = await axios.get(apiURL + "/auth/logout", {
-        headers: {
-          Cookie: `accessToken=${accessToken}; refreshToken=${refreshToken}`,
-        },
-      });
+      const response = await axiosInstance.get("/auth/logout");
 
       if (response.data.success) {
-        // Clear local state and AsyncStorage
+        // Clear local state and SecureStore
         clearUserTokenAuth();
 
         navigation.navigate("Home");
