@@ -18,7 +18,7 @@ const Login = () => {
   const { userData, setUserTokenAuth, setUserProfileData } = useUser();
   const [loading, setLoading] = useState(false);
 
-  const loginURL = process.env.REACT_APP_API_URL + "/auth/login";
+  const loginURL = "/auth/login";
 
   const handleSignUp = () => {
     navigation.navigate("Sign Up User");
@@ -51,7 +51,7 @@ const Login = () => {
   const fetchUserData = async () => {
     try {
       console.log("Fetching user data...");
-      const apiURL = process.env.REACT_APP_API_URL + "/auth/profile";
+      const apiURL = "/auth/profile";
       const response = await axiosInstance.post(apiURL);
 
       if (response.status == 200) {
