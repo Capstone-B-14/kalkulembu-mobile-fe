@@ -10,8 +10,8 @@ const CameraResult = ({ route }) => {
   const navigation = useNavigation();
   const [selectedOption, setSelectedOption] = useState(null);
   const [farms, setFarms] = useState([]);
-  const [cows, setCows] = useState([]);
-  const [cowStats, setCowStats] = useState([]);
+  const [cattle, setCattle] = useState([]);
+  const [cattleStats, setCattleStats] = useState([]);
   const { userData } = useUser();
 
   const parsedUserData = userData ? JSON.parse(userData) : null;
@@ -20,48 +20,48 @@ const CameraResult = ({ route }) => {
     const userId = parsedUserData.id;
 
     // console.log(userId);
-    const fetchCows = async () => {
+    const fetchCattle = async () => {
       try {
         const farmsRequest = axiosInstance.get(`/users/${userId}/farms`);
 
-        const cowsRequest = farmsRequest.then((response) => {
+        const cattleRequest = farmsRequest.then((response) => {
           const farmId = response.data.data[0].id;
-          return axiosInstance.get(`/farms/${farmId}/cows`);
+          return axiosInstance.get(`/farms/${farmId}/cattle`);
         });
 
-        const [farmsResponse, cowsResponse] = await Promise.all([
+        const [farmsResponse, cattleResponse] = await Promise.all([
           farmsRequest,
-          cowsRequest,
+          cattleRequest,
         ]);
 
-        // console.log(cowsResponse.data);
+        // console.log(cattleResponse.data);
         setFarms(farmsResponse.data.data);
-        setCows(cowsResponse.data.data);
+        setCattle(cattleResponse.data.data);
       } catch (error) {
-        console.error("Failed to fetch cows:", error);
+        console.error("Failed to fetch cattle:", error);
       }
     };
 
-    fetchCows();
+    fetchCattle();
   }, []);
 
-  const handleDropdownChange = async (cowId) => {
-    setSelectedOption(cowId);
-    // console.log(cowId);
+  const handleDropdownChange = async (cattleId) => {
+    setSelectedOption(cattleId);
+    // console.log(cattleId);
 
     try {
       const statsResponse = await axiosInstance.get(
-        `/cows/${cowId.value}/stats`
+        `/cattle/${cattleId.value}/stats`
       );
-      setCowStats(statsResponse.data.data);
+      setCattleStats(statsResponse.data.data);
     } catch (error) {
-      console.error("Failed to fetch cow stats: ", error);
+      console.error("Failed to fetch cattle stats: ", error);
     }
   };
 
-  const dropdownOptions = cows.map((cow) => ({
-    label: cow.name,
-    value: cow.id.toString(),
+  const dropdownOptions = cattle.map((cattle) => ({
+    label: cattle.name,
+    value: cattle.id.toString(),
   }));
 
   return (
@@ -75,8 +75,8 @@ const CameraResult = ({ route }) => {
         search
         searchPlaceholder='Pilih Sapi'
       />
-      {cowStats.length > 0 &&
-        cowStats.map((stat, index) => (
+      {cattleStats.length > 0 &&
+        cattleStats.map((stat, index) => (
           <View key={index} style={styles.statContainer}>
             <View style={styles.statDetails}>
               <Text>Usia: {stat.age} bulan</Text>
