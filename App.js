@@ -6,6 +6,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import * as SecureStore from "expo-secure-store";
 import HomeScreen from "./src/screens/HomeScreen";
 import CameraScreen from "./src/screens/CameraScreen";
+import AfterCamera from "./src/screens/AfterCamera";
 import CameraResult from "./src/screens/CameraResult";
 import SapiScreen from "./src/screens/SapiScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";

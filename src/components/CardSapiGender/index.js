@@ -11,7 +11,10 @@ const CardSapiGender = ({ icon, title, text, jumlahsapi }) => {
       <View className="flex basis-2/3 mb-2 mt-2 justify-center">
         <Text className="text-md text-[#FBFBFB]">{title}</Text>
         <View className="flex flex-row items-end">
-          <Text className="text-xl text-[#FBFBFB] font-bold">{jumlahsapi}</Text>
+          <Text style={{ fontFamily: "Raleway-Bold",
+                fontSize: 23,
+                fontWeight: "bold",}} 
+                className="text-[#FBFBFB]">{jumlahsapi}</Text>
           <Text className="text-md text-[#FBFBFB]">{text}</Text>
         </View>
       </View>
