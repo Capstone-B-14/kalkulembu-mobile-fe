@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as SecureStore from "expo-secure-store";
 
 const UserContext = createContext();
 
@@ -13,8 +13,8 @@ export function UserProvider({ children }) {
   useEffect(() => {
     const loadDataFromStorage = async () => {
       try {
-        const storedUser = await AsyncStorage.getItem("userLogin");
-        const storedToken = await AsyncStorage.getItem("accessToken");
+        const storedUser = await SecureStore.getItemAsync("userLogin");
+        const storedToken = await SecureStore.getItemAsync("accessToken");
 
         if (storedToken) {
           setUserLogin(storedUser);
@@ -22,7 +22,7 @@ export function UserProvider({ children }) {
           setIsAuthenticated(true);
         }
       } catch (error) {
-        console.error("Error loading data from AsyncStorage: ", error);
+        console.error("Error loading data from SecureStore: ", error);
       } finally {
         setLoading(false);
       }
@@ -33,8 +33,8 @@ export function UserProvider({ children }) {
 
   const setUserTokenAuth = async (user, token) => {
     try {
-      await AsyncStorage.setItem("userLogin", JSON.stringify(user));
-      await AsyncStorage.setItem("accessToken", token);
+      await SecureStore.setItemAsync("userLogin", JSON.stringify(user));
+      await SecureStore.setItemAsync("accessToken", token);
 
       setUserLogin(JSON.stringify(user));
       setToken(token);
@@ -50,7 +50,7 @@ export function UserProvider({ children }) {
 
   const setUserProfileData = async (profile) => {
     try {
-      await AsyncStorage.setItem("userData", JSON.stringify(profile));
+      await SecureStore.setItemAsync("userData", JSON.stringify(profile));
       setUserData(JSON.stringify(profile));
     } catch (error) {
       console.error("Error setting user profile: ", error);
@@ -59,7 +59,7 @@ export function UserProvider({ children }) {
 
   const clearUserTokenAuth = async () => {
     try {
-      await AsyncStorage.removeItem("accessToken");
+      await SecureStore.deleteItemAsync("accessToken");
 
       setUserLogin("");
       setUserData("");
@@ -67,7 +67,7 @@ export function UserProvider({ children }) {
       setIsAuthenticated(false);
       // console.log("GET CLEARED LOL");
     } catch (error) {
-      console.error("Error clearing data from AsyncStorage: ", error);
+      console.error("Error clearing data from SecureStore: ", error);
     }
   };
 

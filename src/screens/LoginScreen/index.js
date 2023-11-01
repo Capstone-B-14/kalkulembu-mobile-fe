@@ -8,10 +8,10 @@ import {
   Image,
   ActivityIndicator,
 } from "react-native";
-import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
 import CustomButton from "../../components/Button";
 import { useUser } from "../../contexts/UserContext";
+import axiosInstance from '../../utils/axios'
 
 const Login = () => {
   const navigation = useNavigation();
@@ -32,7 +32,7 @@ const Login = () => {
         password: password,
       };
 
-      const response = await axios.post(loginURL, loginData);
+      const response = await axiosInstance.post(loginURL, loginData);
 
       if (response.status == 200) {
         setUserTokenAuth(response.data.user, response.data.accessToken);
@@ -52,7 +52,7 @@ const Login = () => {
     try {
       console.log("Fetching user data...");
       const apiURL = process.env.REACT_APP_API_URL + "/auth/profile";
-      const response = await axios.post(apiURL);
+      const response = await axiosInstance.post(apiURL);
 
       if (response.status == 200) {
         setUserProfileData(response.data.data.user);

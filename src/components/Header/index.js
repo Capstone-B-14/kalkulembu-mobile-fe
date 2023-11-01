@@ -13,11 +13,9 @@ const CustomHeader = ({ title, showUserData }) => {
   const navigation = useNavigation();
   const parsedUserData = userData ? JSON.parse(userData) : null;
 
-
   const handleLogin = () => {
     navigation.navigate("Login");
   };
-
   
   useEffect(() => {
     if (!parsedUserData) {
