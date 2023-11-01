@@ -9,6 +9,7 @@ const axiosInstance = axios.create({
   },
 });
 
+
 axiosInstance.interceptors.request.use(
   (config) => {
     const accessToken = SecureStore.getItemAsync("accessToken");
