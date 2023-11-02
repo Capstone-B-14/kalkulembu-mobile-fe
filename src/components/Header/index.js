@@ -8,7 +8,7 @@ import CustomButton from "../Button";
 
 const statusBarHeight = Constants.statusBarHeight;
 
-const CustomHeader = ({ title, showUserData }) => {
+const CustomHeader = ({ title, showUserData, rightComponent }) => {
   const { userData, clearUserTokenAuth } = useUser();
   const navigation = useNavigation();
   const parsedUserData = userData ? JSON.parse(userData) : null;
@@ -16,7 +16,7 @@ const CustomHeader = ({ title, showUserData }) => {
   const handleLogin = () => {
     navigation.navigate("Login");
   };
-  
+
   useEffect(() => {
     if (!parsedUserData) {
       clearUserTokenAuth();
@@ -27,22 +27,21 @@ const CustomHeader = ({ title, showUserData }) => {
     <View style={styles.container}>
       <StatusBar style='auto' animated={true} />
       <Text style={styles.title}>{title}</Text>
-      {showUserData && (
-        <View style={styles.rightContent}>
-          {parsedUserData ? (
-            <Text style={styles.userData}>
-              Selamat datang, {parsedUserData?.name}
-            </Text>
-          ) : (
-            <CustomButton
-              style={styles.login}
-              onPress={handleLogin}
-              text='Masuk'
-              backgroundColor='#FFDF64'
-            />
-          )}
-        </View>
-      )}
+      <View style={styles.rightContent}>
+        {showUserData && parsedUserData ? (
+          <Text style={styles.userData}>
+            Selamat datang, {parsedUserData?.name}
+          </Text>
+        ) : showUserData ? (
+          <CustomButton
+            style={styles.login}
+            onPress={handleLogin}
+            text='Masuk'
+            backgroundColor='#FFDF64'
+          />
+        ) : null}
+        {rightComponent && rightComponent}
+      </View>
     </View>
   );
 };
@@ -75,6 +74,7 @@ const styles = StyleSheet.create({
   rightContent: {
     flex: 0,
     alignItems: "center",
+    flexDirection: "row",
   },
 });
 

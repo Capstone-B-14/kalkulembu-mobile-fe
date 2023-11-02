@@ -1,5 +1,17 @@
-import React, { useState, useCallback } from "react";
-import { View, Text, Image, StyleSheet, ActivityIndicator } from "react-native";
+import React, { useState, useEffect, useCallback } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Pressable,
+  Image,
+  StyleSheet,
+  Modal,
+  Button,
+  ActivityIndicator,
+  ScrollView,
+} from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
@@ -12,6 +24,8 @@ import axiosInstance from "../../utils/axios";
 const ProfileScreen = () => {
   const { userData, isAuthenticated, clearUserTokenAuth } = useUser();
   const [modalVisible, setModalVisible] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [confirmLogout, setconfirmLogout] = useState(false);
 
   const navigation = useNavigation();
 
@@ -23,6 +37,15 @@ const ProfileScreen = () => {
   const handleBack = () => {
     navigation.goBack();
     setModalVisible(false);
+  };
+
+  const showLogoutConfirmation = () => {
+    setconfirmLogout(true);
+  };
+
+  const handleConfirmLogout = () => {
+    handleLogout();
+    setconfirmLogout(false);
   };
 
   const handleLogout = async () => {
@@ -42,6 +65,11 @@ const ProfileScreen = () => {
     }
   };
 
+  const handleEdit = () => {
+    setIsEditing(false);
+    console.log(isEditing);
+  };
+
   const parsedUserData = userData ? JSON.parse(userData) : null;
 
   useFocusEffect(
@@ -55,30 +83,110 @@ const ProfileScreen = () => {
   );
 
   return (
-    <View style={styles.container}>
-      <CustomHeader title='Profil' />
+    <Pressable
+      className='flex-1'
+      onPress={() => {
+        setIsEditing(false);
+      }}
+    >
+      <ScrollView style={styles.container}>
+        <View style={styles.container}>
+          <CustomHeader
+            title='Profil'
+            rightComponent={
+              <TouchableOpacity onPress={showLogoutConfirmation}>
+                <Text>Keluar</Text>
+              </TouchableOpacity>
+            }
+          />
 
-      <View style={styles.header}>
-        <Image
-          uri // Replace with your image source
-          style={styles.profileImage}
-        />
-        <Text style={styles.userName}>{parsedUserData?.name}</Text>
-        <Text style={styles.bio}>{parsedUserData?.role}</Text>
-        <AuthModal
-          isVisible={modalVisible}
-          onLogin={handleLogin}
-          onGoBack={handleBack}
-        />
-        <CustomButton
-          style={styles.logout}
-          onPress={handleLogout}
-          text='Log Out'
-          backgroundColor='#FFDF64'
-        />
-      </View>
-      {/* Add more content here */}
-    </View>
+          <View style={styles.header}>
+            <Image
+              uri // Replace with your image source
+              style={styles.profileImage}
+            />
+            <Text style={styles.userName}>{parsedUserData?.name}</Text>
+            <Text style={styles.bio}>{parsedUserData?.role}</Text>
+            <AuthModal
+              isVisible={modalVisible}
+              onLogin={handleLogin}
+              onGoBack={handleBack}
+            />
+            <Pressable
+              className='items-center p-4 bg-[#FFDF64] mt-10 ml-24 mr-24 rounded-2xl'
+              onPress={handleLogout}
+              onPressOut={(e) => e.stopPropagation()}
+            >
+              <Text className='font-bold text-[18px]'>Keluar</Text>
+            </Pressable>
+            <Pressable
+              className='items-center p-4 bg-[#FFDF64] mt-10 ml-24 mr-24 rounded-2xl'
+              onPress={() => {
+                setIsEditing(true);
+              }}
+              onPressOut={(e) => e.stopPropagation()}
+            >
+              <Text className='font-bold text-[18px]'>Edit Profil</Text>
+            </Pressable>
+          </View>
+
+          <Pressable className='flex-1'>
+            <View className='m-5 '>
+              <View className='bg-[#FBFBFB] rounded-t-2xl border-b-[1px] border-[#CCCCCC]'>
+                <Text className='text-[16px] pl-4 pr-4 pt-4 pb-2'>Nama</Text>
+                <TextInput
+                  placeholder='Nama'
+                  className='pl-4 pr-4 pt-2 pb-4'
+                  editable={isEditing}
+                ></TextInput>
+              </View>
+              <View className='bg-[#FBFBFB] border-b-[1px] border-[#CCCCCC]'>
+                <Text className='text-[16px] pl-4 pr-4 pt-4 pb-2'>Email</Text>
+                <TextInput
+                  placeholder='Email'
+                  className='pl-4 pr-4 pt-2 pb-4'
+                  editable={isEditing}
+                ></TextInput>
+              </View>
+              <View className='bg-[#FBFBFB] border-b-[1px] border-[#CCCCCC]'>
+                <Text className='text-[16px] pl-4 pr-4 pt-4 pb-2'>
+                  Nomor Telepon
+                </Text>
+                <TextInput
+                  placeholder='Nomor Telepon'
+                  className='pl-4 pr-4 pt-2 pb-4'
+                  editable={isEditing}
+                ></TextInput>
+              </View>
+
+              <TouchableOpacity className='items-center p-4 bg-[#FFDF64] mt-10 ml-24 mr-24 rounded-2xl'>
+                <Text className='font-bold text-[18px]'>Simpan</Text>
+              </TouchableOpacity>
+            </View>
+          </Pressable>
+
+          {/* Add more content here */}
+        </View>
+      </ScrollView>{" "}
+      <Modal animationType='slide' transparent={true} visible={confirmLogout}>
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <View
+            style={{
+              width: 300,
+              padding: 20,
+              backgroundColor: "white",
+              borderRadius: 10,
+            }}
+          >
+            {/* <Text>Yakin ingin keluar?</Text> */}
+            <Button title='Ya' onPress={handleConfirmLogout} />
+            <Button title='Tidak' onPress={() => setConfirmLogout(false)} />
+          </View>
+        </View>
+      </Modal>
+    </Pressable>
   );
 };
 
