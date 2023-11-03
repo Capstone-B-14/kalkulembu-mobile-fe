@@ -17,11 +17,11 @@ const CustomHeader = ({ title, showUserData, rightComponent }) => {
     navigation.navigate("Login");
   };
 
-  useEffect(() => {
-    if (!parsedUserData) {
-      clearUserTokenAuth();
-    }
-  }, [userData]);
+  // useEffect(() => {
+  //   if (!parsedUserData) {
+  //     clearUserTokenAuth();
+  //   }
+  // }, [userData]);
 
   return (
     <View style={styles.container}>

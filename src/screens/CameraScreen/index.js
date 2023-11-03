@@ -1,6 +1,6 @@
-import React, { useRef, useEffect, useCallback } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import { Camera, CameraType } from "expo-camera";
-import { useState } from "react";
+import { Picker } from "@react-native-picker/picker";
 import {
   Button,
   StyleSheet,
@@ -9,19 +9,31 @@ import {
   View,
   Image,
 } from "react-native";
-import Dropdowns from "../../components/Dropdown";
-import Modal from "../../components/Modal";
 import Svg, { Path } from "react-native-svg";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
+import CowAgePicker from "../../components/CowAgePicker";
+import Dropdowns from "../../components/Dropdown";
+import Modal from "../../components/Modal";
+
 const CameraScreen = () => {
+  // Camerastuff
   const [type, setType] = useState(CameraType.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const [capturedImage, setCapturedImage] = useState(null);
+
+  // Aspect ratio
+  const [aspectRatio, setAspectRatio] = useState("4:3");
+
+  // Modal and mounting
   const [isModalOpen, setIsModalOpen] = useState(true);
   const [showImageModal, setShowImageModal] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
   const [isScreenActive, setIsScreenActive] = useState(false);
+
+  // Picker state
+  const [isPickerVisible, setIsPickerVisible] = useState(false);
+  const [cowAgeInMonths, setCowAgeInMonths] = useState(0);
 
   const navigation = useNavigation();
 
@@ -89,17 +101,13 @@ const CameraScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Camera style={styles.camera} type={type} ref={cameraRef}>
-        <View className='m-4 flex justify-center items-center pt-10'>
-          <Dropdowns
-            options={options}
-            selectedValue={selectedOption}
-            onSelect={handleDropdownChange}
-            placeholder='Pilih Umur Sapi'
-            search
-            searchPlaceholder='Cari Umur Sapi'
-          />
-        </View>
+      <Camera
+        style={styles.camera}
+        type={type}
+        ref={cameraRef}
+        ratio={aspectRatio}
+      >
+        <View className='m-4 flex justify-center items-center pt-10'></View>
         <Image
           source={require("../../../assets/sapi-outline.png")}
           style={styles.sticker}
@@ -129,6 +137,16 @@ const CameraScreen = () => {
           <Text style={styles.modal}>
             Pastikan sapi yang akan difoto masuk ke dalam gambar outline
           </Text>
+        </Modal>
+        <Button
+          title='Select Age'
+          onPress={() => setIsPickerVisible(!isPickerVisible)}
+        />
+        <Modal
+          isOpen={isPickerVisible}
+          onClose={() => setIsPickerVisible(false)}
+        >
+          <CowAgePicker onChange={setCowAgeInMonths} />
         </Modal>
       </Camera>
       {capturedImage && (
