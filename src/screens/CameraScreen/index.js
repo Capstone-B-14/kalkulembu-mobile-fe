@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect, useCallback } from "react";
 import { Camera, CameraType } from "expo-camera";
-import { Picker } from "@react-native-picker/picker";
 import {
   Button,
   StyleSheet,
@@ -17,7 +16,7 @@ import Dropdowns from "../../components/Dropdown";
 import Modal from "../../components/Modal";
 
 const CameraScreen = () => {
-  // Camerastuff
+  // Camera stuff
   const [type, setType] = useState(CameraType.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
   const [capturedImage, setCapturedImage] = useState(null);
@@ -28,23 +27,17 @@ const CameraScreen = () => {
   // Modal and mounting
   const [isModalOpen, setIsModalOpen] = useState(true);
   const [showImageModal, setShowImageModal] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(null);
   const [isScreenActive, setIsScreenActive] = useState(false);
 
   // Picker state
   const [isPickerVisible, setIsPickerVisible] = useState(false);
-  const [cowAgeInMonths, setCowAgeInMonths] = useState(0);
+  const [selectedAge, setSelectedAge] = useState(null);
 
-  const navigation = useNavigation();
-
-  const handleDropdownChange = (value) => {
-    setSelectedOption(value);
+  const handleAgeChange = (months) => {
+    setSelectedAge(months);
   };
 
-  const options = [
-    { label: "3 Bulan", value: "3bulan" },
-    { label: "6 Bulan", value: "6bulan" },
-  ];
+  const navigation = useNavigation();
 
   const cameraRef = useRef(null);
 
@@ -139,15 +132,25 @@ const CameraScreen = () => {
           </Text>
         </Modal>
         <Button
-          title='Select Age'
+          title={isPickerVisible ? "Confirm Age" : "Select Age"}
           onPress={() => setIsPickerVisible(!isPickerVisible)}
         />
-        <Modal
-          isOpen={isPickerVisible}
-          onClose={() => setIsPickerVisible(false)}
-        >
-          <CowAgePicker onChange={setCowAgeInMonths} />
-        </Modal>
+        {selectedAge && !isPickerVisible && (
+          <View style={styles.ageBox}>
+            <Text>
+              {`Umur Sapi: ${Math.floor(selectedAge / 12)} tahun ${
+                selectedAge % 12
+              } bulan`}
+            </Text>
+          </View>
+        )}
+        {isPickerVisible && (
+          <CowAgePicker
+            onChange={handleAgeChange}
+            showPicker={isPickerVisible}
+            setShowPicker={setIsPickerVisible}
+          />
+        )}
       </Camera>
       {capturedImage && (
         <TouchableOpacity onPress={() => setShowImageModal(true)}>
