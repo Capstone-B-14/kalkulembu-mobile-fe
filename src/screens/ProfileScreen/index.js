@@ -89,17 +89,16 @@ const ProfileScreen = () => {
         setIsEditing(false);
       }}
     >
+      <CustomHeader
+        title='Profil'
+        rightComponent={
+          <TouchableOpacity onPress={showLogoutConfirmation}>
+            <Text>Keluar</Text>
+          </TouchableOpacity>
+        }
+      />
       <ScrollView style={styles.container}>
         <View style={styles.container}>
-          <CustomHeader
-            title='Profil'
-            rightComponent={
-              <TouchableOpacity onPress={showLogoutConfirmation}>
-                <Text>Keluar</Text>
-              </TouchableOpacity>
-            }
-          />
-
           <View style={styles.header}>
             <Image
               uri // Replace with your image source
@@ -112,13 +111,6 @@ const ProfileScreen = () => {
               onLogin={handleLogin}
               onGoBack={handleBack}
             />
-            <Pressable
-              className='items-center p-4 bg-[#FFDF64] mt-10 ml-24 mr-24 rounded-2xl'
-              onPress={handleLogout}
-              onPressOut={(e) => e.stopPropagation()}
-            >
-              <Text className='font-bold text-[18px]'>Keluar</Text>
-            </Pressable>
             <Pressable
               className='items-center p-4 bg-[#FFDF64] mt-10 ml-24 mr-24 rounded-2xl'
               onPress={() => {
@@ -164,25 +156,30 @@ const ProfileScreen = () => {
               </TouchableOpacity>
             </View>
           </Pressable>
-
-          {/* Add more content here */}
         </View>
-      </ScrollView>{" "}
+      </ScrollView>
       <Modal animationType='slide' transparent={true} visible={confirmLogout}>
-        <View
-          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
-        >
-          <View
-            style={{
-              width: 300,
-              padding: 20,
-              backgroundColor: "white",
-              borderRadius: 10,
-            }}
-          >
-            {/* <Text>Yakin ingin keluar?</Text> */}
-            <Button title='Ya' onPress={handleConfirmLogout} />
-            <Button title='Tidak' onPress={() => setConfirmLogout(false)} />
+        <View className='flex-1 items-center justify-center'>
+          <View className='w-[300px] h-[200px] bg-white rounded-2xl'>
+            <Text className='text-[18px] text-center pt-8'>
+              Apakah Anda yakin ingin keluar?
+            </Text>
+            <View className='flex flex-row justify-center pt-8'>
+              <TouchableOpacity
+                className='bg-[#FFDF64] w-[100px] h-[40px] rounded-2xl items-center justify-center mr-4'
+                onPress={handleConfirmLogout}
+              >
+                <Text className='text-[18px]'>Ya</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                className='bg-[#FFDF64] w-[100px] h-[40px] rounded-2xl items-center justify-center'
+                onPress={() => {
+                  setconfirmLogout(false);
+                }}
+              >
+                <Text className='text-[18px]'>Tidak</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </Modal>
