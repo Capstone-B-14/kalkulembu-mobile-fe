@@ -11,9 +11,9 @@ const axiosInstance = axios.create({
 
 
 axiosInstance.interceptors.request.use(
-  (config) => {
-    const accessToken = SecureStore.getItemAsync("accessToken");
-    const refreshToken = SecureStore.getItemAsync("refreshToken");
+  async (config) => {
+    const accessToken = await SecureStore.getItemAsync("accessToken");
+    const refreshToken = await SecureStore.getItemAsync("refreshToken");
 
     if (accessToken && refreshToken) {
       config.headers.Cookie = `accessToken=${accessToken}; refreshToken=${refreshToken}`;
