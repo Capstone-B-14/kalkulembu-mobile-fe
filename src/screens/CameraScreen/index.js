@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect, useCallback } from "react";
 import { Camera, CameraType } from "expo-camera";
-import { Picker } from "@react-native-picker/picker";
 import {
   Button,
   StyleSheet,

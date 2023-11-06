@@ -49,7 +49,7 @@ function NavBar() {
 
           <Tab.Screen
             name='Daftar Sapi'
-            component={CRUDSapi}
+            component={SapiScreen}
             options={{
               tabBarLabel: "Daftar Sapi",
               tabBarIcon: ({ color, size }) => (
