@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   View,
   Text,
@@ -8,7 +8,7 @@ import {
   Image,
   StyleSheet,
   Modal,
-  Button,
+  Animated,
   ActivityIndicator,
   ScrollView,
 } from "react-native";
@@ -20,14 +20,41 @@ import CustomButton from "../../components/Button";
 import CustomHeader from "../../components/Header";
 import { useUser } from "../../contexts/UserContext";
 import axiosInstance from "../../utils/axios";
+import { parse } from "react-native-svg";
 
 const ProfileScreen = () => {
   const { userData, isAuthenticated, clearUserTokenAuth } = useUser();
   const [modalVisible, setModalVisible] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [confirmLogout, setconfirmLogout] = useState(false);
+  const [showInputs, setShowInputs] = useState(false);
+
+  const inputAnimation = useRef(new Animated.Value(0)).current;
 
   const navigation = useNavigation();
+
+  const toggleEditing = () => {
+    if (!isEditing) setShowInputs(true);
+
+    setIsEditing(!isEditing);
+    Animated.timing(inputAnimation, {
+      toValue: !isEditing ? 1 : 0,
+      duration: 200,
+      useNativeDriver: false,
+    }).start(() => {
+      if (isEditing) setShowInputs(false);
+    });
+  };
+
+  const inputHeight = inputAnimation.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 450], // Adjust this value to the sum height of your TextInputs
+  });
+
+  const inputOpacity = inputAnimation.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 1],
+  });
 
   const handleLogin = () => {
     navigation.navigate("Login");
@@ -65,11 +92,6 @@ const ProfileScreen = () => {
     }
   };
 
-  const handleEdit = () => {
-    setIsEditing(false);
-    console.log(isEditing);
-  };
-
   const parsedUserData = userData ? JSON.parse(userData) : null;
 
   useFocusEffect(
@@ -83,12 +105,7 @@ const ProfileScreen = () => {
   );
 
   return (
-    <Pressable
-      className='flex-1'
-      onPress={() => {
-        setIsEditing(false);
-      }}
-    >
+    <Pressable className='flex-1'>
       <CustomHeader
         title='Profil'
         rightComponent={
@@ -101,7 +118,7 @@ const ProfileScreen = () => {
         <View style={styles.container}>
           <View style={styles.header}>
             <Image
-              uri // Replace with your image source
+              source={{ uri: parsedUserData.photo }}
               style={styles.profileImage}
             />
             <Text style={styles.userName}>{parsedUserData?.name}</Text>
@@ -111,50 +128,69 @@ const ProfileScreen = () => {
               onLogin={handleLogin}
               onGoBack={handleBack}
             />
+          </View>
+          <View style={styles.buttonContainer}>
             <Pressable
-              className='items-center p-4 bg-[#FFDF64] mt-10 ml-24 mr-24 rounded-2xl'
-              onPress={() => {
-                setIsEditing(true);
-              }}
-              onPressOut={(e) => e.stopPropagation()}
+              style={[
+                styles.button,
+                isEditing ? styles.buttonSave : styles.buttonEdit,
+              ]}
+              onPress={toggleEditing}
             >
-              <Text className='font-bold text-[18px]'>Edit Profil</Text>
+              <Text style={styles.buttonText}>
+                {isEditing ? "Save Profile" : "Edit Profile"}
+              </Text>
             </Pressable>
           </View>
 
-          <Pressable className='flex-1'>
-            <View className='m-5 '>
-              <View className='bg-[#FBFBFB] rounded-t-2xl border-b-[1px] border-[#CCCCCC]'>
-                <Text className='text-[16px] pl-4 pr-4 pt-4 pb-2'>Nama</Text>
-                <TextInput
-                  placeholder='Nama'
-                  className='pl-4 pr-4 pt-2 pb-4'
-                  editable={isEditing}
-                ></TextInput>
-              </View>
-              <View className='bg-[#FBFBFB] border-b-[1px] border-[#CCCCCC]'>
-                <Text className='text-[16px] pl-4 pr-4 pt-4 pb-2'>Email</Text>
-                <TextInput
-                  placeholder='Email'
-                  className='pl-4 pr-4 pt-2 pb-4'
-                  editable={isEditing}
-                ></TextInput>
-              </View>
-              <View className='bg-[#FBFBFB] border-b-[1px] border-[#CCCCCC]'>
-                <Text className='text-[16px] pl-4 pr-4 pt-4 pb-2'>
-                  Nomor Telepon
-                </Text>
-                <TextInput
-                  placeholder='Nomor Telepon'
-                  className='pl-4 pr-4 pt-2 pb-4'
-                  editable={isEditing}
-                ></TextInput>
-              </View>
+          <Pressable
+            className='flex-1'
+            onPress={() => {
+              setIsEditing(true);
+              console.log(isEditing);
+            }}
+            onPressOut={(e) => e.stopPropagation()}
+          >
+            <Animated.View
+              style={{
+                height: inputHeight,
+                opacity: inputOpacity,
+                overflow: "hidden",
+              }}
+            >
+              {showInputs && (
+                <View className='m-5 '>
+                  <View style={styles.inputcontainer}>
+                    <Text style={styles.label}>Nama</Text>
+                    <TextInput
+                      placeholder='Nama'
+                      style={styles.input}
+                      editable={isEditing}
+                    />
+                  </View>
+                  <View style={styles.inputcontainer}>
+                    <Text style={styles.label}>Email</Text>
+                    <TextInput
+                      placeholder='Email'
+                      style={styles.input}
+                      editable={isEditing}
+                    />
+                  </View>
+                  <View style={styles.inputcontainer}>
+                    <Text style={styles.label}>Nomor Telepon</Text>
+                    <TextInput
+                      placeholder='Nomor Telepon'
+                      style={styles.input}
+                      editable={isEditing}
+                    />
+                  </View>
 
-              <TouchableOpacity className='items-center p-4 bg-[#FFDF64] mt-10 ml-24 mr-24 rounded-2xl'>
-                <Text className='font-bold text-[18px]'>Simpan</Text>
-              </TouchableOpacity>
-            </View>
+                  <TouchableOpacity className='items-center p-4 bg-[#FFDF64] mt-10 ml-24 mr-24 rounded-2xl'>
+                    <Text className='font-bold text-[18px]'>Simpan</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+            </Animated.View>
           </Pressable>
         </View>
       </ScrollView>
@@ -211,6 +247,46 @@ const styles = StyleSheet.create({
   logout: {
     flex: 0,
     borderRadius: 10,
+  },
+  buttonContainer: {
+    alignSelf: "flex-end",
+    marginRight: 16,
+    marginTop: 16,
+  },
+  button: {
+    alignItems: "center",
+    backgroundColor: "#FFDF64",
+    padding: 16,
+    borderRadius: 16,
+  },
+  buttonEdit: {
+    backgroundColor: "#FFDF64", // color when in edit mode
+  },
+  buttonSave: {
+    backgroundColor: "#4CAF50", // color when in save mode
+  },
+  buttonText: {
+    fontWeight: "bold",
+    fontSize: 18,
+    // Rest of your styles...
+  },
+  inputcontainer: {
+    backgroundColor: "#FBFBFB",
+    borderBottomWidth: 1,
+    borderBottomColor: "#CCCCCC",
+    paddingTop: 16,
+  },
+  label: {
+    fontSize: 16,
+    paddingLeft: 16,
+    paddingRight: 16,
+    paddingBottom: 8,
+  },
+  input: {
+    fontSize: 16,
+    padding: 16,
+    // Increase the height if needed to make it easier to tap
+    minHeight: 44, // 44 pixels is a good minimum touch target size
   },
 });
 
