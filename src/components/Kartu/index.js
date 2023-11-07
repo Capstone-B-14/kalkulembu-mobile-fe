@@ -25,7 +25,7 @@ const Kartu = ({photo, name, weight, kondisi}) => {
       <View className="bg-[#FFFFFF] p-2 rounded-xl w-[170px] h-[230px] shadow-lg flex flex-col drop-shadow drop-shadow-lg">
         <View className="flex items-center">
           <View className="bg-transparent w-[150px] h-[150px] rounded rounded-xl">
-            <Image source={{uri: photo}} style={{width: 150, height: 150}} />
+            <Image source={{uri: photo}} style={{width: 150, height: 150, borderRadius:8}} />
           </View>
         </View>
           <View className="flex flex-row my-3">

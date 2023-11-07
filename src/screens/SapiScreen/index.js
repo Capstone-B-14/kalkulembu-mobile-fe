@@ -1,13 +1,28 @@
-import React from "react";
-import { View, Text, Image, StyleSheet, FlatList, ScrollView } from "react-native";
+import React, {useState} from "react";
+import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
 import CustomHeader from "../../components/Header";
+import SearchBar from '../../components/SearchBar';
 import Kartu from "../../components/Kartu";
 
 const SapiScreen = () => {
+  const [searchText, setSearchText] = useState("");
+  
+
+  const handleSearch = (text) => {
+    setSearchText(text);
+  };
+
   return (
-    <View className="h-full">
+    <View className="h-full sm: w-auto">
       <CustomHeader title="Sapi" showUserData={false} />
-      <ScrollView horizontal={false}>
+      <View className="flex items-end mx-4">
+        <SearchBar 
+          placeholder="Cari Sapi"
+          value={searchText}
+          onChangeText={handleSearch}
+        />
+      </View>
+      <ScrollView horizontal={false} className="my-4">
         <View className="">
           <View  className="flex flex-row flex-wrap h-full w-full items-center justify-between">
             <Kartu
