@@ -34,7 +34,7 @@ const Signup = ({ onPress }) => {
             resizeMode="contain"
           ></Image>
           <TextInput
-            style={styles.peternakan}
+            style={styles.textinput}
             onChangeText={setNamapeternakan}
             value={namapeternakan}
             placeholder="Masukkan Nama Peternakan"
@@ -48,7 +48,7 @@ const Signup = ({ onPress }) => {
             resizeMode="contain"
           ></Image>
           <TextInput
-            style={styles.alamat}
+            style={styles.textinput}
             onChangeText={setAlamat}
             value={alamat}
             placeholder="Alamat Peternakan"
@@ -62,7 +62,7 @@ const Signup = ({ onPress }) => {
             resizeMode="contain"
           ></Image>
           <TextInput
-            style={styles.nopon}
+            style={styles.textinput}
             onChangeText={setNomortelepon}
             value={nomortelepon}
             placeholder="Nomor Telepon"
@@ -118,33 +118,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: -2,
   },
-  alamat: {
-    height: 30,
-    padding: 20,
-    margin: 10,
-    marginLeft: -1,
-    width: "80%",
-    borderRadius: 10,
-    fontSize: 16,
-  },
-  nopon: {
-    height: 30,
-    padding: 20,
-    margin: 10,
-    marginLeft: -1,
-    width: "80%",
-    borderRadius: 10,
-    fontSize: 16,
-  },
-  peternakan: {
-    height: 30,
-    padding: 20,
-    margin: 10,
-    marginLeft: -1,
-    width: "80%",
-    borderRadius: 10,
-    fontSize: 16,
-  },
   input: {
     backgroundColor: "#80ACC8",
     borderRadius: 10,
@@ -175,6 +148,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 10,
     margin: 10,
+  },
+  textinput: {
+    height: 60,
+    marginHorizontal: 10,
+    width: "80%",
+    borderRadius: 10,
+    fontSize: 16,
+    color: "#000",
   },
   logonopon: {
     opacity: 0.5,

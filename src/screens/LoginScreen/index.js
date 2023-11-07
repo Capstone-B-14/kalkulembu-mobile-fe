@@ -87,7 +87,7 @@ const Login = () => {
             resizeMode='contain'
           ></Image>
           <TextInput
-            style={styles.email}
+            style={styles.textinput}
             onChangeText={(text) => setEmail(text)}
             value={email}
             placeholder='Email'
@@ -101,7 +101,7 @@ const Login = () => {
             resizeMode='contain'
           ></Image>
           <TextInput
-            style={styles.password}
+            style={styles.textinput}
             onChangeText={(text) => setPassword(text)}
             value={password}
             placeholder='Password'
@@ -179,21 +179,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     paddingLeft: 40,
   },
-  email: {
-    height: 30,
-    padding: 20,
-    margin: 10,
-    marginLeft: -1,
-    width: "80%",
-    borderRadius: 10,
-    fontSize: 16,
-    color: "#000",
-  },
-  password: {
-    height: 30,
-    padding: 20,
-    margin: 10,
-    marginLeft: -1,
+  textinput: {
+    height: 60,
+    marginHorizontal: 10,
     width: "80%",
     borderRadius: 10,
     fontSize: 16,
@@ -242,7 +230,7 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   login: {
-    width: "90%",
+    width: "0%",
     flex: 0,
     borderRadius: 10,
   },

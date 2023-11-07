@@ -10,7 +10,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import CustomButton from "../../components/CustomButton";
 
-const SignupUser = ({ onPress }) => {
+const SignupUser = () => {
   const navigation = useNavigation();
 
   const [namalengkap, setNamalengkap] = useState("");
@@ -38,7 +38,7 @@ const SignupUser = ({ onPress }) => {
             resizeMode='contain'
           ></Image>
           <TextInput
-            style={styles.user}
+            style={styles.textinput}
             onChangeText={setNamalengkap}
             value={namalengkap}
             placeholder='Masukkan Nama Lengkap'
@@ -52,7 +52,7 @@ const SignupUser = ({ onPress }) => {
             resizeMode='contain'
           ></Image>
           <TextInput
-            style={styles.email}
+            style={styles.textinput}
             onChangeText={setEmail}
             value={email}
             placeholder='Masukkan Email'
@@ -66,7 +66,7 @@ const SignupUser = ({ onPress }) => {
             resizeMode='contain'
           ></Image>
           <TextInput
-            style={styles.password}
+            style={styles.textinput}
             onChangeText={setPassword}
             value={password}
             placeholder='Password'
@@ -80,7 +80,7 @@ const SignupUser = ({ onPress }) => {
             resizeMode='contain'
           ></Image>
           <TextInput
-            style={styles.password}
+            style={styles.textinput}
             onChangeText={setKonfirmasipassword}
             value={konfirmasipassword}
             placeholder='Password'
@@ -96,7 +96,7 @@ const SignupUser = ({ onPress }) => {
         routeName='SignupPeternakan'
         navigation={navigation}
       />
-      <Pressable onPress={onPress} style={styles.login}>
+      <Pressable style={styles.login}>
         <Text className='text-white'>Saya sudah memiliki akun</Text>
       </Pressable>
     </View>
@@ -137,33 +137,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: -2,
   },
-  email: {
-    height: 30,
-    padding: 20,
-    margin: 10,
-    marginLeft: -1,
-    width: "80%",
-    borderRadius: 10,
-    fontSize: 16,
-  },
-  password: {
-    height: 30,
-    padding: 20,
-    margin: 10,
-    marginLeft: -1,
-    width: "80%",
-    borderRadius: 10,
-    fontSize: 16,
-  },
-  user: {
-    height: 30,
-    padding: 20,
-    margin: 10,
-    marginLeft: -1,
-    width: "80%",
-    borderRadius: 10,
-    fontSize: 16,
-  },
   input: {
     backgroundColor: "#80ACC8",
     borderRadius: 10,
@@ -177,6 +150,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     margin: 10,
     marginTop: -1,
+  },
+  textinput: {
+    height: 60,
+    marginHorizontal: 10,
+    width: "80%",
+    borderRadius: 10,
+    fontSize: 16,
+    color: "#000",
   },
   inputpassword: {
     backgroundColor: "#FDFDFD",
