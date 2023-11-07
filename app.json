@@ -1,37 +1,40 @@
 {
-  "expo": {
-    "name": "kalkulembu-mobile-fe",
-    "slug": "kalkulembu-mobile-fe",
-    "version": "1.0.0",
-    "jsEngine": "hermes",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "package": "com.daffa_romero.kalkulembumobilefe"
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "e9781806-94b6-441e-adc8-82bb544bb944"
-      }
-    }
-  }
+	"expo": {
+		"name": "kalkulembu-mobile-fe",
+		"slug": "kalkulembu-mobile-fe",
+		"version": "1.0.0",
+		"jsEngine": "hermes",
+		"orientation": "portrait",
+		"icon": "./assets/icon.png",
+		"userInterfaceStyle": "light",
+		"splash": {
+			"image": "./assets/splash.png",
+			"resizeMode": "contain",
+			"backgroundColor": "#ffffff"
+		},
+		"assetBundlePatterns": ["**/*"],
+		"ios": {
+			"supportsTablet": true,
+			"infoPlist": {
+				"NSPhotoLibraryUsageDescription": "Kalkulembu uses the photo library to upload images."
+			}
+		},
+		"android": {
+			"adaptiveIcon": {
+				"foregroundImage": "./assets/adaptive-icon.png",
+				"backgroundColor": "#ffffff"
+			},
+			"package": "com.daffa_romero.kalkulembumobilefe",
+			"permissions": ["READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"]
+		},
+		"web": {
+			"favicon": "./assets/favicon.png"
+		},
+		"extra": {
+			"eas": {
+				"projectId": "e9781806-94b6-441e-adc8-82bb544bb944"
+			}
+		},
+		"plugins": []
+	}
 }

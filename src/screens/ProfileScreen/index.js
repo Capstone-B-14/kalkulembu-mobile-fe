@@ -8,26 +8,62 @@ import {
   Image,
   StyleSheet,
   Modal,
+  Button,
   Animated,
   ActivityIndicator,
   ScrollView,
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
-import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
+
 import AuthModal from "../../components/Modal/AuthModal";
 import CustomButton from "../../components/Button";
 import CustomHeader from "../../components/Header";
 import { useUser } from "../../contexts/UserContext";
 import axiosInstance from "../../utils/axios";
-import { parse } from "react-native-svg";
+
+
+const useForm = (initialValues) => {
+  const [values, setValues] = useState(initialValues);
+  const [touchedFields, setTouchedFields] = useState({});
+
+  const setValue = (field, value) => {
+    if (values[field] === value) return;
+    setValues((prevValues) => ({
+      ...prevValues,
+      [field]: value,
+    }));
+    setTouchedFields((prevTouched) => ({
+      ...prevTouched,
+      [field]: true,
+    }));
+  };
+
+  // Function to get only changed values
+  const getChangedValues = () => {
+    return Object.keys(touchedFields).reduce((acc, field) => {
+      if (touchedFields[field] && initialValues[field] !== values[field]) {
+        acc[field] = values[field];
+      }
+      return acc;
+    }, {});
+  };
+
+  return [values, setValue, getChangedValues];
+};
 
 const ProfileScreen = () => {
-  const { userData, isAuthenticated, clearUserTokenAuth } = useUser();
+  const { userData, setUserProfileData, isAuthenticated, clearUserTokenAuth } = useUser();
   const [modalVisible, setModalVisible] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [confirmLogout, setconfirmLogout] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [showInputs, setShowInputs] = useState(false);
+
+  const [form, setFormValue, getChangedValues] = useForm({
+    name: '',
+    phone: '',
+  });
 
   const inputAnimation = useRef(new Animated.Value(0)).current;
 
@@ -75,12 +111,51 @@ const ProfileScreen = () => {
     setconfirmLogout(false);
   };
 
+  const handleSubmit = async () => {
+    const changedValues = getChangedValues();
+
+    if (Object.keys(changedValues).length > 0) {
+      await sendFormData(changedValues);
+    }
+  };
+
+  const sendFormData = async (changedValues) => {
+    setLoading(true);
+    try {
+      const response = await axiosInstance.put("/auth/updateprofile", changedValues);
+
+      if (response.status == 200) {
+        await fetchUserData();
+      } else {
+        console.error("Gagal edit profil: ", response.data.error);
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error("Terjadi error: ", error);
+      setLoading(false);
+    }
+  };
+
+  const fetchUserData = async () => {
+    try {
+      console.log("Fetching user data...");
+      const response = await axiosInstance.post("/auth/profile");
+
+      if (response.status == 200) {
+        setUserProfileData(response.data.data.user);
+      } else {
+        console.error("What is profile data? ", response.data.error);
+      }
+    } catch (err) {
+      console.error("Error fetching user data:", err);
+    }
+  };
+
   const handleLogout = async () => {
     try {
       const response = await axiosInstance.get("/auth/logout");
 
       if (response.data.success) {
-        // Clear local state and SecureStore
         clearUserTokenAuth();
 
         navigation.navigate("Home");
@@ -128,6 +203,10 @@ const ProfileScreen = () => {
               onLogin={handleLogin}
               onGoBack={handleBack}
             />
+            <Button
+              title="Edit Photo"
+              onPress={() => navigation.navigate('EditPhotoScreen')}
+            />
           </View>
           <View style={styles.buttonContainer}>
             <Pressable
@@ -138,7 +217,7 @@ const ProfileScreen = () => {
               onPress={toggleEditing}
             >
               <Text style={styles.buttonText}>
-                {isEditing ? "Save Profile" : "Edit Profile"}
+                Edit Profile
               </Text>
             </Pressable>
           </View>
@@ -165,14 +244,8 @@ const ProfileScreen = () => {
                     <TextInput
                       placeholder='Nama'
                       style={styles.input}
-                      editable={isEditing}
-                    />
-                  </View>
-                  <View style={styles.inputcontainer}>
-                    <Text style={styles.label}>Email</Text>
-                    <TextInput
-                      placeholder='Email'
-                      style={styles.input}
+                      onChangeText={(text) => setFormValue('name', text)}
+                      value={form.name}
                       editable={isEditing}
                     />
                   </View>
@@ -181,13 +254,18 @@ const ProfileScreen = () => {
                     <TextInput
                       placeholder='Nomor Telepon'
                       style={styles.input}
+                      onChangeText={(text) => setFormValue('phone', text)}
+                      value={form.phone}
                       editable={isEditing}
                     />
                   </View>
-
-                  <TouchableOpacity className='items-center p-4 bg-[#FFDF64] mt-10 ml-24 mr-24 rounded-2xl'>
-                    <Text className='font-bold text-[18px]'>Simpan</Text>
-                  </TouchableOpacity>
+                  <CustomButton
+                    style={styles.buttonSend}
+                    text='Simpan'
+                    backgroundColor='#FFDF64'
+                    textColor='#000'
+                    onPress={handleSubmit}
+                  />
                 </View>
               )}
             </Animated.View>
@@ -265,10 +343,16 @@ const styles = StyleSheet.create({
   buttonSave: {
     backgroundColor: "#4CAF50", // color when in save mode
   },
+  buttonSend: {
+    alignSelf: "center",
+    marginTop: 10,
+    width: "90%",
+    flex: 0,
+    borderRadius: 10,
+  },
   buttonText: {
     fontWeight: "bold",
     fontSize: 18,
-    // Rest of your styles...
   },
   inputcontainer: {
     backgroundColor: "#FBFBFB",
@@ -285,8 +369,7 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 16,
     padding: 16,
-    // Increase the height if needed to make it easier to tap
-    minHeight: 44, // 44 pixels is a good minimum touch target size
+    minHeight: 44,
   },
 });
 

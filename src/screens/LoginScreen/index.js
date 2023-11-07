@@ -11,12 +11,30 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import CustomButton from "../../components/Button";
 import { useUser } from "../../contexts/UserContext";
-import axiosInstance from '../../utils/axios'
+import axiosInstance from '../../utils/axios';
 
 const Login = () => {
   const navigation = useNavigation();
   const { userData, setUserTokenAuth, setUserProfileData } = useUser();
   const [loading, setLoading] = useState(false);
+  const useForm = (initialValues) => {
+    const [values, setValues] = useState(initialValues);
+
+    return [
+      values,
+      (field, value) => {
+        setValues({
+          ...values,
+          [field]: value,
+        });
+      }
+    ];
+  };
+
+  const [form, setFormValue] = useForm({
+    email: '',
+    password: '',
+  });
 
   const loginURL = "/auth/login";
 
@@ -28,8 +46,8 @@ const Login = () => {
     setLoading(true);
     try {
       const loginData = {
-        email: email,
-        password: password,
+        email: form.email,
+        password: form.password,
       };
 
       const response = await axiosInstance.post(loginURL, loginData);
@@ -44,6 +62,31 @@ const Login = () => {
       }
     } catch (error) {
       console.error("Terjadi error: ", error);
+      setLoading(false);
+    }
+  };
+
+  const handleDevLogin = async () => {
+    setLoading(true);
+    try {
+      const devLoginData = {
+        email: process.env.REACT_APP_DEV_LOGIN,
+        password: process.env.REACT_APP_DEV_PASS
+      };
+
+      const response = await axiosInstance.post(loginURL, devLoginData);
+
+      if (response.status == 200) {
+        setUserTokenAuth(response.data.user, response.data.accessToken);
+        await fetchUserData();
+        navigation.navigate("NavBar");
+      } else {
+        console.error("Login gagal: ", response.data.error);
+        setLoading(false);
+      }
+
+    } catch (error) {
+      console.error("Dev login error: ", error);
       setLoading(false);
     }
   };
@@ -64,8 +107,6 @@ const Login = () => {
     }
   };
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
   return (
     <View style={styles.root}>
@@ -88,8 +129,8 @@ const Login = () => {
           ></Image>
           <TextInput
             style={styles.textinput}
-            onChangeText={(text) => setEmail(text)}
-            value={email}
+            onChangeText={(text) => setFormValue('email', text)}
+            value={form.email}
             placeholder='Email'
             keyboardType='email-address'
           />
@@ -102,8 +143,8 @@ const Login = () => {
           ></Image>
           <TextInput
             style={styles.textinput}
-            onChangeText={(text) => setPassword(text)}
-            value={password}
+            onChangeText={(text) => setFormValue('password', text)}
+            value={form.password}
             placeholder='Password'
             keyboardType='default'
             secureTextEntry
@@ -132,6 +173,13 @@ const Login = () => {
               backgroundColor='#FFDF64'
               textColor='#000'
               onPress={handleSignUp}
+            />
+            <CustomButton
+              style={styles.devlogin}
+              text='Dev Login'
+              backgroundColor='#FFDF64'
+              textColor='#000'
+              onPress={handleDevLogin}
             />
           </>
         )}
@@ -233,6 +281,12 @@ const styles = StyleSheet.create({
     width: "90%",
     flex: 0,
     borderRadius: 10,
+  },
+  devlogin: {
+    width: "69%",
+    flex: 0,
+    borderRadius: 0,
+    marginTop: 10,
   },
   buatakun: {
     width: "90%",
