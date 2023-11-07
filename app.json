@@ -22,16 +22,10 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      },
-      "package": "com.daffa_romero.kalkulembumobilefe"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "e9781806-94b6-441e-adc8-82bb544bb944"
-      }
     }
   }
 }
