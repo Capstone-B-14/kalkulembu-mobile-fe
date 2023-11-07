@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   login: {
-    width: "0%",
+    width: "90%",
     flex: 0,
     borderRadius: 10,
   },
