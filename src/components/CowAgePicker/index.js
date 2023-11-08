@@ -5,26 +5,21 @@ import { Picker } from "@react-native-picker/picker";
 const CowAgePicker = ({ onChange }) => {
   const [years, setYears] = useState(0);
   const [months, setMonths] = useState(0);
-  const [finalSelection, setFinalSelection] = useState(null);
+  // const [finalSelection, setFinalSelection] = useState(null);
   const [showPicker, setShowPicker] = useState(true);
 
   const handleYearChange = (selectedYear) => {
     setYears(selectedYear);
+    // Call the passed onChange prop function
+    onChange(selectedYear, months);
+    console.log(selectedYear * 12);
   };
 
   const handleMonthChange = (selectedMonth) => {
     setMonths(selectedMonth);
-  };
-
-  const handleFinalizeSelection = () => {
-    const totalMonths = years * 12 + months;
-    setFinalSelection(totalMonths);
-    onChange(totalMonths);
-    setShowPicker(false);
-  };
-
-  const handleOpenPicker = () => {
-    setShowPicker(true);
+    // Call the passed onChange prop function
+    onChange(years, selectedMonth);
+    console.log(selectedMonth);
   };
 
   return (
@@ -37,8 +32,8 @@ const CowAgePicker = ({ onChange }) => {
               style={styles.picker}
               onValueChange={handleYearChange}
             >
-              {[...Array(10)].map((_, i) => (
-                <Picker.Item key={i} label={`${i} Tahun`} value={i} />
+              {[...Array(101)].map((_, i) => (
+                <Picker.Item key={i} label={`${i} tahun`} value={i} />
               ))}
             </Picker>
             <Picker
@@ -47,13 +42,13 @@ const CowAgePicker = ({ onChange }) => {
               onValueChange={handleMonthChange}
             >
               {[...Array(12)].map((_, i) => (
-                <Picker.Item key={i} label={`${i} Bulan`} value={i} />
+                <Picker.Item key={i} label={`${i} bulan`} value={i} />
               ))}
             </Picker>
           </View>
         </>
       )}
-      <View style={styles.buttonContainer}>
+      {/* <View style={styles.buttonContainer}>
         {!showPicker ? (
           <Button title='Confirm' onPress={handleFinalizeSelection} />
         ) : (
@@ -63,8 +58,8 @@ const CowAgePicker = ({ onChange }) => {
             color='#4CAF50'
           />
         )}
-      </View>
-      {finalSelection !== null && !showPicker && (
+      </View> */}
+      {/* {finalSelection !== null && !showPicker && (
         <View style={styles.finalSelection}>
           <Text>
             {`Umur Sapi: ${Math.floor(finalSelection / 12)} tahun ${
@@ -72,7 +67,7 @@ const CowAgePicker = ({ onChange }) => {
             } bulan`}
           </Text>
         </View>
-      )}
+      )} */}
     </View>
   );
 };

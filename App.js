@@ -79,9 +79,10 @@ export default function App() {
             options={{ title: "Profile" }}
           />
           <Stack.Screen
-            name="EditPhotoScreen"
+            name='EditPhotoScreen'
             component={EditPhotoScreen}
-            options={{ title: 'Edit Photo Screen' }} />
+            options={{ title: "Edit Photo Screen" }}
+          />
 
           <Stack.Screen
             name='Login'

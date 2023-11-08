@@ -11,29 +11,17 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import CustomButton from "../../components/Button";
 import { useUser } from "../../contexts/UserContext";
-import axiosInstance from '../../utils/axios';
+import axiosInstance from "../../utils/axios";
+import useForm from "../../utils/useForm";
 
 const Login = () => {
   const navigation = useNavigation();
   const { userData, setUserTokenAuth, setUserProfileData } = useUser();
   const [loading, setLoading] = useState(false);
-  const useForm = (initialValues) => {
-    const [values, setValues] = useState(initialValues);
-
-    return [
-      values,
-      (field, value) => {
-        setValues({
-          ...values,
-          [field]: value,
-        });
-      }
-    ];
-  };
 
   const [form, setFormValue] = useForm({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
 
   const loginURL = "/auth/login";
@@ -70,8 +58,8 @@ const Login = () => {
     setLoading(true);
     try {
       const devLoginData = {
-        email: process.env.REACT_APP_DEV_LOGIN,
-        password: process.env.REACT_APP_DEV_PASS
+        email: process.env.EXPO_PUBLIC_DEV_LOGIN,
+        password: process.env.EXPO_PUBLIC_DEV_PASS,
       };
 
       const response = await axiosInstance.post(loginURL, devLoginData);
@@ -84,7 +72,6 @@ const Login = () => {
         console.error("Login gagal: ", response.data.error);
         setLoading(false);
       }
-
     } catch (error) {
       console.error("Dev login error: ", error);
       setLoading(false);
@@ -107,7 +94,6 @@ const Login = () => {
     }
   };
 
-
   return (
     <View style={styles.root}>
       <View style={styles.atas}>
@@ -129,7 +115,7 @@ const Login = () => {
           ></Image>
           <TextInput
             style={styles.textinput}
-            onChangeText={(text) => setFormValue('email', text)}
+            onChangeText={(text) => setFormValue("email", text)}
             value={form.email}
             placeholder='Email'
             keyboardType='email-address'
@@ -143,7 +129,7 @@ const Login = () => {
           ></Image>
           <TextInput
             style={styles.textinput}
-            onChangeText={(text) => setFormValue('password', text)}
+            onChangeText={(text) => setFormValue("password", text)}
             value={form.password}
             placeholder='Password'
             keyboardType='default'

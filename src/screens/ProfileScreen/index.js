@@ -15,45 +15,18 @@ import {
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 import AuthModal from "../../components/Modal/AuthModal";
 import CustomButton from "../../components/Button";
 import CustomHeader from "../../components/Header";
 import { useUser } from "../../contexts/UserContext";
 import axiosInstance from "../../utils/axios";
-
-
-const useForm = (initialValues) => {
-  const [values, setValues] = useState(initialValues);
-  const [touchedFields, setTouchedFields] = useState({});
-
-  const setValue = (field, value) => {
-    if (values[field] === value) return;
-    setValues((prevValues) => ({
-      ...prevValues,
-      [field]: value,
-    }));
-    setTouchedFields((prevTouched) => ({
-      ...prevTouched,
-      [field]: true,
-    }));
-  };
-
-  // Function to get only changed values
-  const getChangedValues = () => {
-    return Object.keys(touchedFields).reduce((acc, field) => {
-      if (touchedFields[field] && initialValues[field] !== values[field]) {
-        acc[field] = values[field];
-      }
-      return acc;
-    }, {});
-  };
-
-  return [values, setValue, getChangedValues];
-};
+import useForm from "../../utils/useForm";
 
 const ProfileScreen = () => {
-  const { userData, setUserProfileData, isAuthenticated, clearUserTokenAuth } = useUser();
+  const { userData, setUserProfileData, isAuthenticated, clearUserTokenAuth } =
+    useUser();
   const [modalVisible, setModalVisible] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [confirmLogout, setconfirmLogout] = useState(false);
@@ -61,8 +34,8 @@ const ProfileScreen = () => {
   const [showInputs, setShowInputs] = useState(false);
 
   const [form, setFormValue, getChangedValues] = useForm({
-    name: '',
-    phone: '',
+    name: "",
+    phone: "",
   });
 
   const inputAnimation = useRef(new Animated.Value(0)).current;
@@ -122,7 +95,10 @@ const ProfileScreen = () => {
   const sendFormData = async (changedValues) => {
     setLoading(true);
     try {
-      const response = await axiosInstance.put("/auth/updateprofile", changedValues);
+      const response = await axiosInstance.put(
+        "/auth/updateprofile",
+        changedValues
+      );
 
       if (response.status == 200) {
         await fetchUserData();
@@ -180,7 +156,7 @@ const ProfileScreen = () => {
   );
 
   return (
-    <Pressable className='flex-1'>
+    <Pressable style={styles.flexOne}>
       <CustomHeader
         title='Profil'
         rightComponent={
@@ -191,23 +167,25 @@ const ProfileScreen = () => {
       />
       <ScrollView style={styles.container}>
         <View style={styles.container}>
-          <View style={styles.header}>
-            <Image
-              source={{ uri: parsedUserData.photo }}
-              style={styles.profileImage}
-            />
-            <Text style={styles.userName}>{parsedUserData?.name}</Text>
-            <Text style={styles.bio}>{parsedUserData?.role}</Text>
-            <AuthModal
-              isVisible={modalVisible}
-              onLogin={handleLogin}
-              onGoBack={handleBack}
-            />
-            <Button
-              title="Edit Photo"
-              onPress={() => navigation.navigate('EditPhotoScreen')}
-            />
+          <View style={styles.profileHeader}>
+            <View style={styles.photoEditContainer}>
+              <Image
+                source={{ uri: parsedUserData?.photo }}
+                style={styles.profileImage}
+              />
+              <TouchableOpacity
+                style={styles.editIcon}
+                onPress={() => navigation.navigate("EditPhotoScreen")}
+              >
+                <FontAwesome name='pencil' size={20} color='#FFF' />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.profileInfo}>
+              <Text style={styles.userName}>{parsedUserData?.name}</Text>
+              <Text style={styles.bio}>{parsedUserData?.role}</Text>
+            </View>
           </View>
+          {/* Rest of your components */}
           <View style={styles.buttonContainer}>
             <Pressable
               style={[
@@ -216,9 +194,7 @@ const ProfileScreen = () => {
               ]}
               onPress={toggleEditing}
             >
-              <Text style={styles.buttonText}>
-                Edit Profile
-              </Text>
+              <Text style={styles.buttonText}>Edit Profile</Text>
             </Pressable>
           </View>
 
@@ -244,7 +220,7 @@ const ProfileScreen = () => {
                     <TextInput
                       placeholder='Nama'
                       style={styles.input}
-                      onChangeText={(text) => setFormValue('name', text)}
+                      onChangeText={(text) => setFormValue("name", text)}
                       value={form.name}
                       editable={isEditing}
                     />
@@ -254,7 +230,7 @@ const ProfileScreen = () => {
                     <TextInput
                       placeholder='Nomor Telepon'
                       style={styles.input}
-                      onChangeText={(text) => setFormValue('phone', text)}
+                      onChangeText={(text) => setFormValue("phone", text)}
                       value={form.phone}
                       editable={isEditing}
                     />
@@ -302,6 +278,35 @@ const ProfileScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  flexOne: {
+    flex: 1,
+  },
+  profileHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 20,
+  },
+  photoEditContainer: {
+    position: "relative",
+    marginRight: 20, // Adjust spacing according to your design
+  },
+  profileImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+  },
+  editIcon: {
+    position: "absolute",
+    right: 0,
+    bottom: 0,
+    backgroundColor: "#FFDF64",
+    borderRadius: 50,
+    padding: 8,
+  },
+  profileInfo: {
+    justifyContent: "center",
+    flex: 1,
+  },
   container: {
     flex: 1,
   },

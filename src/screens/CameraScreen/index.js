@@ -12,7 +12,6 @@ import Svg, { Path } from "react-native-svg";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
 import CowAgePicker from "../../components/CowAgePicker";
-import Dropdowns from "../../components/Dropdown";
 import Modal from "../../components/Modal";
 
 const CameraScreen = () => {
@@ -32,9 +31,16 @@ const CameraScreen = () => {
   // Picker state
   const [isPickerVisible, setIsPickerVisible] = useState(false);
   const [selectedAge, setSelectedAge] = useState(null);
+  const [selectedYear, setSelectedYear] = useState(0);
+  const [selectedMonth, setSelectedMonth] = useState(0);
 
-  const handleAgeChange = (months) => {
-    setSelectedAge(months);
+  const handleFinalizeAgeSelection = () => {
+    setIsPickerVisible(false); // Hide the picker after selecting the age
+  };
+
+  const handleAgeChange = (year, month) => {
+    setSelectedYear(year);
+    setSelectedMonth(month);
   };
 
   const navigation = useNavigation();

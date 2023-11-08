@@ -18,6 +18,10 @@ const SignupUser = () => {
   const [password, setPassword] = useState("");
   const [konfirmasipassword, setKonfirmasipassword] = useState("");
 
+  const handleLoginRedirect = () => {
+    navigation.navigate("Login");
+  };
+
   return (
     <View style={styles.root}>
       <View style={styles.atas}>
@@ -96,7 +100,7 @@ const SignupUser = () => {
         routeName='SignupPeternakan'
         navigation={navigation}
       />
-      <Pressable style={styles.login}>
+      <Pressable style={styles.login} onPress={handleLoginRedirect}>
         <Text className='text-white'>Saya sudah memiliki akun</Text>
       </Pressable>
     </View>
