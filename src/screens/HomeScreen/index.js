@@ -1,5 +1,5 @@
 import React, { useState, useLayoutEffect } from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, Dimensions, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import CustomHeader from "../../components/Header";
 import SearchBar from '../../components/SearchBar';
@@ -20,7 +20,7 @@ const HomeScreen = () => {
 
 // 
     return(
-        <View className="h-full">
+        <View className="h-full sm: w-auto">
             <CustomHeader title='Home' showUserData={true} />
             <View className="flex flex-row justify-between m-3">
               <View className="pt-3">
@@ -60,4 +60,5 @@ const HomeScreen = () => {
         </View>
     );
 };
+
 export default HomeScreen;

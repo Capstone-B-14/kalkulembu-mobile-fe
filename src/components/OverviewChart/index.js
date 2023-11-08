@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { Dimensions, View, TouchableOpacity, Text } from 'react-native';
+import { Dimensions, View, TouchableOpacity, Text, ScrollView } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 
 const OverviewChart=() => {
@@ -39,7 +39,7 @@ const OverviewChart=() => {
                     </View>
                     {/* Switch Button End */}
                     {/* Chart Start */}
-                    <View className="w-[150px] mt-6 flex justify-center">
+                    <ScrollView horizontal={true} className="mx-4 my-6">
                         <LineChart
                             data={{
                                 labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May','Jun','Jul','Agt','Sep','Oct','Nov','Dec'],
@@ -62,9 +62,9 @@ const OverviewChart=() => {
                                     },
                                 ],
                             }}
-                            width={350}
+                            width={Dimensions.get("window").width}
                             height={220}
-                            // yAxisLabel='Banyaknya Sapi (ekor)'
+                            //yAxisLabel='Banyaknya Sapi (ekor)'
                             yAxisInterval={1}
                             chartConfig={{
                                 backgroundColor: '#FBFBFB',
@@ -76,17 +76,18 @@ const OverviewChart=() => {
                                 style: {
                                     borderRadius: 0,
                                 },
+                                
                             }}
                             withHorizontalLabels={true}
-                            
                         >
 
                         </LineChart>
-                    </View>
+                    </ScrollView>
                 </View>
                 {/* Container End */}
             </View> 
         );
+// ==========================================BATAS CHART PER TAHUN=========================================
     }else{
         return(
             <View className="">
@@ -118,7 +119,7 @@ const OverviewChart=() => {
                     </View>
                     {/* Switch Button End */}
                     {/* Chart Start */}
-                    <View className="w-[150px] mt-6 flex justify-center">
+                    <ScrollView horizontal={true} className="mx-4 my-6">
                         <LineChart
                             data={{
                                 labels: ['2020', '2021', '2022', '2023', ],
@@ -133,7 +134,7 @@ const OverviewChart=() => {
                                     },
                                 ],
                             }}
-                            width={350}
+                            width={Dimensions.get("window").width}
                             height={220}
                             // yAxisLabel='Banyaknya Sapi (ekor)'
                             yAxisInterval={1}
@@ -152,7 +153,7 @@ const OverviewChart=() => {
                             
                         >
                         </LineChart>
-                    </View>
+                    </ScrollView>
                 </View>
             </View>
         )

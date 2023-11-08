@@ -19,13 +19,14 @@ const Modal = ({ isOpen, onClose, children }) => {
 const styles = StyleSheet.create({
   modal: {
     paddingBottom: 25,
+    marginTop:40,
     justifyContent: "center",
     alignItems: "center",
     //backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
     backgroundColor: "white",
-    padding: 10,
+    padding: 15,
     borderRadius: 10,
     width: "90%",
   },
@@ -35,7 +36,7 @@ const styles = StyleSheet.create({
     top: 10,
   },
   closeText: {
-    fontSize: 24,
+    fontSize: 30,
   },
   modalBody: {
     padding: 3,

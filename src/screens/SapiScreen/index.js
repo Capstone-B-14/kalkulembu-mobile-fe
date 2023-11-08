@@ -1,88 +1,58 @@
-import React from "react";
-import { View, Text, Image, StyleSheet, FlatList } from "react-native";
+import React, {useState} from "react";
+import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
 import CustomHeader from "../../components/Header";
-import SapiCard from "../../components/SapiCard";
-
-const data = [
-  {
-    id: 1,
-    namasapi: "Jono",
-    bobot: "200",
-    status: 1,
-    image: require("../../../assets/sapi1.jpg"),
-  },
-  {
-    id: 2,
-    namasapi: "Joni",
-    bobot: "300",
-    status: 0,
-    image: require("../../../assets/sapi2.jpg"),
-  },
-  {
-    id: 3,
-    namasapi: "Joni",
-    bobot: "300",
-    status: 0,
-    image: require("../../../assets/sapi2.jpg"),
-  },
-  {
-    id: 4,
-    namasapi: "Joni",
-    bobot: "300",
-    status: 0,
-    image: require("../../../assets/sapi2.jpg"),
-  },
-  {
-    id: 5,
-    namasapi: "Joni",
-    bobot: "300",
-    status: 0,
-    image: require("../../../assets/sapi2.jpg"),
-  },
-  {
-    id: 6,
-    namasapi: "Joni",
-    bobot: "300",
-    status: 0,
-    image: require("../../../assets/sapi2.jpg"),
-  },
-  {
-    id: 7,
-    namasapi: "Joni",
-    bobot: "300",
-    status: 0,
-    image: require("../../../assets/sapi2.jpg"),
-  },
-  {
-    id: 8,
-    namasapi: "Joni",
-    bobot: "300",
-    status: 0,
-    image: require("../../../assets/sapi3.jpg"),
-  },
-];
+import SearchBar from '../../components/SearchBar';
+import Kartu from "../../components/Kartu";
 
 const SapiScreen = () => {
+  const [searchText, setSearchText] = useState("");
+  
+
+  const handleSearch = (text) => {
+    setSearchText(text);
+  };
+
   return (
-    <View>
+    <View className="h-full sm: w-auto">
       <CustomHeader title="Sapi" showUserData={false} />
-      <View className="flex-wrap">
-        <View className="justify-between w-full">
-          <FlatList
-            data={data}
-            numColumns={2} // 2 columns per row
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => (
-              <SapiCard
-                namasapi={item.namasapi}
-                bobot={item.bobot}
-                status={item.status}
-                image={item.image}
-              />
-            )}
-          />
-        </View>
+      <View className="flex items-end mx-4">
+        <SearchBar 
+          placeholder="Cari Sapi"
+          value={searchText}
+          onChangeText={handleSearch}
+        />
       </View>
+      <ScrollView horizontal={false} className="my-4">
+        <View className="">
+          <View  className="flex flex-row flex-wrap h-full w-full items-center justify-between">
+            <Kartu
+            photo="https://reactjs.org/logo-og.png"
+            name="Joni"
+            weight="70"
+            kondisi="sakit" />
+            <Kartu
+            photo="https://reactjs.org/logo-og.png"
+            name="YesPapa"
+            weight="70"
+            kondisi="sehat" />
+            <Kartu
+            photo="https://reactjs.org/logo-og.png"
+            name="Joni"
+            weight="70"
+            kondisi="sakit" />
+            <Kartu
+            photo="https://reactjs.org/logo-og.png"
+            name="YesPapa"
+            weight="70"
+            kondisi="sehat" />
+            <Kartu
+            photo="https://reactjs.org/logo-og.png"
+            name="Joni"
+            weight="70"
+            kondisi="sakit" />
+         </View>
+        </View>
+      </ScrollView>
     </View>
   );
 };
