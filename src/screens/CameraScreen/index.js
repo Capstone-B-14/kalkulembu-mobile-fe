@@ -8,11 +8,14 @@ import {
   View,
   Image,
 } from "react-native";
+import Constants from "expo-constants";
 import Svg, { Path } from "react-native-svg";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 
 import CowAgePicker from "../../components/CowAgePicker";
 import Modal from "../../components/Modal";
+
+const statusBarHeight = Constants.statusBarHeight;
 
 const CameraScreen = () => {
   // Camera stuff
@@ -30,17 +33,14 @@ const CameraScreen = () => {
 
   // Picker state
   const [isPickerVisible, setIsPickerVisible] = useState(false);
-  const [selectedAge, setSelectedAge] = useState(null);
+  const [ageSelected, setAgeSelected] = useState(false);
   const [selectedYear, setSelectedYear] = useState(0);
   const [selectedMonth, setSelectedMonth] = useState(0);
-
-  const handleFinalizeAgeSelection = () => {
-    setIsPickerVisible(false); // Hide the picker after selecting the age
-  };
 
   const handleAgeChange = (year, month) => {
     setSelectedYear(year);
     setSelectedMonth(month);
+    setAgeSelected(true);
   };
 
   const navigation = useNavigation();
@@ -86,9 +86,6 @@ const CameraScreen = () => {
   if (!isScreenActive) {
     return null;
   }
-  const onClose = () => {
-    setIsModalOpen(false);
-  };
 
   const takePicture = async () => {
     if (cameraRef.current) {
@@ -100,6 +97,15 @@ const CameraScreen = () => {
 
   return (
     <View style={styles.container}>
+      {ageSelected && (
+        <View style={styles.ageBox}>
+          <Text style={styles.modal}>
+            {`Umur Sapi: ${Math.floor(
+              selectedYear
+            )} tahun ${selectedMonth} bulan`}
+          </Text>
+        </View>
+      )}
       <Camera
         style={styles.camera}
         type={type}
@@ -127,29 +133,35 @@ const CameraScreen = () => {
             </Svg>
           </TouchableOpacity>
         </View>
-        <Modal isOpen={isModalOpen} onClose={onClose}>
-          <Image
-            source={require("../../../assets/info-logo.png")}
-            style={styles.logoinfo}
-            resizeMode='contain'
-          />
-          <Text style={styles.modal}>
-            Pastikan sapi yang akan difoto masuk ke dalam gambar outline
-          </Text>
+        <Modal
+          isOpen={isModalOpen}
+          onClose={() => {
+            setIsModalOpen(false);
+          }}
+        >
+          <View style={styles.modal}>
+            <Image
+              source={require("../../../assets/info-logo.png")}
+              style={styles.logoinfo}
+              resizeMode='contain'
+            />
+            <Text style={styles.modaltext}>
+              Pastikan sapi yang akan difoto masuk ke dalam gambar outline
+            </Text>
+            <TouchableOpacity
+              style={styles.close}
+              onPress={() => {
+                setIsModalOpen(false);
+              }}
+            >
+              <Text style={styles.closeText}>&times;</Text>
+            </TouchableOpacity>
+          </View>
         </Modal>
         <Button
           title={isPickerVisible ? "Confirm Age" : "Select Age"}
           onPress={() => setIsPickerVisible(!isPickerVisible)}
         />
-        {selectedAge && !isPickerVisible && (
-          <View style={styles.ageBox}>
-            <Text>
-              {`Umur Sapi: ${Math.floor(selectedAge / 12)} tahun ${
-                selectedAge % 12
-              } bulan`}
-            </Text>
-          </View>
-        )}
         {isPickerVisible && (
           <CowAgePicker
             onChange={handleAgeChange}
@@ -192,9 +204,6 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
     margin: 24,
   },
-  modalContainer: {
-    top: 10,
-  },
   button: {
     flex: 1,
     alignSelf: "flex-end",
@@ -206,15 +215,26 @@ const styles = StyleSheet.create({
     color: "white",
   },
   modal: {
-    fontSize: 10,
-    color: "#000000",
-    textAlign: "center",
-    bottom: 8,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 5,
   },
-  logoinfo: {
-    height: 15,
-    marginRight: 2,
-    top: 6,
+  modaltext: {
+    fontSize: 15,
+    color: "#0D0D0D",
+    textAlign: "center",
+    width: "90%",
+    paddingHorizontal: 10,
+  },
+  close: {
+    backgroundColor: "white", // Background color to make it stand out
+    borderRadius: 5, // Rounded corners for the close button
+    padding: 5, // Padding for the close button
+  },
+  closeText: {
+    fontSize: 30, // Reduced font size for the close button
+    color: "#333", // Color for the close button text, for better visibility
   },
   buttoncam: {
     //paddingBottom: 25,
@@ -245,6 +265,17 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     resizeMode: "contain",
+  },
+  ageBox: {
+    position: "absolute", // Position it over the other components
+    top: statusBarHeight + 25, // Align to the top of the screen
+    marginHorizontal: 10,
+    backgroundColor: "rgba(255, 255, 255, 0.8)", // Semi-transparent white background
+    padding: 15, // Some padding
+    zIndex: 10,
+    alignSelf: "center",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 export default CameraScreen;

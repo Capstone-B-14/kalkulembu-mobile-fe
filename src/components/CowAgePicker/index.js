@@ -12,14 +12,12 @@ const CowAgePicker = ({ onChange }) => {
     setYears(selectedYear);
     // Call the passed onChange prop function
     onChange(selectedYear, months);
-    console.log(selectedYear * 12);
   };
 
   const handleMonthChange = (selectedMonth) => {
     setMonths(selectedMonth);
     // Call the passed onChange prop function
     onChange(years, selectedMonth);
-    console.log(selectedMonth);
   };
 
   return (
@@ -48,26 +46,6 @@ const CowAgePicker = ({ onChange }) => {
           </View>
         </>
       )}
-      {/* <View style={styles.buttonContainer}>
-        {!showPicker ? (
-          <Button title='Confirm' onPress={handleFinalizeSelection} />
-        ) : (
-          <Button
-            title='Confirm Age'
-            onPress={handleFinalizeSelection}
-            color='#4CAF50'
-          />
-        )}
-      </View> */}
-      {/* {finalSelection !== null && !showPicker && (
-        <View style={styles.finalSelection}>
-          <Text>
-            {`Umur Sapi: ${Math.floor(finalSelection / 12)} tahun ${
-              finalSelection % 12
-            } bulan`}
-          </Text>
-        </View>
-      )} */}
     </View>
   );
 };

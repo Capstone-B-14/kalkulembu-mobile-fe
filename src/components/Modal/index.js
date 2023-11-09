@@ -1,15 +1,12 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 
-const Modal = ({ isOpen, onClose, children }) => {
+const Modal = ({ isOpen, children, style }) => {
   if (!isOpen) return null;
 
   return (
-    <View style={styles.modal}>
+    <View style={[styles.modal, style]}>
       <View style={styles.modalContent}>
-        <TouchableOpacity style={styles.close} onPress={onClose}>
-          <Text style={styles.closeText}>&times;</Text>
-        </TouchableOpacity>
         <View style={styles.modalBody}>{children}</View>
       </View>
     </View>
@@ -18,28 +15,18 @@ const Modal = ({ isOpen, onClose, children }) => {
 
 const styles = StyleSheet.create({
   modal: {
-    paddingBottom: 25,
-    marginTop:40,
+    flexDirection: "row",
+    paddingBottom: 20,
     justifyContent: "center",
     alignItems: "center",
     //backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
     backgroundColor: "white",
-    padding: 15,
-    borderRadius: 10,
-    width: "90%",
-  },
-  close: {
-    position: "absolute",
-    right: 12,
-    top: 10,
-  },
-  closeText: {
-    fontSize: 30,
-  },
-  modalBody: {
-    padding: 3,
+    paddingHorizontal: 15, // Increased padding for better spacing
+    paddingVertical: 10,
+    borderRadius: 20, // Rounded corners
+    width: "92%",
   },
 });
 
