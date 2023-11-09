@@ -1,6 +1,5 @@
 import { View, Text, Image } from 'react-native';
 import React from 'react';
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { TouchableOpacity } from 'react-native';
 import  Feather  from 'react-native-vector-icons/Feather';
 

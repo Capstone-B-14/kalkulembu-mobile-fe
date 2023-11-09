@@ -80,12 +80,12 @@ export default function App() {
             options={{ title: "Profile" }}
           />
           <Stack.Screen
-            name='EditPhotoScreen'
+            name='Edit Photo'
             component={EditPhotoScreen}
             options={{ title: "Edit Photo Screen" }}
           />
           <Stack.Screen
-            name='ImageViewerScreen'
+            name='Image Viewer'
             component={ImageViewerScreen}
             options={{ title: "Image Viewer Screen" }}
           />

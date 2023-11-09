@@ -36,10 +36,12 @@ const CameraScreen = () => {
   const [ageSelected, setAgeSelected] = useState(false);
   const [selectedYear, setSelectedYear] = useState(0);
   const [selectedMonth, setSelectedMonth] = useState(0);
+  const [totalAge, setTotalAge] = useState(0);
 
   const handleAgeChange = (year, month) => {
     setSelectedYear(year);
     setSelectedMonth(month);
+    setTotalAge(year * 12 + month);
     setAgeSelected(true);
   };
 
@@ -101,7 +103,7 @@ const CameraScreen = () => {
     if (cameraRef.current) {
       const photo = await cameraRef.current.takePictureAsync();
       handleCapture(photo.uri);
-      navigation.navigate("CameraResult", { uri: photo.uri });
+      navigation.navigate("CameraResult", { uri: photo.uri, cowAge: totalAge });
     }
   };
 
@@ -185,7 +187,7 @@ const CameraScreen = () => {
           <TouchableOpacity
             key={image.uri}
             onPress={() => {
-              navigation.navigate("ImageViewerScreen", {
+              navigation.navigate("Image Viewer", {
                 capturedImages: capturedImages,
               });
             }}

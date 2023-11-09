@@ -1,14 +1,33 @@
 import React, { useState, useEffect } from "react";
-import { View, Image, StyleSheet, Button, Text } from "react-native";
+import {
+  View,
+  Image,
+  StyleSheet,
+  Switch,
+  Button,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import Constants from "expo-constants";
+
 import Dropdowns from "../../components/Dropdown";
 import axiosInstance from "../../utils/axios";
 import { useUser } from "../../contexts/UserContext";
+import CustomButton from "../../components/CustomButton";
+
+const statusBarHeight = Constants.statusBarHeight;
 
 const CameraResult = ({ route }) => {
-  const { uri } = route.params;
-  console.log(route.params);
+  const { uri, cowAge } = route.params;
   const navigation = useNavigation();
+
+  // Specific stats states
+  const [weight, setWeight] = useState(0);
+  const [healthy, setHealthy] = useState(true);
+
   const [selectedOption, setSelectedOption] = useState(null);
   const [farms, setFarms] = useState([]);
   const [cattle, setCattle] = useState([]);
@@ -24,7 +43,6 @@ const CameraResult = ({ route }) => {
     const fetchCattle = async () => {
       try {
         const farmsRequest = axiosInstance.get(`/users/${userId}/farms`);
-
         const cattleRequest = farmsRequest.then((response) => {
           const farmId = response.data.data[0].id;
           return axiosInstance.get(`/farms/${farmId}/cattle`);
@@ -60,6 +78,27 @@ const CameraResult = ({ route }) => {
     }
   };
 
+  const submitStats = async () => {
+    const payload = {
+      age: Number(cowAge),
+      weight: 696,
+      healthy: healthy,
+    };
+    if (selectedOption) {
+      try {
+        const response = await axiosInstance.post(
+          `/cattle/${selectedOption.value}/stats/${new Date().toISOString()}`,
+          payload
+        );
+        if (response.status === 200) {
+          console.log(response);
+        }
+      } catch (error) {
+        console.error("Gagal submit stats sapi: ", error);
+      }
+    }
+  };
+
   const dropdownOptions = cattle.map((cattle) => ({
     label: cattle.name,
     value: cattle.id.toString(),
@@ -67,30 +106,46 @@ const CameraResult = ({ route }) => {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity
+        style={styles.backButtonContainer}
+        onPress={() => navigation.goBack()}
+      >
+        <FontAwesome name='arrow-left' />
+        <Text style={styles.back}>Kembali</Text>
+      </TouchableOpacity>
       <Image source={{ uri }} style={styles.image} />
-      <Dropdowns
-        options={dropdownOptions}
-        selectedValue={selectedOption}
-        onSelect={handleDropdownChange}
-        placeholder='Pilih Sapi'
-        search
-        searchPlaceholder='Pilih Sapi'
-      />
-      {cattleStats.length > 0 &&
-        cattleStats.map((stat, index) => (
-          <View key={index} style={styles.statContainer}>
-            <View style={styles.statDetails}>
-              <Text>Usia: {stat.age} bulan</Text>
-              <Text>Bobot: {stat.weight} kg</Text>
-              <Text>{stat.healthy ? "Sehat" : "Sakit"}</Text>
-            </View>
-            <Text style={styles.statDate}>
-              {new Date(stat.measuredAt).toLocaleDateString("id-ID")}{" "}
-              {new Date(stat.measuredAt).toLocaleTimeString("id-ID")}
-            </Text>
-          </View>
-        ))}
-      <Button title='Go Back' onPress={() => navigation.goBack()} />
+      <View style={styles.healthSwitch}>
+        <Text>Apakah sapi sehat?</Text>
+        <Switch onValueChange={setHealthy} value={healthy} />
+      </View>
+      <Button title='Submit' onPress={() => submitStats()} />
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <View style={styles.container}>
+          <Dropdowns
+            options={dropdownOptions}
+            selectedValue={selectedOption}
+            onSelect={handleDropdownChange}
+            placeholder='Pilih Sapi'
+            search
+            searchPlaceholder='Pilih Sapi'
+          />
+
+          {cattleStats.length > 0 &&
+            cattleStats.map((stat, index) => (
+              <View key={index} style={styles.statContainer}>
+                <View style={styles.statDetails}>
+                  <Text>Usia: {stat.age} bulan</Text>
+                  <Text>Bobot: {stat.weight} kg</Text>
+                  <Text>{stat.healthy ? "Sehat" : "Sakit"}</Text>
+                </View>
+                <Text style={styles.statDate}>
+                  {new Date(stat.measuredAt).toLocaleDateString("id-ID")}{" "}
+                  {new Date(stat.measuredAt).toLocaleTimeString("id-ID")}
+                </Text>
+              </View>
+            ))}
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -103,10 +158,25 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF",
   },
   image: {
-    width: "90%",
-    height: "70%",
+    width: "75%",
+    height: "60%",
     resizeMode: "contain",
-    marginBottom: 20,
+    marginVertical: 20,
+  },
+  backButtonContainer: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    width: "100%",
+    left: 50,
+    marginTop: statusBarHeight + 25,
+  },
+  healthSwitch: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    width: "100%",
+    left: 50,
   },
   statContainer: {
     flexDirection: "row",
@@ -124,6 +194,12 @@ const styles = StyleSheet.create({
   },
   statDate: {
     marginLeft: 20,
+  },
+  back: {
+    fontSize: 20,
+    fontFamily: "Roboto-Regular",
+    fontWeight: "bold",
+    marginLeft: 10,
   },
 });
 

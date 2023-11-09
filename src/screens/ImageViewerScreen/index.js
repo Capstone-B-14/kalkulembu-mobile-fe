@@ -31,8 +31,7 @@ const ImageViewerScreen = ({ route }) => {
 
   const handleLongPress = (image) => {
     setSelectedImage(image[0].source);
-    console.log(image);
-    // console.log(image.source);
+    // console.log(image);
     setModalVisible(true);
   };
 

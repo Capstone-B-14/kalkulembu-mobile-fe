@@ -175,7 +175,7 @@ const ProfileScreen = () => {
               />
               <TouchableOpacity
                 style={styles.editIcon}
-                onPress={() => navigation.navigate("EditPhotoScreen")}
+                onPress={() => navigation.navigate("Edit Photo")}
               >
                 <FontAwesome name='pencil' size={20} color='#FFF' />
               </TouchableOpacity>
