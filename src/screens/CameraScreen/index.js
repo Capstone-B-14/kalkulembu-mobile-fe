@@ -21,7 +21,7 @@ const CameraScreen = () => {
   // Camera stuff
   const [type, setType] = useState(CameraType.back);
   const [permission, requestPermission] = Camera.useCameraPermissions();
-  const [capturedImage, setCapturedImage] = useState(null);
+  const [capturedImages, setCapturedImages] = useState([]);
 
   // Aspect ratio
   const [aspectRatio, setAspectRatio] = useState("4:3");
@@ -87,10 +87,20 @@ const CameraScreen = () => {
     return null;
   }
 
+  const handleCapture = (newImageUri) => {
+    setCapturedImages([
+      ...capturedImages,
+      {
+        uri: newImageUri,
+      },
+    ]);
+    // console.log(capturedImages);
+  };
+
   const takePicture = async () => {
     if (cameraRef.current) {
       const photo = await cameraRef.current.takePictureAsync();
-      setCapturedImage(photo);
+      handleCapture(photo.uri);
       navigation.navigate("CameraResult", { uri: photo.uri });
     }
   };
@@ -170,16 +180,25 @@ const CameraScreen = () => {
           />
         )}
       </Camera>
-      {capturedImage && (
-        <TouchableOpacity onPress={() => setShowImageModal(true)}>
-          <Image
-            source={{ uri: capturedImage?.uri }}
-            style={styles.thumbnail}
-          />
-        </TouchableOpacity>
-      )}
-      <Modal isOpen={showImageModal} onClose={() => setShowImageModal(false)}>
-        <Image source={{ uri: capturedImage?.uri }} style={styles.fullImage} />
+      {capturedImages &&
+        capturedImages.map((image, index) => (
+          <TouchableOpacity
+            key={image.uri}
+            onPress={() => {
+              navigation.navigate("ImageViewerScreen", {
+                capturedImages: capturedImages,
+              });
+            }}
+          >
+            <Image source={{ uri: image.uri }} style={styles.thumbnail} />
+          </TouchableOpacity>
+        ))}
+      <Modal
+        isOpen={showImageModal}
+        onClose={() => setShowImageModal(false)}
+        style={styles.imagemodal}
+      >
+        <Image source={{ uri: capturedImages?.uri }} style={styles.fullImage} />
       </Modal>
     </View>
   );
@@ -202,6 +221,9 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     backgroundColor: "transparent",
+    width: "10%",
+    alignSelf: "center",
+    alignItems: "center",
     margin: 24,
   },
   button: {
@@ -236,15 +258,6 @@ const styles = StyleSheet.create({
     fontSize: 30, // Reduced font size for the close button
     color: "#333", // Color for the close button text, for better visibility
   },
-  buttoncam: {
-    //paddingBottom: 25,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-    width: "100%",
-    height: "30%",
-    //textAlign: "center",
-  },
   sticker: {
     position: "absolute",
     top: 150,
@@ -253,6 +266,10 @@ const styles = StyleSheet.create({
     height: 450,
     width: 450,
   },
+  imagecontainer: {
+    width: 100,
+    backgroundColor: "#FBFBFB",
+  },
   thumbnail: {
     width: 75,
     height: 75,
@@ -260,8 +277,16 @@ const styles = StyleSheet.create({
     bottom: 100,
     right: 10,
     borderRadius: 5,
+    zIndex: 11,
+  },
+  imagemodal: {
+    alignContent: "center",
+    marginTop: statusBarHeight + 20,
   },
   fullImage: {
+    alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "center",
     width: "100%",
     height: "100%",
     resizeMode: "contain",

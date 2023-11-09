@@ -9,6 +9,7 @@ import CameraResult from "./src/screens/CameraResult";
 import SapiScreen from "./src/screens/SapiScreen";
 import ProfileScreen from "./src/screens/ProfileScreen";
 import EditPhotoScreen from "./src/screens/ProfileScreen/EditPhotoScreen";
+import ImageViewerScreen from "./src/screens/ImageViewerScreen";
 import Login from "./src/screens/LoginScreen";
 import NavBar from "./src/components/NavBar";
 import SignupUser from "./src/screens/SignupUser";
@@ -83,7 +84,11 @@ export default function App() {
             component={EditPhotoScreen}
             options={{ title: "Edit Photo Screen" }}
           />
-
+          <Stack.Screen
+            name='ImageViewerScreen'
+            component={ImageViewerScreen}
+            options={{ title: "Image Viewer Screen" }}
+          />
           <Stack.Screen
             name='Login'
             component={Login}
