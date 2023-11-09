@@ -7,6 +7,7 @@ import { useUser } from "../../contexts/UserContext";
 
 const CameraResult = ({ route }) => {
   const { uri } = route.params;
+  console.log(route.params);
   const navigation = useNavigation();
   const [selectedOption, setSelectedOption] = useState(null);
   const [farms, setFarms] = useState([]);
