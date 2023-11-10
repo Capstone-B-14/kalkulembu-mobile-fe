@@ -16,7 +16,7 @@ import Constants from "expo-constants";
 import Dropdowns from "../../components/Dropdown";
 import axiosInstance from "../../utils/axios";
 import { useUser } from "../../contexts/UserContext";
-import CustomButton from "../../components/CustomButton";
+import CustomButton from "../../components/Button";
 
 const statusBarHeight = Constants.statusBarHeight;
 
@@ -118,7 +118,9 @@ const CameraResult = ({ route }) => {
         <Text>Apakah sapi sehat?</Text>
         <Switch onValueChange={setHealthy} value={healthy} />
       </View>
-      <Button title='Submit' onPress={() => submitStats()} />
+      <View style={styles.submitContainer}>
+        <CustomButton style={styles.submit} text='Submit' onPress={() => submitStats()} />
+      </View>
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View style={styles.container}>
           <Dropdowns
@@ -177,6 +179,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     left: 50,
+  },
+  submitContainer: {
+    flex: 0,
+    justifyContent: "center",
+    alignItems: "center",
+    width: "40%",
+  },
+  submit: {
+    width: "100%",
+    flex: 0,
+    borderRadius: 50,
+    backgroundColor: "#FFDF64",
   },
   statContainer: {
     flexDirection: "row",

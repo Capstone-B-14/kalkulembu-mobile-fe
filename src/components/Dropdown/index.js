@@ -22,7 +22,7 @@ const Dropdowns = ({
   const [isFocus, setIsFocus] = useState(false);
 
   return (
-    <View className='bg-[#2E78A6] w-[170px] m-2 p-2 pl-2 ounded-3xl'>
+    <View style={styles.unrolled}>
       <Dropdown
         styles={[styles.dropdown]}
         iconStyle={[styles.iconStyle]}
@@ -54,27 +54,35 @@ const Dropdowns = ({
 export default Dropdowns;
 
 const styles = StyleSheet.create({
+  unrolled: {
+    backgroundColor: "#2E78A6",
+    borderRadius: 50,
+    width: 200,
+    margin: 12,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+  },
   containerStyle: {
     backgroundColor: "#2E78A6",
+    borderRadius: 10,
   },
   dropdown: {
     height: "50px",
     flex: 1,
   },
-  icon: {
-    color: "#FBFBFB",
-  },
   label: {
     position: "absolute",
     backgroundColor: "#2E78A6",
-    fontSize: 14,
+    fontSize: 20,
   },
   iconStyle: {
     width: 20,
     height: 20,
+    padding: 10,
   },
   placeholderStyle: {
-    fontSize: 14,
+    fontSize: 18,
+    fontFamily: "Roboto-Regular",
     color: "#FBFBFB",
     textAlign: "center",
   },
@@ -84,9 +92,11 @@ const styles = StyleSheet.create({
   },
   itemContainerStyle: {
     backgroundColor: "#2E78A6",
+    borderRadius: 10,
   },
   inputSearchStyle: {
     backgroundColor: "#FBFBFB",
+    borderRadius: 7,
   },
   itemTextStyle: {
     color: "#FBFBFB",

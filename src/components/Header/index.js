@@ -30,7 +30,7 @@ const CustomHeader = ({ title, showUserData, rightComponent }) => {
       <View style={styles.rightContent}>
         {showUserData && parsedUserData ? (
           <Text style={styles.userData}>
-            Selamat datang, {parsedUserData?.name}
+            Selamat datang, {parsedUserData?.name.split(' ')[0]}
           </Text>
         ) : showUserData ? (
           <CustomButton
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     padding: 18,
-    paddingTop: statusBarHeight + 6,
+    paddingTop: statusBarHeight + 12,
     justifyContent: "space-between",
   },
   title: {

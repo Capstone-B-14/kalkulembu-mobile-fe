@@ -8,7 +8,6 @@ import {
   Image,
   StyleSheet,
   Modal,
-  Button,
   Animated,
   ActivityIndicator,
   ScrollView,
@@ -18,7 +17,7 @@ import { useNavigation } from "@react-navigation/native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 import AuthModal from "../../components/Modal/AuthModal";
-import CustomButton from "../../components/Button";
+import Button from "../../components/CustomButton";
 import CustomHeader from "../../components/Header";
 import { useUser } from "../../contexts/UserContext";
 import axiosInstance from "../../utils/axios";
@@ -182,70 +181,70 @@ const ProfileScreen = () => {
             </View>
             <View style={styles.profileInfo}>
               <Text style={styles.userName}>{parsedUserData?.name}</Text>
-              <Text style={styles.bio}>{parsedUserData?.role}</Text>
+              <Text style={styles.profileData}>{parsedUserData?.role}</Text>
+              <Text style={styles.profileData}>{parsedUserData?.phone}</Text>
             </View>
           </View>
-          {/* Rest of your components */}
           <View style={styles.buttonContainer}>
-            <Pressable
-              style={[
-                styles.button,
-                isEditing ? styles.buttonSave : styles.buttonEdit,
-              ]}
+            <Button
+              style={[isEditing ? styles.buttonSave : styles.buttonEdit]}
+              text='Edit Profil'
+              backgroundColor={isEditing ? '#2E78A6' : '#FFDF64'}
+              textColor={isEditing ? '#FBFBFB' : '#0D0D0D'}
               onPress={toggleEditing}
+            />
+          </View>
+          <View>
+            <Pressable
+              className='flex-1'
+              onPress={() => {
+                setIsEditing(true);
+              }}
+              onPressOut={(e) => e.stopPropagation()}
             >
-              <Text style={styles.buttonText}>Edit Profile</Text>
+              <Animated.View
+                style={{
+                  height: inputHeight,
+                  opacity: inputOpacity,
+                  overflow: "hidden",
+                }}
+              >
+                {showInputs && (
+                  <>
+                    <View style={styles.inputContainer}>
+                      <View style={styles.inputBox}>
+                        <Text style={styles.label}>Nama</Text>
+                        <TextInput
+                          placeholder='Nama'
+                          style={styles.input}
+                          onChangeText={(text) => setFormValue("name", text)}
+                          value={form.name}
+                          editable={isEditing}
+                        />
+                      </View>
+                      <View style={styles.inputBox}>
+                        <Text style={styles.label}>Nomor Telepon</Text>
+                        <TextInput
+                          placeholder='Nomor Telepon'
+                          style={styles.input}
+                          onChangeText={(text) => setFormValue("phone", text)}
+                          value={form.phone}
+                          editable={isEditing}
+                        />
+                      </View>
+                    </View>
+                    <Button
+                      style={styles.buttonSend}
+                      text='Simpan'
+                      backgroundColor='#FFDF64'
+                      textColor='#000'
+                      onPress={handleSubmit}
+                    />
+                  </>
+                )}
+              </Animated.View>
             </Pressable>
           </View>
-
-          <Pressable
-            className='flex-1'
-            onPress={() => {
-              setIsEditing(true);
-              console.log(isEditing);
-            }}
-            onPressOut={(e) => e.stopPropagation()}
-          >
-            <Animated.View
-              style={{
-                height: inputHeight,
-                opacity: inputOpacity,
-                overflow: "hidden",
-              }}
-            >
-              {showInputs && (
-                <View className='m-5 '>
-                  <View style={styles.inputcontainer}>
-                    <Text style={styles.label}>Nama</Text>
-                    <TextInput
-                      placeholder='Nama'
-                      style={styles.input}
-                      onChangeText={(text) => setFormValue("name", text)}
-                      value={form.name}
-                      editable={isEditing}
-                    />
-                  </View>
-                  <View style={styles.inputcontainer}>
-                    <Text style={styles.label}>Nomor Telepon</Text>
-                    <TextInput
-                      placeholder='Nomor Telepon'
-                      style={styles.input}
-                      onChangeText={(text) => setFormValue("phone", text)}
-                      value={form.phone}
-                      editable={isEditing}
-                    />
-                  </View>
-                  <CustomButton
-                    style={styles.buttonSend}
-                    text='Simpan'
-                    backgroundColor='#FFDF64'
-                    textColor='#000'
-                    onPress={handleSubmit}
-                  />
-                </View>
-              )}
-            </Animated.View>
-          </Pressable>
         </View>
       </ScrollView>
       <Modal animationType='slide' transparent={true} visible={confirmLogout}>
@@ -320,12 +319,14 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   userName: {
+    fontFamily: "Roboto-Regular",
     fontSize: 24,
     fontWeight: "bold",
     marginVertical: 10,
   },
-  bio: {
+  profileData: {
     fontSize: 16,
+    fontFamily: "Roboto-Regular",
   },
   logout: {
     flex: 0,
@@ -333,45 +334,52 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     alignSelf: "flex-end",
-    marginRight: 16,
-    marginTop: 16,
+    width: "75%",
+    marginTop: 20,
   },
   button: {
     alignItems: "center",
     backgroundColor: "#FFDF64",
     padding: 16,
-    borderRadius: 16,
+    borderRadius: 20,
   },
   buttonEdit: {
     backgroundColor: "#FFDF64", // color when in edit mode
   },
   buttonSave: {
-    backgroundColor: "#4CAF50", // color when in save mode
+    backgroundColor: "#2E78A6", // color when in save mode
   },
   buttonSend: {
-    alignSelf: "center",
-    marginTop: 10,
-    width: "90%",
-    flex: 0,
-    borderRadius: 10,
+    width: "100%",
+    borderRadius: 20,
   },
   buttonText: {
     fontWeight: "bold",
     fontSize: 18,
+    fontFamily: "Roboto-Regular",
   },
-  inputcontainer: {
+  inputContainer: {
+    marginHorizontal: 0,
+    marginTop: 20,
+    marginBottom: 10,
+  },
+  inputBox: {
+    marginHorizontal: 30,
+    borderRadius: 20,
     backgroundColor: "#FBFBFB",
     borderBottomWidth: 1,
     borderBottomColor: "#CCCCCC",
     paddingTop: 16,
   },
   label: {
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
     paddingLeft: 16,
     paddingRight: 16,
     paddingBottom: 8,
   },
   input: {
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
     padding: 16,
     minHeight: 44,

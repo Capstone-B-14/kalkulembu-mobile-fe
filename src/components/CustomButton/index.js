@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { Text, StyleSheet, Pressable, TouchableOpacity } from "react-native";
 
 const Button = ({
   onPress,
@@ -15,12 +15,12 @@ const Button = ({
     }
   };
   return (
-    <Pressable
+    <TouchableOpacity
       onPress={onPress || handleNavigate}
       style={[styles.press, { backgroundColor: backgroundColor }]}
     >
       <Text style={[styles.text, { color: textColor }]}>{text}</Text>
-    </Pressable>
+    </TouchableOpacity>
   );
 };
 
