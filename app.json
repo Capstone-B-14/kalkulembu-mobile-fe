@@ -24,7 +24,7 @@
 				"foregroundImage": "./assets/adaptive-icon.png",
 				"backgroundColor": "#ffffff"
 			},
-			"package": "com.daffa_romero.kalkulembumobilefe",
+			"package": "com.kalkulembu.kalkulembu",
 			"permissions": ["READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"]
 		},
 		"web": {
