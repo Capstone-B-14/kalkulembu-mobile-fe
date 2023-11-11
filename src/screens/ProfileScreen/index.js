@@ -16,7 +16,6 @@ import { useFocusEffect } from "@react-navigation/native";
 import { useNavigation } from "@react-navigation/native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
-import AuthModal from "../../components/Modal/AuthModal";
 import Button from "../../components/CustomButton";
 import CustomHeader from "../../components/Header";
 import { useUser } from "../../contexts/UserContext";
@@ -189,8 +188,8 @@ const ProfileScreen = () => {
             <Button
               style={[isEditing ? styles.buttonSave : styles.buttonEdit]}
               text='Edit Profil'
-              backgroundColor={isEditing ? '#2E78A6' : '#FFDF64'}
-              textColor={isEditing ? '#FBFBFB' : '#0D0D0D'}
+              backgroundColor={isEditing ? "#2E78A6" : "#FFDF64"}
+              textColor={isEditing ? "#FBFBFB" : "#0D0D0D"}
               onPress={toggleEditing}
             />
           </View>
@@ -233,13 +232,15 @@ const ProfileScreen = () => {
                         />
                       </View>
                     </View>
-                    <Button
-                      style={styles.buttonSend}
-                      text='Simpan'
-                      backgroundColor='#FFDF64'
-                      textColor='#000'
-                      onPress={handleSubmit}
-                    />
+                    <View style={styles.sendContainer}>
+                      <Button
+                        style={styles.buttonSend}
+                        text='Simpan'
+                        backgroundColor='#FFDF64'
+                        textColor='#000'
+                        onPress={handleSubmit}
+                      />
+                    </View>
                   </>
                 )}
               </Animated.View>
@@ -330,12 +331,13 @@ const styles = StyleSheet.create({
   },
   logout: {
     flex: 0,
-    borderRadius: 10,
+    borderRadius: 20,
   },
   buttonContainer: {
     alignSelf: "flex-end",
-    width: "75%",
+    width: "60%",
     marginTop: 20,
+    marginHorizontal: 20,
   },
   button: {
     alignItems: "center",
@@ -349,9 +351,15 @@ const styles = StyleSheet.create({
   buttonSave: {
     backgroundColor: "#2E78A6", // color when in save mode
   },
-  buttonSend: {
+  sendContainer: {
+    flex: 1,
+    alignSelf: "center",
     width: "100%",
+  },
+  buttonSend: {
+    width: "85%",
     borderRadius: 20,
+    alignSelf: "center",
   },
   buttonText: {
     fontWeight: "bold",

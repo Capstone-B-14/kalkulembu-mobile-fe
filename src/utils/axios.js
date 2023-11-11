@@ -4,9 +4,6 @@ import * as SecureStore from "expo-secure-store";
 const axiosInstance = axios.create({
   baseURL: process.env.REACT_APP_API_URL || process.env.EXPO_PUBLIC_API_URL,
   // any other default settings you want
-  headers: {
-    "Content-Type": "application/json",
-  },
 });
 
 axiosInstance.interceptors.request.use(
@@ -16,6 +13,10 @@ axiosInstance.interceptors.request.use(
 
     if (accessToken && refreshToken) {
       config.headers.Cookie = `accessToken=${accessToken}; refreshToken=${refreshToken}`;
+    }
+
+    if (config.data instanceof FormData) {
+      delete config.headers["Content-Type"];
     }
 
     return config;

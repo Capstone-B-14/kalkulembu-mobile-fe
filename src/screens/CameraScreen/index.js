@@ -101,9 +101,16 @@ const CameraScreen = () => {
 
   const takePicture = async () => {
     if (cameraRef.current) {
-      const photo = await cameraRef.current.takePictureAsync();
+      const photo = await cameraRef.current.takePictureAsync({
+        aspect: [4, 3],
+        base64: true,
+      });
       handleCapture(photo.uri);
-      navigation.navigate("CameraResult", { uri: photo.uri, cowAge: totalAge });
+      navigation.navigate("CameraResult", {
+        source: photo.base64,
+        uri: photo.uri,
+        cowAge: totalAge,
+      });
     }
   };
 
@@ -119,6 +126,7 @@ const CameraScreen = () => {
         </View>
       )}
       <Camera
+        useCamera2Api={true}
         style={styles.camera}
         type={type}
         ref={cameraRef}

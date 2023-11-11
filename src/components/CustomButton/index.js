@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, StyleSheet, Pressable, TouchableOpacity } from "react-native";
+import { Text, StyleSheet, TouchableOpacity } from "react-native";
 
 const Button = ({
   onPress,
@@ -8,6 +8,8 @@ const Button = ({
   textColor,
   navigation,
   routeName,
+  style,
+  disabled,
 }) => {
   const handleNavigate = () => {
     if (navigation && routeName) {
@@ -17,7 +19,13 @@ const Button = ({
   return (
     <TouchableOpacity
       onPress={onPress || handleNavigate}
-      style={[styles.press, { backgroundColor: backgroundColor }]}
+      style={[
+        styles.press,
+        style,
+        { backgroundColor: backgroundColor },
+        disabled && styles.disabled,
+      ]}
+      disabled={disabled}
     >
       <Text style={[styles.text, { color: textColor }]}>{text}</Text>
     </TouchableOpacity>
@@ -26,17 +34,18 @@ const Button = ({
 
 const styles = StyleSheet.create({
   press: {
-    padding: 13,
+    padding: 12,
     alignItems: "center",
     borderRadius: 10,
-    marginLeft: 30,
-    marginRight: 30,
-    marginTop: 2,
   },
   text: {
     fontWeight: "bold",
     color: "#000",
     fontSize: 18,
+  },
+  disabled: {
+    opacity: 0.5,
+    backgroundColor: "#9ea4ad",
   },
 });
 

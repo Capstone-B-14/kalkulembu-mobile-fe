@@ -18,6 +18,9 @@
     "preview2": {
         "android": {
           "gradleCommand": "app:assembleRelease"
+        },
+        "env": {
+          "EXPO_PUBLIC_API_URL": "https://kalkulembu.cloud/api/v1"
         }
     },
     "preview3": {

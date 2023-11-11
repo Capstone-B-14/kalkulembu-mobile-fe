@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, Pressable, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 const CustomButton = ({ onPress, text, style, backgroundColor }) => {
   return (
@@ -9,7 +9,7 @@ const CustomButton = ({ onPress, text, style, backgroundColor }) => {
       style={[
         styles.button,
         style,
-        { backgroundColor } // Apply backgroundColor here
+        { backgroundColor }, // Apply backgroundColor here
       ]}
     >
       <Text style={styles.text}>{text}</Text>
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   button: {
     padding: 13,
     alignItems: "center",
-    backgroundColor: 'blue',
+    backgroundColor: "blue",
   },
   text: {
     fontWeight: "bold",
