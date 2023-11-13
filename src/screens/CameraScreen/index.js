@@ -133,10 +133,10 @@ const CameraScreen = () => {
         ratio={aspectRatio}
       >
         <View className='m-4 flex justify-center items-center pt-10'></View>
-        <Image
+        {/* <Image
           source={require("../../../assets/sapi-outline.png")}
           style={styles.sticker}
-        />
+        /> */}
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={takePicture}>
             <Svg width='40' height='40' viewBox='0 0 40 40'>
@@ -191,7 +191,7 @@ const CameraScreen = () => {
         )}
       </Camera>
       {capturedImages &&
-        capturedImages.map((image, index) => (
+        capturedImages.map((image) => (
           <TouchableOpacity
             key={image.uri}
             onPress={() => {

@@ -12,7 +12,7 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Constants from "expo-constants";
-import mime from "mime";
+// import mime from "mime";
 import axios from "axios";
 
 import Dropdowns from "../../components/Dropdown";
