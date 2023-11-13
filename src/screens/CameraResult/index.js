@@ -25,7 +25,6 @@ const statusBarHeight = Constants.statusBarHeight;
 const CameraResult = ({ route }) => {
   const { source, uri, cowAge } = route.params;
   const navigation = useNavigation();
-  console.log(mime.getType(uri));
   // Specific stats states
   const [healthy, setHealthy] = useState(true);
 
@@ -170,10 +169,47 @@ const CameraResult = ({ route }) => {
       });
       if (response.status === 200) {
         console.log(response.data.secure_url);
+        await submitImage(response.data.secure_url);
         // await submitStats();
       }
     } catch (error) {
       console.error(error); // Log the error response from the server
+    }
+  };
+
+  const submitImage = async (sendUri) => {
+    const payload = {
+      imageUrl: sendUri,
+    };
+    if (selectedOption) {
+      try {
+        const response = await axiosInstance.post(
+          `/cattle/${selectedOption}/saveImageUrl`,
+          payload
+        );
+        if (response.status === 200) {
+          setIsImageUploaded(true);
+          setLoading(false);
+        }
+      } catch (error) {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.error(
+            "Server responded with an error: ",
+            error.response.data
+          );
+          Alert.alert("Error", "There was an error fetching the data.");
+        } else if (error.request) {
+          // The request was made but no response was received
+          console.error("No response was received: ", error.request);
+          Alert.alert("Error", "No response from the server.");
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.error("Error message: ", error.message);
+          Alert.alert("Error", "There was an error setting up the request.");
+        }
+      }
     }
   };
 
