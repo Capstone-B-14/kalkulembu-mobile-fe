@@ -233,7 +233,7 @@ const CameraResult = ({ route }) => {
             setLoading(true); // start loading before operations
             try {
               await uploadImage(); // wait for upload image
-              // await submitStats(); // then submit THE STATS MASON WHAT DO THEY MEAN
+              await submitStats(); // then submit THE STATS MASON WHAT DO THEY MEAN
             } catch (error) {
               // handle any errors that occur during the process
               console.error("An error occurred:", error);
