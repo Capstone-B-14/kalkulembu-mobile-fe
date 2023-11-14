@@ -60,6 +60,7 @@ const SapiScreen = () => {
         const response = await axiosInstance.get(`/farms/${id}/cattle/latest`);
         if (response.status === 200) {
           setCattle(response.data.data);
+          console.log(response.data.data);
         }
       } catch (error) {
         console.log(error);

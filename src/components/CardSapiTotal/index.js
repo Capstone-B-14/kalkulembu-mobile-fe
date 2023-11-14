@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, Dimensions } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-const CardSapiTotal = ({count}) => {
+const CardSapiTotal = ({ count }) => {
   return (
     <View className='p-4 bg-[#2E78A6] rounded-3xl flex justify-center sm: w-[155px] h-[155px]'>
       <View className='flex justify-between mb-2 sm: w-max'>

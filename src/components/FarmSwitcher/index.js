@@ -6,15 +6,22 @@ import { useUser } from "../../contexts/UserContext";
 
 const FarmSwitcher = () => {
   const [farms, setFarms] = useState([]);
-  const { userData, currentFarm, setFarmProfileData } = useUser();
+  const { userData, isAuthenticated, currentFarm, setFarmProfileData } = useUser();
   const parsedUserData = userData ? JSON.parse(userData) : null;
 
   useEffect(() => {
     const fetchFarms = async () => {
+      let response;
       try {
-        const response = await axiosInstance.get(
-          `/users/${parsedUserData.id}/farms`
-        );
+        if (parsedUserData && isAuthenticated) {
+          response = await axiosInstance.get(
+            `/users/${parsedUserData.id}/farms`
+          );
+        } else {
+          response = await axiosInstance.get(
+            `/farms`
+          );
+        }
         // console.log(response.data.data);
         setFarms(response.data.data);
         // Set default selected farm if none is selected
