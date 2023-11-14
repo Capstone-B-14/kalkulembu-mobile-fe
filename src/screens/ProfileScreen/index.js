@@ -63,15 +63,15 @@ const ProfileScreen = () => {
     outputRange: [0, 1],
   });
 
-  const handleLogin = () => {
-    navigation.navigate("Login");
-    setModalVisible(false);
-  };
+  // const handleLogin = () => {
+  //   navigation.navigate("Login");
+  //   setModalVisible(false);
+  // };
 
-  const handleBack = () => {
-    navigation.goBack();
-    setModalVisible(false);
-  };
+  // const handleBack = () => {
+  //   navigation.goBack();
+  //   setModalVisible(false);
+  // };
 
   const showLogoutConfirmation = () => {
     setconfirmLogout(true);

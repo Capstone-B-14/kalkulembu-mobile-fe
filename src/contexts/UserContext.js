@@ -9,6 +9,7 @@ export function UserProvider({ children }) {
   const [token, setToken] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [currentFarm, setCurrentFarm] = useState(null);
 
   useEffect(() => {
     const loadDataFromStorage = async () => {
@@ -57,6 +58,14 @@ export function UserProvider({ children }) {
     }
   };
 
+  const setFarmProfileData = async (farm) => {
+    try {
+      setCurrentFarm(farm);
+    } catch (error) {
+      console.error("Error setting farm profile: ", error);
+    }
+  }
+
   const clearUserTokenAuth = async () => {
     try {
       await SecureStore.deleteItemAsync("accessToken");
@@ -80,6 +89,8 @@ export function UserProvider({ children }) {
         setUserProfileData,
         setUserTokenAuth,
         clearUserTokenAuth,
+        currentFarm,
+        setFarmProfileData,
       }}
     >
       {children}
