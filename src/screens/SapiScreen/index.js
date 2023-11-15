@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Image, StyleSheet, Alert, ScrollView } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 import { useUser } from "../../contexts/UserContext";
 import axiosInstance from "../../utils/axios";
@@ -10,6 +11,9 @@ import Kartu from "../../components/Kartu";
 const SapiScreen = () => {
   const [searchText, setSearchText] = useState("");
   const [cattle, setCattle] = useState([]);
+  const [farmId, setFarmId] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const { userData } = useUser();
   const parsedUserData = userData ? JSON.parse(userData) : null;
@@ -19,54 +23,47 @@ const SapiScreen = () => {
     setSearchText(text);
   };
 
+  const navigation = useNavigation();
+
+  const handleCardPress = (cattleId, farmId) => {
+    // Navigate to the desired screen
+    navigation.navigate("Detail Sapi", {
+      cattleId: cattleId,
+      farmId: farmId,
+    });
+  };
+
   useEffect(() => {
     const fetchCattle = async () => {
-      try {
-        const farmsRequest = axiosInstance.get(`/users/${userId}/farms`);
-        const cattleRequest = farmsRequest.then((response) => {
-          const farmId = response.data.data[0].id;
-          return getImages(farmId);
-        });
+      setIsLoading(true);
+      setError(null);
 
-        // const [cattleResponse] = await Promise.all([
-        //   farmsRequest,
-        //   cattleRequest,
-        // ]);
-      } catch (error) {
-        if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          console.error(
-            "Server responded with an error: ",
-            error.response.data
-          );
-          Alert.alert("Error", "There was an error fetching the data.");
-        } else if (error.request) {
-          // The request was made but no response was received
-          console.error("No response was received: ", error.request);
-          Alert.alert("Error", "No response from the server.");
+      try {
+        let farmsResponse;
+        // If the user is logged in, use the endpoint with /users/:userId/farms
+        if (userData && userId) {
+          farmsResponse = await axiosInstance.get(`/users/${userId}/farms`);
         } else {
-          // Something happened in setting up the request that triggered an Error
-          console.error("Error message: ", error.message);
-          Alert.alert("Error", "There was an error setting up the request.");
+          // If the user is not logged in, use the endpoint with /farms
+          farmsResponse = await axiosInstance.get("/farms");
         }
+
+        // Assuming the farm data is in the response and you want the first farm's details
+        const farmId = farmsResponse.data.data[0].id;
+        const cattleResponse = await axiosInstance.get(
+          `/farms/${farmId}/cattle/latest`
+        );
+        setCattle(cattleResponse.data.data);
+        setFarmId(farmId); // Assuming you want to store the entire farm object
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchCattle();
-
-    const getImages = async (id) => {
-      try {
-        const response = await axiosInstance.get(`/farms/${id}/cattle/latest`);
-        if (response.status === 200) {
-          setCattle(response.data.data);
-          console.log(response.data.data);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-  }, []);
+  }, [userData, userId]);
 
   return (
     <View className='h-full sm: w-auto'>
@@ -88,6 +85,9 @@ const SapiScreen = () => {
                 name={item.name.split(" ")[0]}
                 weight={item.latestStats?.weight}
                 healthy={item.latestStats?.healthy}
+                onPress={() => {
+                  handleCardPress(item.id, farmId);
+                }}
               />
             ))}
           </View>

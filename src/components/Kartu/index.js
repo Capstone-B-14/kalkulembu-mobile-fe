@@ -1,7 +1,7 @@
 import React from "react";
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
 
-const Kartu = ({ photo, name, weight, healthy }) => {
+const Kartu = ({ photo, name, weight, healthy, onPress }) => {
   const getKondisiLabel = () => {
     if (healthy) {
       return (
@@ -21,7 +21,7 @@ const Kartu = ({ photo, name, weight, healthy }) => {
   };
 
   return (
-    <View className='mx-4 my-4'>
+    <TouchableOpacity className='mx-4 my-4' onPress={onPress}>
       <View className='bg-[#FFFFFF] p-2 rounded-xl w-[170px] h-[230px] shadow-lg flex flex-col drop-shadow-lg'>
         <View className='flex items-center'>
           <View className='bg-transparent w-[150px] h-[150px] rounded-xl'>
@@ -49,7 +49,7 @@ const Kartu = ({ photo, name, weight, healthy }) => {
           </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

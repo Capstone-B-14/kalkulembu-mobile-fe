@@ -7,6 +7,7 @@ import HomeScreen from "./src/screens/HomeScreen";
 import CameraScreen from "./src/screens/CameraScreen";
 import CameraResult from "./src/screens/CameraResult";
 import SapiScreen from "./src/screens/SapiScreen";
+import DetailSapi from "./src/screens/DetailSapi";
 import ProfileScreen from "./src/screens/ProfileScreen";
 import EditPhotoScreen from "./src/screens/ProfileScreen/EditPhotoScreen";
 import ImageViewerScreen from "./src/screens/ImageViewerScreen";
@@ -73,6 +74,11 @@ export default function App() {
             name='Sapi'
             component={SapiScreen}
             options={{ title: "Sapi" }}
+          />
+          <Stack.Screen
+            name='Detail Sapi'
+            component={DetailSapi}
+            options={{ title: "Detail Sapi" }}
           />
           <Stack.Screen
             name='Profile'
