@@ -11,10 +11,6 @@ const Detail3 = () => {
         <View className='mt-2'>
           <SwitchButton />
         </View>
-
-        <View className=''>
-          
-        </View>
       </View>
     </View>
   );

@@ -23,7 +23,7 @@ const DetailSapi = ({ route, navigation }) => {
         );
         if (response.status === 200) {
           setCattleData(response.data.data);
-          // console.log(response.data.data);
+          console.log(response.data.data);
         }
       } catch (error) {
         console.log(error);
@@ -57,7 +57,7 @@ const DetailSapi = ({ route, navigation }) => {
           sex={getSexLabel()}
           healthy={getHealthyLabel()}
         />
-        <Detail2 />
+        <Detail2 age={cattleData[0]?.latestStats.age} weight={cattleData[0]?.latestStats.weight} />
         <Detail3 />
         <ScrollView horizontal={true} className='flex flex-row p-3 '>
           <Card />
