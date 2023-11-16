@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Alert } from "react-native";
 
 import axiosInstance from "../../utils/axios";
 import Camera from "../../components/Camera";
@@ -14,6 +14,7 @@ const DetailSapi = ({ route, navigation }) => {
   // console.log(route.params);
 
   const [cattleData, setCattleData] = useState({});
+  const [weightAvg, setWeightAvg] = useState([]);
 
   useEffect(() => {
     const getData = async (farm_id, cattle_id) => {
@@ -31,6 +32,25 @@ const DetailSapi = ({ route, navigation }) => {
     };
 
     getData(farmId, cattleId);
+  }, []);
+
+  useEffect(() => {
+    const getAverages = async (cattle_id) => {
+      try {
+        const response = await axiosInstance.get(
+          `/cattle/${cattle_id}/stats/weight`
+        );
+        if (response.status === 200) {
+          setWeightAvg(response.data.data);
+          // console.log(response.data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching cattle data:", error);
+        Alert.alert("Error", "Failed to fetch cattle stats.");
+      }
+    };
+
+    getAverages(cattleId);
   }, []);
 
   const getSexLabel = () => {
@@ -57,10 +77,16 @@ const DetailSapi = ({ route, navigation }) => {
           sex={getSexLabel()}
           healthy={getHealthyLabel()}
         />
-        <Detail2 age={cattleData[0]?.latestStats.age} weight={cattleData[0]?.latestStats.weight} />
-        <Detail3 />
+        <Detail2
+          age={cattleData[0]?.latestStats.age}
+          weight={cattleData[0]?.latestStats.weight}
+        />
+        <Detail3 averages={weightAvg} />
         <ScrollView horizontal={true} className='flex flex-row p-3 '>
-          <Card />
+          <Card
+            weight={cattleData[0]?.latestStats.weight}
+            measureDate={cattleData[0]?.latestStats.measuredAt.split("T")[0]}
+          />
         </ScrollView>
       </ScrollView>
       <Camera />

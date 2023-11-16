@@ -1,14 +1,20 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+
 import Entypo from "react-native-vector-icons/Entypo";
 import Foundation from "react-native-vector-icons/Foundation";
 import Feather from "react-native-vector-icons/Feather";
 import DetailOption from "../DetailOption";
 
 const Detail1 = ({ name, sex, healthy }) => {
+  const navigation = useNavigation();
+
   return (
     <View className='p-5 mt-10 shadow-lg'>
       <View className='bg-[#A3BFD9] p-2 rounded-t-xl flex-row items-center '>
-        <Entypo name='chevron-left' size={25} />
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Entypo name='chevron-left' size={25} />
+        </TouchableOpacity>
         <Text className='ml-2 text-base font-bold mr-44'>Informasi Sapi</Text>
         <DetailOption />
       </View>
