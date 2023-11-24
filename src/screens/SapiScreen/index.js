@@ -12,6 +12,7 @@ const SapiScreen = () => {
   const [searchText, setSearchText] = useState("");
   const [cattle, setCattle] = useState([]);
   const [farmId, setFarmId] = useState([]);
+  const [cattleImages, setCattleImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -46,6 +47,7 @@ const SapiScreen = () => {
         } else {
           // If the user is not logged in, use the endpoint with /farms
           farmsResponse = await axiosInstance.get("/farms");
+          // console.log(farmsResponse.data.data);
         }
 
         // Assuming the farm data is in the response and you want the first farm's details
@@ -65,6 +67,41 @@ const SapiScreen = () => {
     fetchCattle();
   }, [userData, userId]);
 
+  // Latest cattle images
+  useEffect(() => {
+    const fetchCattleImages = async () => {
+      setIsLoading(true);
+      setError(null);
+
+      try {
+        // Assuming you have an array of cattle objects
+        const allCattleImages = await Promise.all(
+          cattle.map(async (cow) => {
+            const response = await axiosInstance.get(
+              `/cattle/${cow.id}/images`
+            );
+            return {
+              cowId: cow.id,
+              images: response.data.data,
+            };
+          })
+        );
+
+        // Now allCattleImages is an array of objects with cowId and images
+        setCattleImages(allCattleImages);
+        console.log(cattleImages[0].images[0].url);
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (cattle && cattle.length > 0) {
+      fetchCattleImages();
+    }
+  }, []);
+
   return (
     <View className='h-full sm: w-auto'>
       <CustomHeader title='Sapi' showUserData={false} />
@@ -81,7 +118,7 @@ const SapiScreen = () => {
             {cattle.map((item) => (
               <Kartu
                 key={item.id}
-                photo='https://reactjs.org/logo-og.png'
+                photo={cattleImages[0].images[0].url}
                 name={item.name.split(" ")[0]}
                 weight={item.latestStats?.weight}
                 healthy={item.latestStats?.healthy}

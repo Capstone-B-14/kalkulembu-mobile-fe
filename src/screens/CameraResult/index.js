@@ -40,6 +40,9 @@ const CameraResult = ({ route }) => {
   const [loading, setLoading] = useState(false);
   const [isImageUploaded, setIsImageUploaded] = useState(false);
 
+  // Image processing states
+  const [base64Image, setBase64Image] = useState(null);
+
   const parsedUserData = userData ? JSON.parse(userData) : null;
 
   useEffect(() => {
@@ -168,8 +171,10 @@ const CameraResult = ({ route }) => {
         headers: { "Content-Type": "multipart/form-data" },
       });
       if (response.status === 200) {
-        console.log(response.data.secure_url);
-        await submitImage(response.data.secure_url);
+        // console.log(response.data.secure_url);
+        // await submitImage(response.data.secure_url);
+        // await submitImage();
+        await submitToFlask();
         // await submitStats();
       }
     } catch (error) {
@@ -177,10 +182,33 @@ const CameraResult = ({ route }) => {
     }
   };
 
+  const submitToFlask = async () => {
+    const payload = {
+      imageUrl:
+        "https://res.cloudinary.com/kalkulembu/image/upload/v1700151927/photo_2.jpg.jpg",
+    };
+
+    try {
+      const response = await axios.post(
+        "http://10.0.2.2:5001/predict",
+        payload
+      );
+      if (response.status === 200) {
+        // Assuming the response contains the Base64 string
+        console.log(response.data);
+        // setBase64Image(response.data.image_base64);
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error("Error submitting image:", error);
+    }
+  };
+
   const submitImage = async (sendUri) => {
     const payload = {
       imageUrl: sendUri,
     };
+
     if (selectedOption) {
       try {
         const response = await axiosInstance.post(
@@ -282,6 +310,12 @@ const CameraResult = ({ route }) => {
       </View>
       <View style={styles.topContainer}>
         <Image source={{ uri }} style={styles.image} />
+        {base64Image && (
+          <Image
+            source={{ uri: `data:image/jpeg;base64,${base64Image}` }}
+            style={{ width: 600, height: 600 }} // Set your desired style
+          />
+        )}
         <View style={styles.healthSwitch}>
           <Text>Apakah sapi sehat?</Text>
           <Switch onValueChange={setHealthy} value={healthy} />
