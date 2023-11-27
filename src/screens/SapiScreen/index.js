@@ -72,24 +72,11 @@ const SapiScreen = () => {
     const fetchCattleImages = async () => {
       setIsLoading(true);
       setError(null);
-
       try {
-        // Assuming you have an array of cattle objects
-        const allCattleImages = await Promise.all(
-          cattle.map(async (cow) => {
-            const response = await axiosInstance.get(
-              `/cattle/${cow.id}/images`
-            );
-            return {
-              cowId: cow.id,
-              images: response.data.data,
-            };
-          })
+        const latestCattleImage = await axiosInstance.get(
+          `/cattle/images/latest`
         );
-
-        // Now allCattleImages is an array of objects with cowId and images
-        setCattleImages(allCattleImages);
-        console.log(cattleImages[0].images[0].url);
+        setCattleImages(latestCattleImage.data.data);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -101,6 +88,8 @@ const SapiScreen = () => {
       fetchCattleImages();
     }
   }, []);
+
+  console.log(cattle.id);
 
   return (
     <View className='h-full sm: w-auto'>
@@ -115,18 +104,27 @@ const SapiScreen = () => {
       <ScrollView className='my-2'>
         <View className=''>
           <View className='flex flex-row flex-wrap h-full w-full items-center justify-between'>
-            {cattle.map((item) => (
-              <Kartu
-                key={item.id}
-                photo={cattleImages[0].images[0].url}
-                name={item.name.split(" ")[0]}
-                weight={item.latestStats?.weight}
-                healthy={item.latestStats?.healthy}
-                onPress={() => {
-                  handleCardPress(item.id, farmId);
-                }}
-              />
-            ))}
+            {cattle?.map((item, index) => {
+              const adjustedIndex = index + 1;
+              const cattleImage = cattleImages?.find(
+                (url) => url.cattle_id === adjustedIndex
+              );
+
+              console.log(cattleImage);
+
+              return (
+                <Kartu
+                  key={item.id}
+                  photo={cattleImage ? cattleImage.url : null}
+                  name={item.name.split(" ")[0]}
+                  weight={item.latestStats?.weight}
+                  healthy={item.latestStats?.healthy}
+                  onPress={() => {
+                    handleCardPress(item.id, farmId);
+                  }}
+                />
+              );
+            })}
           </View>
         </View>
       </ScrollView>
