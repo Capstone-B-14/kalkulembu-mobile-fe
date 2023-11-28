@@ -172,9 +172,9 @@ const CameraResult = ({ route }) => {
       });
       if (response.status === 200) {
         // console.log(response.data.secure_url);
-        // await submitImage(response.data.secure_url);
+        await submitImage(response.data.secure_url);
         // await submitImage();
-        await submitToFlask();
+        // await submitToFlask();
         // await submitStats();
       }
     } catch (error) {

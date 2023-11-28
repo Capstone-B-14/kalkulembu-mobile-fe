@@ -77,6 +77,7 @@ const SapiScreen = () => {
           `/cattle/images/latest`
         );
         setCattleImages(latestCattleImage.data.data);
+        console.log(latestCattleImage.data.data);
       } catch (error) {
         setError(error.message);
       } finally {
@@ -87,9 +88,7 @@ const SapiScreen = () => {
     if (cattle && cattle.length > 0) {
       fetchCattleImages();
     }
-  }, []);
-
-  console.log(cattle.id);
+  }, [cattle]);
 
   return (
     <View className='h-full sm: w-auto'>
@@ -104,27 +103,25 @@ const SapiScreen = () => {
       <ScrollView className='my-2'>
         <View className=''>
           <View className='flex flex-row flex-wrap h-full w-full items-center justify-between'>
-            {cattle?.map((item, index) => {
-              const adjustedIndex = index + 1;
-              const cattleImage = cattleImages?.find(
-                (url) => url.cattle_id === adjustedIndex
-              );
+            {!isLoading &&
+              cattle?.map((item) => {
+                const cattleImage = cattleImages.find(
+                  (image) => image.cattle_id === item.id
+                );
 
-              console.log(cattleImage);
-
-              return (
-                <Kartu
-                  key={item.id}
-                  photo={cattleImage ? cattleImage.url : null}
-                  name={item.name.split(" ")[0]}
-                  weight={item.latestStats?.weight}
-                  healthy={item.latestStats?.healthy}
-                  onPress={() => {
-                    handleCardPress(item.id, farmId);
-                  }}
-                />
-              );
-            })}
+                return (
+                  <Kartu
+                    key={item.id}
+                    photo={cattleImage ? cattleImage.url : "adaptive_icon.png"}
+                    name={item.name.split(" ")[0]}
+                    weight={item.latestStats?.weight}
+                    healthy={item.latestStats?.healthy}
+                    onPress={() => {
+                      handleCardPress(item.id, farmId);
+                    }}
+                  />
+                );
+              })}
           </View>
         </View>
       </ScrollView>
