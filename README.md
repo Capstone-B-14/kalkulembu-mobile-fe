@@ -1,11 +1,11 @@
 # Kalkulembu
 
 ## Apa Itu Kalkulembu?
-Kalkulembu adalah sebuah aplikasi Android yang dapat digunakan untuk _monitoring_ sapi di peternakan.
+Kalkulembu adalah sebuah aplikasi Android yang dapat digunakan untuk _monitoring_ sapi di peternakan. Kalkulembu dikembangkan dalam rangka Capstone Project DTETI FT UGM tahun 2023.
 
 ## Fitur-Fitur
 
-### Monitoring Sapi
+### Monitoring sapi di peternakan
 - Melihat data sapi di tiap peternakan:
   - Banyak sapi
   - Nama sapi
@@ -15,29 +15,27 @@ Kalkulembu adalah sebuah aplikasi Android yang dapat digunakan untuk _monitoring
   - Jenis kelamin sapi
 - Melihat grafik pertumbuhan setiap sapi melalui bobot badannya.
 
-### Kamera dan Galeri
+### Kamera dan galeri
 - Mengambil foto sapi menggunakan kamera _smartphone_.
 - Memilih usia dari sapi yang diambil fotonya.
 - Mengunggah foto sapi yang baru saja diambil atau melalui galeri foto.
 
-### Manajemen Akun dan Profil Pengguna
+### Manajemen akun dan profil pengguna
 - Log in/log out akun pengguna
 - Mengedit data profil pengguna: foto profil, nama, nomor telepon
 - Berganti ke peternakan lain yang dimiliki pengguna
 
-## Lain-Lain:
+## Lain-lain
 - Jenis rilis: _Preview_
 - Tanggal rilis: 17 November 2023 (aplikasi di-_build_ kembali untuk keperluan dokumentasi pada tanggal 28 Januari 2024)
 - Versi: 1.0.0 (versi Capstone Expo)
 - Platform: Android
-
-## Tech Stack
+- Tech stack: 
 ![React Native](https://img.shields.io/badge/react_native-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 ![Expo](https://img.shields.io/badge/expo-1C1E24?style=for-the-badge&logo=expo&logoColor=#D04A37)
-
-Backend:
-- [Repo GitHub](https://github.com/Capstone-B-14/kalkulembu-be-main)
-- [Vercel](https://kalkulembu-be-main.vercel.app/)
+- Referensi ke _backend_:
+  - [Repo GitHub](https://github.com/Capstone-B-14/kalkulembu-be-main)
+  - [Vercel](https://kalkulembu-be-main.vercel.app/)
 
 ## Menjalankan Aplikasi
 ### _User account credentials_
@@ -79,9 +77,13 @@ Langkah-langkah:
 #### Apakah aplikasi ini tidak dapat dijalankan di komputer Anda?
 Biasanya, masalah ini disebabkan oleh _package_ yang belum ter-_install_ ataupun belum ter-_update_. Jalankan ```npm install``` dan ```npx expo install``` di terminal Anda untuk meng-_install_ dan meng-_update_ aplikasi.
 #### Apakah Anda hanya melihat layar putih di _smartphone_ Anda?
-Kemungkinan besar terdapat masalah di koneksi Anda, sehingga _smartphone_ atau _emulator_ Anda tidak dapat terhubung ke _development server_. Anda dapat mencoba menggunakan _tunneling_ untuk menjalankan _development server_ Anda. Masalah ini juga kami hadapi selama proses pengembangan aplikasi untuk Capstone Expo, dan kadang terjadi, baik itu karena menggunakan Wi-Fi publik, menggunakan _firewall_, maupun karena pengaturan _emulator_ yang kurang tepat.
+Kemungkinan besar terdapat masalah di koneksi Anda, sehingga _smartphone_ atau _emulator_ Anda tidak dapat terhubung ke _development server_. Anda dapat mencoba menggunakan _tunneling_ untuk menjalankan _development server_ Anda. Masalah ini juga kami hadapi selama proses pengembangan aplikasi untuk Capstone Expo, dan kadang terjadi karena menggunakan Wi-Fi publik, menggunakan _firewall_, maupun karena pengaturan _emulator_ yang kurang tepat.
 
 Ikuti langkah-langkah di dokumentasi Expo: [Tunneling di Expo CLI](https://docs.expo.dev/more/expo-cli/#tunneling) atau lihat langkah-langkah berikut:
 - Install package @expo/ngrok dengan _command_ ```npm i -g @expo/ngrok```
 - Jalankan _development server_ melalui URL _tunnel_ dengan _command_ ```npx expo start --tunnel```
+
 Sesuai dengan dokumentasi Expo, _tunneling_ lebih lambat daripada _dev server_ lokal. Akan tetapi, menggunakan _tunneling_ dapat memitigasi masalah koneksi yang mungkin Anda hadapi.
+
+
+Tim B_14
